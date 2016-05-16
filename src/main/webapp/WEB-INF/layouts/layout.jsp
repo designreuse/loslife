@@ -26,7 +26,6 @@
     body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei, Tahoma, Helvetica, Arial,  sans-serif;}
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
-    font-weight: 500;
 	}
 	body {
 	    font-family: "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
@@ -47,7 +46,7 @@
     <![endif]-->
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-  <body class="hold-transition skin-red layout-top-nav fixed">
+  <body class="hold-transition skin-red layout-top-nav">
     <div class="wrapper">
 	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
 

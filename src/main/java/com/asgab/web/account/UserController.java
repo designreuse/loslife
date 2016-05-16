@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
-import com.asgab.service.mail.MailService;
 import com.asgab.util.Servlets;
 
 /*
@@ -36,8 +35,7 @@ public class UserController {
   @Autowired
   AccountService accountService;
 
-  @Autowired
-  MailService mailService;
+ 
 
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
@@ -119,12 +117,7 @@ public class UserController {
     }
   }
 
-  // 重新发送失败的邮件
-  @ResponseBody
-  @RequestMapping(value = "resend/mails", method = RequestMethod.POST)
-  public String resendFailureMails() {
-    return mailService.resendNotSentMails() + "";
-  }
+ 
 
 
 }

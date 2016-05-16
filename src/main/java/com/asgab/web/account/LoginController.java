@@ -45,7 +45,7 @@ public class LoginController {
       if (null != (ShiroUser) currentUser.getPrincipal()) {// 如果已经登录，则退出or
                                                            // 跳转到主页
         // currentUser.logout(); //安全起见，用这种，退出再登录
-        return "redirect:/paytran"; // "/" 会根据spring-mvc.xml 配置通过
+        return "redirect:/login"; // "/" 会根据spring-mvc.xml 配置通过
                                     // pageController 重新分配跳转到主页
       }
     }
