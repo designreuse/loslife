@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="org.springframework.context.i18n.LocaleContextHolder"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -19,7 +20,7 @@
     <link rel="stylesheet" href="${ctx}/static/styles/ionicons.min.css">
     
     <!-- Theme style -->
-    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
     
    
      <style type="text/css">
@@ -31,12 +32,51 @@
 	    font-family: "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
 	    color: #424242;
 	}
+	 /*langauage ch or en*/
+	.x-lang{
+	    position: fixed;
+	    top: 2px;
+	    right: 5px;
+	}
+	.x-lang-en{
+	    width: 24px;
+	    height: 24px;
+	    border: 1px solid #acb0bc;
+	    display: inline-block;
+	    background-color: #acb0bc;
+	    border-radius: 24px;
+	    text-align: center;
+	    color: #434343;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    line-height: 24px;
+	    box-sizing:border-box;
+	}
+	.x-lang-en:after{content: "E"}
+	
+	.x-lang-ch{
+	    width: 24px;
+	    height: 24px;
+	    border: 1px solid #acb0bc;
+	    display: inline-block;
+	    background-color: #acb0bc;
+	    border-radius: 24px;
+	    text-align: center;
+	    color: #434343;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    line-height: 24px;
+	    box-sizing:border-box;
+	}
+	.x-lang-ch:after{content: "中"}
+	
+	.x-lang-ch.selected,.x-lang-en.selected{background-color: #336dc6;color: white}
     </style>
     
     
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,9 +84,10 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-  <body class="hold-transition skin-red layout-top-nav">
+  <body class="hold-transition layout-top-nav skin-black">
     <div class="wrapper">
 	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
 
@@ -87,6 +128,25 @@
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/demo.js"></script>
+    <script type="text/javascript">
+	    function changeLang(lang){
+	    	url = window.location.href;
+	    	
+	    	if(url.indexOf("lang=zh_CN")>-1){
+	    		window.location.href = url.replace("lang=zh_CN","lang="+lang);
+	    	}
+	    	else if(url.indexOf("lang=en_US")>-1){
+	    		window.location.href = url.replace("lang=en_US","lang="+lang);
+	    	}else if( url.indexOf("?")==-1){
+    			window.location.href = url+"?lang="+lang;
+    		}else {
+    			window.location.href = url+"&lang="+lang;
+    		}
+	    }
+	    
+	    
+    </script>
+    
   </body>
 </html>
 

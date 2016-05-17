@@ -337,13 +337,13 @@
 .skin-black .main-header > .navbar .nav .open > a:focus,
 .skin-black .main-header > .navbar .nav > .active > a {
   background: #ffffff;
-  color: #999999;
+  color: #336dc6;
 }
 .skin-black .main-header > .navbar .sidebar-toggle {
   color: #333333;
 }
 .skin-black .main-header > .navbar .sidebar-toggle:hover {
-  color: #999999;
+  color: #336dc6;
   background: #ffffff;
 }
 .skin-black .main-header > .navbar > .sidebar-toggle {
