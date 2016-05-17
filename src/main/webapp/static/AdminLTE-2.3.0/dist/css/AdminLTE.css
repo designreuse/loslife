@@ -918,7 +918,8 @@ a:focus {
 }
 .dropdown-menu > li > a:hover {
   background-color: #e1e3e9;
-  color: #333;
+  /* color: #333; */
+  color: #336dc6;
 }
 .dropdown-menu > .divider {
   background-color: #eee;

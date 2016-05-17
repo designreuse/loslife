@@ -69,9 +69,9 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body" style="background:none;">
         <p class="login-box-msg">
-        	<spring:message code="login.welcome"/> <b style="font-size: 16px;">PipeLine</b>
-        	<a href="javascript:void(0);" onclick="changeLang('zh');"><span  class="pull-right badge <c:if test="${lang=='zh' }">bg-red</c:if>">中</span></a>
-        	<a href="javascript:void(0);" onclick="changeLang('en');"><span  class="pull-right badge <c:if test="${lang=='en' }">bg-red</c:if>">E</span></a>
+        	<spring:message code="login.welcome"/> <b style="font-size: 16px;">PMS</b>
+        	<a href="?lang=zh_CN"><span  class="pull-right badge <c:if test="${lang=='zh' }">bg-blue</c:if>">中</span></a>
+        	<a href="?lang=en_US"><span  class="pull-right badge <c:if test="${lang=='en' }">bg-blue</c:if>">E</span></a>
         </p>
         <%
                             	String error = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
@@ -190,15 +190,7 @@
 	     }); 
       });
       
-      function changeLang(lang){
-    	  $.ajax({
-    		  method: "POST",
-    		  url: "${ctx}/login/lang",
-    		  data: {langType: lang}
-    		}).done(function( msg ) {
-    		  location.reload();
-    		});
-      }
+     
     </script>
   </body>
 </html>

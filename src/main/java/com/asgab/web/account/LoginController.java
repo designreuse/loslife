@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.support.RequestContext;
 
 import com.asgab.service.account.ShiroDbRealm.ShiroUser;
 
@@ -42,11 +43,10 @@ public class LoginController {
   public String login(HttpServletRequest request) {
     Subject currentUser = SecurityUtils.getSubject();
     if (null != currentUser) {
-      if (null != (ShiroUser) currentUser.getPrincipal()) {// 如果已经登录，则退出or
-                                                           // 跳转到主页
+      // 如果已经登录，则退出or跳转到主页
+      if (null != (ShiroUser) currentUser.getPrincipal()) {
         // currentUser.logout(); //安全起见，用这种，退出再登录
-        return "redirect:/login"; // "/" 会根据spring-mvc.xml 配置通过
-                                    // pageController 重新分配跳转到主页
+        return "redirect:/login";
       }
     }
     return "account/login";
@@ -75,13 +75,15 @@ public class LoginController {
   @ResponseBody
   public String lang(HttpServletRequest request, HttpServletResponse response) {
     String langType = request.getParameter("langType");
-    if ("zh".equals(langType)) {
+    if ("zh_CN".equals(langType)) {
       localeResolver.setLocale(request, response, new Locale("zh", "CN"));
-    } else if ("en".equals(langType)) {
+    } else if ("en_US".equals(langType)) {
       localeResolver.setLocale(request, response, new Locale("en", "US"));
     } else {
       localeResolver.setLocale(request, response, LocaleContextHolder.getLocale());
     }
+//    RequestContext requestContext = new RequestContext(request);
+//    System.out.println(requestContext.getMessage("login.welcome"));
     return "";
   }
 
