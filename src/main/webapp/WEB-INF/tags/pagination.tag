@@ -15,7 +15,7 @@
 	request.setAttribute("end", end);
 %>
 
-		<ul class="pagination pull-left" style="margin-top: 20px;margin-bottom: 0px;">
+		<ul class="pagination pull-left" style="margin-top: 0px;margin-bottom: 0px;">
 			<%
 			String lang = request.getLocale().getLanguage();
 			if("zh".equals(lang)){
@@ -53,7 +53,7 @@
 			
 		</script>
 
-		<ul class="pagination pull-right" style="margin-top: 10px;margin-bottom: 0px;">
+		<ul class="pagination pagination-sm no-margin pull-right" style="margin-top: 10px;margin-bottom: 0px;">
 			<%
 				if (page.hasPrevious()) {
 			%>
