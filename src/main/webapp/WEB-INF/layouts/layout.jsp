@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="${ctx}/static/images/favicon.ico">
-    <title>AdminLTE 2 | Top Navigation</title>
+    <title>PMS | <sitemesh:title/></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -21,9 +21,8 @@
     
     <!-- Theme style -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
-    
    
-     <style type="text/css">
+    <style type="text/css">
     body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei, Tahoma, Helvetica, Arial,  sans-serif;}
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
@@ -31,6 +30,7 @@
 	body {
 	    font-family: "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
 	    color: #424242;
+	    font-size: 12px;
 	}
 	 /*langauage ch or en*/
 	.x-lang{
@@ -72,46 +72,29 @@
 	
 	.x-lang-ch.selected,.x-lang-en.selected{background-color: #336dc6;color: white}
     </style>
-    
-    
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
   </head>
-  <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition layout-top-nav skin-black">
     <div class="wrapper">
 	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
-
-    
       <!-- Full Width Column -->
       <div class="content-wrapper">
         <div class="container">
-        
          <sitemesh:body/>
-         
-          
-          
         </div><!-- /.container -->
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">
         <div class="container">
-        
-        
           <div class="pull-right hidden-xs">
             <b>Version</b> 1.0
           </div>
           <strong>Copyright &copy; 2016 <a href="http://www.i-click.com/">iClick Interactive Asia Limited</a>.</strong> All rights reserved.
-          
-          
         </div><!-- /.container -->
       </footer>
     </div><!-- ./wrapper -->
@@ -131,7 +114,9 @@
     <script type="text/javascript">
 	    function changeLang(lang){
 	    	url = window.location.href;
-	    	
+	    	if(url.indexOf("#")>-1){
+	    		window.location.href = url.replace("#","");
+	    	}
 	    	if(url.indexOf("lang=zh_CN")>-1){
 	    		window.location.href = url.replace("lang=zh_CN","lang="+lang);
 	    	}
