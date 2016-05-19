@@ -13,8 +13,7 @@
 
 <html>
 <head>
-
-<title></title>
+<title><spring:message code="menu.business.opportunity"/></title>
 </head>
 <body>
 	 <!-- Content Header -->

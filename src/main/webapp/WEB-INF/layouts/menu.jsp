@@ -5,6 +5,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
   <header class="main-header">
+  
         <nav class="navbar navbar-static-top ">
           <div class="container">
             <div class="navbar-header">
@@ -13,22 +14,21 @@
                 <i class="fa fa-bars"></i>
               </button>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#"><spring:message code="login.welcome"/></a></li>
-                <li><a href="#">Order</a></li>
+                <li class="active"><a href="#"><spring:message code="menu.business.opportunity"/></a></li>
+                <li><a href="#"><spring:message code="menu.advertiser"/></a></li>
+                <li><a href="#"><spring:message code="menu.agency"/></a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Order<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="menu.report"/><span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li><a href="#">Report1</a></li>
+                    <li><a href="#">Report2</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">Report3</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">One more separated link</a></li>
+                    <li><a href="#">Report4</a></li>
                   </ul>
                 </li>
               </ul>
@@ -36,25 +36,27 @@
             <!-- Navbar Right Menu -->
               <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                  <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropdown-toggle" style="cursor: default;" >
+                  <li class="dropdown" >
+                    <a href="javascript:void(0)" class="dropdown-toggle" style="cursor: default;height: 50px;" >
                     	<span class="x-lang-ch <c:if test="${pageContext.response.locale.language=='zh' }">selected</c:if>" onclick="changeLang('zh_CN')" ></span>
                     	<span class="x-lang-en <c:if test="${pageContext.response.locale.language=='en' }">selected</c:if>" onclick="changeLang('en_US')" ></span>
                     </a>
                   </li>
                
-                  <!-- User Account Menu -->
-                  <li class="dropdown" >
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, Admin <span class="caret"></span></a>
-                    <ul class="dropdown-menu" >
-                      <li >
-                          <a href="#" >Profile</a>
-                      </li>
-                      <li >
-                          <a href="${ctx}/logout" >Sign out</a>
-                      </li>
-                    </ul>
-                  </li>
+	               <li class="dropdown">
+	                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><shiro:principal/><span class="caret"></span></a>
+	                  <ul class="dropdown-menu" role="menu">
+	                    
+	                    <li><a href="#"><span class="glyphicon glyphicon-cog"></span>
+	                    		<spring:message code="menu.profile"/>
+	                    	</a></li>
+	                    <li class="divider"></li>
+	                    <li> <a href="${ctx}/logout"><span class="glyphicon glyphicon-log-out"></span>
+	                    		<spring:message code="menu.logout"/>
+	                        </a></li>
+	                  </ul>
+	                </li>
+               
                 </ul>
               </div><!-- /.navbar-custom-menu -->
           </div><!-- /.container-fluid -->
