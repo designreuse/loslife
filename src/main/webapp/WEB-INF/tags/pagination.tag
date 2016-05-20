@@ -1,3 +1,5 @@
+<%@tag import="org.springframework.web.servlet.support.RequestContextUtils"%>
+<%@tag import="org.springframework.web.servlet.LocaleResolver"%>
 <%@tag pageEncoding="UTF-8"%>
 <%@ attribute name="page" type="com.asgab.core.pagination.Page"
 	required="true"%>
@@ -15,9 +17,10 @@
 	request.setAttribute("end", end);
 %>
 
-		<ul class="pagination pull-left" style="margin-top: 20px;margin-bottom: 0px;">
+		<ul class="pagination pull-left" style="margin-top: 0px;margin-bottom: 0px;">
 			<%
-			String lang = request.getLocale().getLanguage();
+			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
+			String lang =localeResolver.resolveLocale(request).getLanguage();
 			if("zh".equals(lang)){
 				%>
 				<li>当前第${current}页，共<%=page.getPageCount()%>页，<%=page.getTotal()%>条记录。</li> 
@@ -53,7 +56,7 @@
 			
 		</script>
 
-		<ul class="pagination pull-right" style="margin-top: 10px;margin-bottom: 0px;">
+		<ul class="pagination pagination-sm no-margin pull-right" style="margin-top: 10px;margin-bottom: 0px;">
 			<%
 				if (page.hasPrevious()) {
 			%>
