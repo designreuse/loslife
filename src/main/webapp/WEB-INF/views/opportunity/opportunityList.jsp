@@ -16,17 +16,29 @@
 <title><spring:message code="menu.business.opportunity"/></title>
 </head>
 <body>
+	<style type="text/css">
+		.btn-sm{line-height: 1.1}
+	</style>
 	 <!-- Content Header -->
        <section class="content-header">
           <h1>
             <spring:message code="opportunity.header"/>
-            <small><spring:message code="opportunity.header.sub"/></small>
+            <small><spring:message code="opportunity.header.list"/></small>
           </h1>
+          
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">General Elements</li>
+            <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
+            <li class="active"><spring:message code="opportunity.header"/></li>
           </ol>
+		
+		<c:if test="${message != null}">
+			<div class="alert alert-success alert-dismissable" style="margin: 10px 0 0 0">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4>	<i class="icon fa fa-check"></i> <spring:message code="message.alert.success"/>!</h4>
+                    ${message}
+            </div>
+        </c:if>
+		          
         </section>
 
           <!-- Main content -->
@@ -35,10 +47,10 @@
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header ">
-                  <h3 class="box-title">Order Table</h3>
+                  <h3 class="box-title"><spring:message code="opportunity.table"/></h3>
                   <div class="btn-group pull-right">
-                          <button type="button" class="btn btn-sm btn-info">search</button>
-                          <a href="${ctx}/opportunity/create" class="btn btn-sm btn-primary">create</a>
+                          <button type="button" onclick="btnSearch();" class="btn btn-sm btn-info"><spring:message code="btn.search"/></button>
+                          <a href="${ctx}/opportunity/create" class="btn btn-sm btn-primary"><spring:message code="btn.create"/></a>
                           
                         </div>
                 </div><!-- /.box-header -->
@@ -46,9 +58,10 @@
                   <table class="table ">
                     <tbody><tr>
                       <th style="width: 10px">#</th>
-                      <th <tags:sort column="task" page="${pages}"/>>Task<i class="fa fa-w fa-sort"></i></th>
-                      <th>Progress</th>
-                      <th style="width: 40px">Label</th>
+                      <th <tags:sort column="task" page="${pages}"/>><spring:message code="opportunity.task"/><i class="fa fa-w fa-sort"></i></th>
+                      <th><spring:message code="opportunity.progress"/></th>
+                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
+                      <th style="width: 152px"><spring:message code="opportunity.operate"/></th>
                     </tr>
                     
                     <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
@@ -61,6 +74,10 @@
 	                        </div>
 	                      </td>
 	                      <td><span class="badge ${opportunity.progressBar.bgClass}">${opportunity.progressBar.value}%</span></td>
+	                      <td>
+	                      		<a href="#" onclick="update(${opportunity.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.edit"/></a>
+	                      		<a href="#" onclick="del(${opportunity.id});" class="btn btn-sm btn-danger"><i class="fa fa-w fa-trash-o"></i>&nbsp;<spring:message code="btn.delete"/></a>
+	                      </td>
 	                    </tr>
                     </c:forEach>
                     
@@ -75,5 +92,22 @@
             </div>
             </div>
           </section>
+          
+          
+          <script type="text/javascript">
+          	function update(id){
+          		window.location.href="${ctx}/opportunity/update/"+id;
+          	};
+          	
+          	function del(id){
+          		if(confirm('<spring:message code="message.confirm.del"/>?')){
+          			window.location.href="${ctx}/opportunity/delete/"+id;
+          		}
+          	};
+          	
+          	function btnSearch(){
+          		
+          	};
+          </script>
 </body>
 </html>

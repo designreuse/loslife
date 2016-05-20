@@ -72,11 +72,11 @@
 						<div class="btn-group" role="group" aria-label="...">
 							<button type="submit" class="btn  btn-info">
 								<i class="fa fa-search"></i>
-								<spring:message code="public.search" />
+								<spring:message code="btn.search" />
 							</button>
 							<button id="resetButtom" type="button" class="btn  btn-warning">
 								<i class="fa fa-repeat"></i>
-								<spring:message code="public.reset" />
+								<spring:message code="btn.reset" />
 							</button>
 						</div>
 

@@ -1,16 +1,16 @@
 package com.asgab.entity;
 
 public class Opportunity {
-  private long id;
+  private Long id;
   private String task;
   private int progress;
   private ProgressBar progressBar;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

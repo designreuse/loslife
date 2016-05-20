@@ -1,28 +1,23 @@
 package com.asgab.util;
 
-import java.io.File;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class CommonUtil {
 
-  public static final PropertiesLoader properties_zh = new PropertiesLoader("message_zh.properties");
-  public static final PropertiesLoader properties_en = new PropertiesLoader("message_en.properties");
+  public static final PropertiesLoader properties_zh = new PropertiesLoader("message_zh_CN.properties");
+  public static final PropertiesLoader properties_en = new PropertiesLoader("message_en_US.properties");
 
 
   public static final Map<String, String> LOG_MODULE_ZH = new TreeMap<String, String>();
@@ -33,7 +28,7 @@ public class CommonUtil {
 
 
   static {
-   
+
 
     for (Operate oper : Operate.values()) {
       LOG_OPERATE_TYPE_ZH.put(String.valueOf(oper.getIndex()), oper.getName());
@@ -58,9 +53,7 @@ public class CommonUtil {
     }
   }
 
- 
 
-  
 
   /**
    * 保留2位小数
@@ -117,10 +110,12 @@ public class CommonUtil {
    * @return
    */
   public static String getProperty(HttpServletRequest request, String key) {
+    LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+    String lang = localeResolver.resolveLocale(request).getLanguage();
     if (properties_zh == null || properties_en == null || !StringUtils.isNotBlank(key)) {
       return "";
     }
 
-    return request.getLocale().getLanguage().equalsIgnoreCase("zh") ? properties_zh.getProperty(key) : properties_en.getProperty(key);
+    return lang.equalsIgnoreCase("zh") ? properties_zh.getProperty(key) : properties_en.getProperty(key);
   }
 }

@@ -1,3 +1,5 @@
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
+<%@page import="org.springframework.web.servlet.LocaleResolver"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -16,11 +18,17 @@
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="${ctx}/static/styles/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="${ctx}/static/styles/ionicons.min.css">
+    
+    <!-- Ion Slider -->
+    <link rel="stylesheet" href="${ctx}/static/styles/normalize.css">
+    <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.css">
+    <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.skinFlat.css">
     
     <!-- Theme style -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
+    
+    <!-- jquery validation -->
+    <link href="${ctx}/static/jquery-validation/1.11.1/validate.css" type="text/css" rel="stylesheet" />
    
     <style type="text/css">
     body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei, Tahoma, Helvetica, Arial,  sans-serif;}
@@ -79,26 +87,6 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-  </head>
-  <body class="hold-transition layout-top-nav skin-black">
-    <div class="wrapper">
-	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
-      <!-- Full Width Column -->
-      <div class="content-wrapper">
-        <div class="container">
-         <sitemesh:body/>
-        </div><!-- /.container -->
-      </div><!-- /.content-wrapper -->
-      <footer class="main-footer">
-        <div class="container">
-          <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0
-          </div>
-          <strong>Copyright &copy; 2016 <a href="http://www.i-click.com/">iClick Interactive Asia Limited</a>.</strong> All rights reserved.
-        </div><!-- /.container -->
-      </footer>
-    </div><!-- ./wrapper -->
-
     <!-- jQuery 2.1.4 -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
@@ -107,10 +95,27 @@
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+    <!-- Ion Slider -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/ionslider/ion.rangeSlider.js"></script>
+    
+    <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
+	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>
+	
     <!-- AdminLTE App -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/demo.js"></script>
+    
+    <%
+    LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
+	String lang =localeResolver.resolveLocale(request).getLanguage();
+	if("zh".equals(lang)){
+		%>
+		<script src="${ctx}/static/jquery-validation/1.14.0/dist/localization/messages_zh.js" type="text/javascript"></script>
+		<%
+	}
+	%>
+    
     <script type="text/javascript">
 	    function changeLang(lang){
 	    	url = window.location.href;
@@ -131,6 +136,26 @@
 	    
 	    
     </script>
+    
+  </head>
+  <body class="hold-transition layout-top-nav skin-black">
+    <div class="wrapper">
+	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
+      <!-- Full Width Column -->
+      <div class="content-wrapper">
+        <div class="container">
+         <sitemesh:body/>
+        </div><!-- /.container -->
+      </div><!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <div class="container">
+          <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+          </div>
+          <strong>Copyright &copy; 2016 <a href="http://www.i-click.com/">iClick Interactive Asia Limited</a>.</strong> All rights reserved.
+        </div><!-- /.container -->
+      </footer>
+    </div><!-- ./wrapper -->
     
   </body>
 </html>
