@@ -14,4 +14,4 @@
 		sortStr = column;
 	}
 %>
-onclick = 'javascript:window.location.href="?sort=<%=sortStr%>&${search}"' class="sorting"
+onclick = 'javascript:window.location.href="?sort=<%=sortStr%>&${search}"' class=""

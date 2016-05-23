@@ -15,7 +15,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title></title>
+    <title>
+    	<c:if test="${action eq 'create' }"><spring:message code="opportunity.title.create"/></c:if>
+        <c:if test="${action eq 'update' }"><spring:message code="opportunity.title.update"/></c:if>
+    </title>
 
 
 </head>
@@ -25,13 +28,15 @@
  <!-- Content Header -->
        <section class="content-header">
           <h1>
-            Form Elements
-            <small>Preview</small>
+            <spring:message code="opportunity.header"/>
+            <small><spring:message code="opportunity.header.create"/></small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">General Elements</li>
+            <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
+            <li class="active">
+            	<c:if test="${action eq 'create' }"><spring:message code="opportunity.title.create"/></c:if>
+            	<c:if test="${action eq 'update' }"><spring:message code="opportunity.title.update"/></c:if>
+            </li>
           </ol>
         </section>
         
@@ -41,55 +46,24 @@
               <div class="box box-info">
               
                 <!-- form start -->
-                <form role="form">
+                <form role="form" action="${ctx}/opportunity/${action}" method="post" id="primaryForm">
+                <input type="hidden" name="id" id="id" value="${opportunity.id}" />
                   <div class="box-body">
                    <div class="row">
            			<div class="col-md-6">
 	                    <div class="form-group">
-	                      <label for="Brand">Brand</label>
-	                      <input type="text" class="form-control" id="Brand" placeholder="Enter Brand">
+	                      <label for="task"><spring:message code="opportunity.task.label" /></label>
+	                      <textarea rows="3" class="form-control" id="task" name="task" placeholder="<spring:message code='opportunity.task.placeholder'/>">${opportunity.task}</textarea>
 	                    </div>
+	                    
 	                    <div class="form-group">
-	                      <label for="CustomerType">Customer Type</label>
-	                      <select class="form-control" id="CustomerType">
-	                        <option>option 1</option>
-	                        <option>option 2</option>
-	                        <option>option 3</option>
-	                        <option>option 4</option>
-	                        <option>option 5</option>
-	                      </select>
-	                    </div>
-	                    <div class="form-group">
-	                      <label for="Applicant">Applicant</label>
-	                      <input type="text" class="form-control" id="Applicant" placeholder="Applicant">
-	                    </div>
-	                    <div class="form-group">
-	                      <label for="ApplicantTeam">Applicant</label>
-	                      <input type="text" class="form-control" id="ApplicantTeam" placeholder="Applicant Team">
-	                    </div>
-	                    <div class="form-group">
-	                      <label for="ApplicantBU">Applicant BU</label>
-	                      <input type="text" class="form-control" id="ApplicantBU" placeholder="Applicant BU">
+	                      <label for="progress"><spring:message code="opportunity.progress.label" /></label>
+				          <input id="progress" type="text" name="progress" value="${opportunity.progress}">
 	                    </div>
                     </div>
                     
                     <div class="col-md-6">
-	                    <div class="form-group">
-	                      <label for="CustomerContact">Customer Contact</label>
-	                      <input type="text" class="form-control" id="CustomerContact" placeholder="Customer Contact">
-	                    </div>
-	                    <div class="form-group">
-	                      <label for="CustomerTel">Customer Tel</label>
-	                      <input type="text" class="form-control" id="CustomerTel" placeholder="Customer Tel:">
-	                    </div>
-	                   <div class="form-group">
-	                      <label for="CustomerEmail">Customer Email</label>
-	                      <input type="email" class="form-control" id="CustomerEmail" placeholder="Enter email">
-	                    </div>
-	                     <div class="form-group">
-	                      <label for="ContactTitle">Customer Title</label>
-	                      <input type="text" class="form-control" id="ContactTitle" placeholder="Customer Title">
-	                    </div>
+	                    
 	                   
                     </div>
                     
@@ -97,11 +71,32 @@
                   </div><!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary"><spring:message code="btn.submit"/></button>
                   </div>
                 </form>
               </div>
            
           </section>
+          
+		<script>    
+			$(document).ready(function() {
+				$("#primaryForm").validate({
+					rules:{
+						task:"required"
+					}
+				});
+
+				$("#progress").ionRangeSlider({
+					min:0,
+					max:100,
+					keyboard:true,
+					keyboard_step:10
+				});
+			});
+		</script>
 </body>
 </html>
+ 
+
+
+
