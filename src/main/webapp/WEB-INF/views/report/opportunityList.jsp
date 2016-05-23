@@ -43,7 +43,9 @@
                    		
 					            <div class="box box-default ">
 					            <div class="box-header ">
-					              <h3 class="box-title">条件</h3>
+					              <h3 class="box-title">
+					              
+					              </h3>
 					              <div class="box-tools pull-right">
 					                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 					              </div>
@@ -106,8 +108,12 @@
 					            </div><!-- /.box-body -->
 					          </div>
 					          
-                   		
-                   		
+                   		<button class="btn btn-primary   btn-xs ">new</button>
+                   		<div class="btn-group pull-right">
+                   					<button class=" btn   btn-xs ">search</button>
+                   					<button class=" btn   btn-warning btn-xs ">reset</button>
+                   		</div>
+                   			
                    		<div class="box-header with-border">
 		                  <h3 class="box-title ">总销售报数 <b class="text-green">￥32,342,100</b></h3><a class="pull-right"><i class="fa fa-fw fa-download"></i>下载</a>
 		                </div>

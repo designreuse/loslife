@@ -32,7 +32,7 @@ public class OpportunityController {
   private OpportunityService opportunityService;
 
   @RequestMapping(method = RequestMethod.GET)
-  public String List(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+  public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
       @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
       ServletRequest request, Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
@@ -75,9 +75,9 @@ public class OpportunityController {
     redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.update.success"));
     return "redirect:/opportunity";
   }
-  
+
   @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-  public String delete(@PathVariable("id") Long id, Model model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
     opportunityService.delete(id);
     redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.delete.success"));
     return "redirect:/opportunity";
@@ -88,5 +88,12 @@ public class OpportunityController {
     if (id != -1) {
       model.addAttribute("opportunity", opportunityService.get(id));
     }
+  }
+  
+  
+  @RequestMapping(value = "report", method = RequestMethod.GET)
+  public String report( HttpServletRequest request, RedirectAttributes redirectAttributes) {
+   
+    return "report/opportunityList";
   }
 }
