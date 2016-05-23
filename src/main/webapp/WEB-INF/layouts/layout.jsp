@@ -24,8 +24,20 @@
     <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.css">
     <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.skinFlat.css">
     
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/iCheck/all.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/colorpicker/bootstrap-colorpicker.min.css">
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/select2/select2.min.css">
+    
     <!-- Theme style -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
     
     <!-- jquery validation -->
     <link href="${ctx}/static/jquery-validation/1.11.1/validate.css" type="text/css" rel="stylesheet" />
@@ -80,7 +92,7 @@
 	
 	.x-lang-ch.selected,.x-lang-en.selected{background-color: #336dc6;color: white}
     </style>
-    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
+   
 
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -89,12 +101,30 @@
     
     <!-- jQuery 2.1.4 -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    
     <!-- Bootstrap 3.3.5 -->
     <script src="${ctx}/static/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
-    <!-- SlimScroll -->
+    
+   <!-- Select2 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/select2/select2.full.min.js"></script>
+    <!-- InputMask -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    <!-- date-range-picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/moment.min.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap color picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <!-- bootstrap time picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- SlimScroll 1.3.0 -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/iCheck/icheck.min.js"></script>
     <!-- FastClick -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+    
     <!-- Ion Slider -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/ionslider/ion.rangeSlider.js"></script>
     
