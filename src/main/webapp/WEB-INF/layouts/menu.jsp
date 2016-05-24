@@ -17,10 +17,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
               <ul class="nav navbar-nav">
-                <li ><a href="#"><spring:message code="menu.business.opportunity"/></a></li>
-                <li><a href="#"><spring:message code="menu.advertiser"/></a></li>
-                <li><a href="#"><spring:message code="menu.agency"/></a></li>
-                <li class="dropdown active">
+                <li id="menu_business_opportunity"><a href="#"><spring:message code="menu.business.opportunity"/></a></li>
+                <li id="menu_advertiser"><a href="#"><spring:message code="menu.advertiser"/></a></li>
+                <li id="menu_agency"><a href="#"><spring:message code="menu.agency"/></a></li>
+                <li id="menu_report" class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="menu.report"/><span class="caret"></span></a>
                  
                   <ul class="dropdown-menu" role="menu">

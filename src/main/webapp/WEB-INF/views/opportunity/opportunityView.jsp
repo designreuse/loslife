@@ -27,8 +27,7 @@
  <!-- Content Header -->
        <section class="content-header">
           <h1>
-            <spring:message code="opportunity.header"/>
-            <small><spring:message code="opportunity.title.view"/></small>
+            <spring:message code="opportunity.title.view"/>
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
@@ -44,9 +43,9 @@
               <div class="box box-info">
               
                 <!-- form start -->
-                <form role="form" class="form-horizontal">
-                <input type="hidden" name="id" id="id" value="${opportunity.id}" />
                   <div class="box-body">
+	                <form role="form" class="form-horizontal">
+	                <input type="hidden" name="id" id="id" value="${opportunity.id}" />
                    
            			<div class="col-md-6">
 	                    <div class="form-group">
@@ -62,19 +61,21 @@
 	                    </div>
                     </div>
                     
+	                </form>
                   </div><!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button  class="btn btn-primary btn-sm"><spring:message code="btn.edit"/></button>
-                    <button  class="btn btn-primary btn-sm disabled"><spring:message code="btn.back"/></button>
+                    <button  class="btn btn-primary btn-sm" onclick="update(${opportunity.id});"><spring:message code="btn.edit"/></button>
+                    <button  class="btn btn-primary btn-sm disabled" onclick="list();"><spring:message code="btn.back"/></button>
                   </div>
-                </form>
               </div>
            
           </section>
           
 		<script>    
 			$(document).ready(function() {
+				$("#menu_business_opportunity").addClass("active");
+				
 				$("#primaryForm").validate({
 					rules:{
 						task:"required"
@@ -88,6 +89,13 @@
 					keyboard_step:10
 				});
 			});
+			
+			function list(){
+				window.location.href="${ctx}/opportunity";
+			};
+			function update(id){
+				window.location.href="${ctx}/opportunity/update/"+id;
+			};
 		</script>
 </body>
 </html>

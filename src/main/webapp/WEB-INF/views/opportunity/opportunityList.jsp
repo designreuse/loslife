@@ -22,8 +22,7 @@
 	 <!-- Content Header -->
        <section class="content-header">
           <h1>
-            <spring:message code="opportunity.header"/>
-            <small><spring:message code="opportunity.header.list"/></small>
+            <spring:message code="menu.business.opportunity"/>
           </h1>
           
           <ol class="breadcrumb">
@@ -51,8 +50,8 @@
                  -->
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
-                  <div class="box box-default ">
-		            <div class="box-header ">
+                  <div class="box box-info ">
+		            <div class="box-header with-border">
 		              <h3 class="box-title">
 		              <!-- 没有title -->
 		             	<button class="btn btn-primary btn-sm" onclick="window.location.href='${ctx}/opportunity/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
@@ -66,11 +65,23 @@
 		            <div class="box-body" style="display: block;">
 		            	<form action="${ctx}/opportunity" method="get" id="searchForm">
 						<div class="row">
-							<div class="col-md-6">
-							<div class="form-group">
-								<label><spring:message code="opportunity.task"/></label>
-								<input type="text" class="form-control" name="task" id="task" value="<c:out value="${pages.searchMap['task']}"/>" placeholder="<spring:message code='opportunity.task.placeholder'/>">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="opportunity.task"/></label>
+									<input type="text" class="form-control" name="task" id="task" value="<c:out value="${pages.searchMap['task']}"/>" placeholder="<spring:message code='opportunity.task.placeholder'/>">
+								</div>
 							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="opportunity.adv.name"/></label>
+									<input type="text" class="form-control" name="advName" id="advName" value="<c:out value="${pages.searchMap['advName']}"/>" placeholder="<spring:message code='opportunity.adv.name.placeholder'/>">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="opportunity.brand.name"/></label>
+									<input type="text" class="form-control" name="brandName" id="brandName" value="<c:out value="${pages.searchMap['brandName']}"/>" placeholder="<spring:message code='opportunity.brand.name.placeholder'/>">
+								</div>
 							</div>
 						</div><!-- /.row -->
 						</form>
@@ -81,7 +92,7 @@
           
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody><tr>
-	                      <th style="width: 10px">#</th>
+	                      <th style="width: 100px"><spring:message code="opportunity.id" /></th>
 	                      <th <tags:sort column="task" page="${pages}"/>><spring:message code="opportunity.task"/><i class="fa fa-w fa-sort"></i></th>
 	                      <th><spring:message code="opportunity.progress"/></th>
 	                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
@@ -90,7 +101,7 @@
                     
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
-		                      <td>${status.index + 1}.</td>
+		                      <td>${opportunity.id}</td>
 		                      <td>${opportunity.task}</td>
 		                      <td>
 		                        <div class="progress progress-xs progress-striped active">
@@ -119,8 +130,12 @@
           
           
           <script type="text/javascript">
+          	$(document).ready(function() {
+        		$("#menu_business_opportunity").addClass("active");  
+        	});
+          
           	function view(id){
-          		window.location.href="${ctx}/opportunity/update/"+id+"?type=view";
+          		window.location.href="${ctx}/opportunity/view/"+id;
           	};
           	
           	function del(id){

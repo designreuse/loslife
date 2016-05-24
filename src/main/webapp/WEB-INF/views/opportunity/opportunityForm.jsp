@@ -28,8 +28,8 @@
  <!-- Content Header -->
        <section class="content-header">
           <h1>
-            <spring:message code="opportunity.header"/>
-            <small><spring:message code="opportunity.header.create"/></small>
+           	<c:if test="${action eq 'create' }"><spring:message code="opportunity.title.create"/></c:if>
+       		<c:if test="${action eq 'update' }"><spring:message code="opportunity.title.update"/></c:if>
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
@@ -45,41 +45,43 @@
          
               <div class="box box-info">
               
+                <div class="box-body">
                 <!-- form start -->
-                <form role="form" action="${ctx}/opportunity/${action}" method="post" id="primaryForm">
+                <form role="form" action="${ctx}/opportunity/${action}" method="post" id="primaryForm" class="form-horizontal">
                 <input type="hidden" name="id" id="id" value="${opportunity.id}" />
-                  <div class="box-body">
-                   <div class="row">
+                   
            			<div class="col-md-6">
 	                    <div class="form-group">
-	                      <label for="task"><spring:message code="opportunity.task.label" /></label>
-	                      <textarea rows="3" class="form-control" id="task" name="task" placeholder="<spring:message code='opportunity.task.placeholder'/>">${opportunity.task}</textarea>
+	                      <label for="task" class="col-md-3"><spring:message code="opportunity.task.label" /></label>
+	                      <div class="col-md-9">
+	                      	<textarea rows="3" class="form-control"  id="task" name="task" placeholder="<spring:message code='opportunity.task.placeholder'/>">${opportunity.task}</textarea>
+	                      </div>
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="progress"><spring:message code="opportunity.progress.label" /></label>
-				          <input id="progress" type="text" name="progress" value="${opportunity.progress}">
+	                      <label for="progress" class="col-md-3"><spring:message code="opportunity.progress.label" /></label>
+	                      <div class="col-md-9">
+				          	<input id="progress" class="form-control" type="text" name="progress" value="${opportunity.progress}">
+				          </div>
 	                    </div>
                     </div>
-                    
-                    <div class="col-md-6">
-	                    
-	                   
-                    </div>
-                    
-                   </div>
-                  </div><!-- /.box-body -->
-
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-primary"><spring:message code="btn.submit"/></button>
-                  </div>
+                  
                 </form>
+                </div><!-- /.box-body -->
+                
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.submit"/></button>
+                    <button  class="btn btn-primary btn-sm disabled" onclick="cancel();"><spring:message code="btn.cancel"/></button>
+                </div>
+                
               </div>
            
           </section>
           
 		<script>    
 			$(document).ready(function() {
+				$("#menu_business_opportunity").addClass("active");
+				
 				$("#primaryForm").validate({
 					rules:{
 						task:"required"
@@ -93,6 +95,10 @@
 					keyboard_step:10
 				});
 			});
+			
+			function cancel(){
+				window.location.href='${ctx}/opportunity';
+			};
 		</script>
 </body>
 </html>

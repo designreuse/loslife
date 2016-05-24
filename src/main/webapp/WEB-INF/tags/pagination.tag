@@ -23,7 +23,7 @@
 			String lang =localeResolver.resolveLocale(request).getLanguage();
 			if("zh".equals(lang)){
 				%>
-				<li><%=page.getTotal()%>条记录。</li> 
+				<li>共<%=page.getTotal()%>条记录。</li> 
 				每页显示
 				<select class="pageSizeSelect" name="pageSize" onchange="pageSizeChange();">
 					<option value="10" <c:if test="${page.pageSize == '10'}">selected</c:if>>10</option>
