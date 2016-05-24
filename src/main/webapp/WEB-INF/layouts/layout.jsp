@@ -39,9 +39,6 @@
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
     
-    <!-- jquery validation -->
-    <link href="${ctx}/static/jquery-validation/1.11.1/validate.css" type="text/css" rel="stylesheet" />
-   
     <style type="text/css">
     body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei, Tahoma, Helvetica, Arial,  sans-serif;}
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -127,6 +124,9 @@
     
     <!-- Ion Slider -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/ionslider/ion.rangeSlider.js"></script>
+    
+    <!-- bootbox -->
+    <script src="${ctx}/static/bootbox/bootbox.js"></script>
     
     <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
 	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>

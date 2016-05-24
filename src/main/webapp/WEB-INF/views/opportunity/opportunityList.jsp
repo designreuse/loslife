@@ -43,43 +43,67 @@
 
           <!-- Main content -->
           <section class="content">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="box">
-                <div class="box-header ">
-                  <h3 class="box-title"><spring:message code="opportunity.table"/></h3>
-                  <div class="btn-group pull-right">
-                          <button type="button" onclick="btnSearch();" class="btn btn-sm btn-info"><spring:message code="btn.search"/></button>
-                          <a href="${ctx}/opportunity/create" class="btn btn-sm btn-primary"><spring:message code="btn.create"/></a>
-                          
-                        </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <table class="table ">
-                    <tbody><tr>
-                      <th style="width: 10px">#</th>
-                      <th <tags:sort column="task" page="${pages}"/>><spring:message code="opportunity.task"/><i class="fa fa-w fa-sort"></i></th>
-                      <th><spring:message code="opportunity.progress"/></th>
-                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
-                      <th style="width: 152px"><spring:message code="opportunity.operate"/></th>
-                    </tr>
-                    
-                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
-                    	<tr>
-	                      <td>${status.index + 1}.</td>
-	                      <td>${opportunity.task}</td>
-	                      <td>
-	                        <div class="progress progress-xs progress-striped active">
-	                          <div class="progress-bar ${opportunity.progressBar.barClass}" style="width: ${opportunity.progressBar.value}%"></div>
-	                        </div>
-	                      </td>
-	                      <td><span class="badge ${opportunity.progressBar.bgClass}">${opportunity.progressBar.value}%</span></td>
-	                      <td>
-	                      		<a href="#" onclick="update(${opportunity.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.edit"/></a>
-	                      		<a href="#" onclick="del(${opportunity.id});" class="btn btn-sm btn-danger"><i class="fa fa-w fa-trash-o"></i>&nbsp;<spring:message code="btn.delete"/></a>
-	                      </td>
+          	<div class="nav-tabs-custom">
+          		<!-- 
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">销售数据</a></li>
+                </ul>
+                 -->
+                <div class="tab-content">
+                  <div class="tab-pane active" id="activity">
+                  <div class="box box-default ">
+		            <div class="box-header ">
+		              <h3 class="box-title">
+		              <!-- 没有title -->
+		             	<button class="btn btn-primary btn-sm" onclick="window.location.href='${ctx}/opportunity/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
+                		<button class="btn btn-sm" onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
+		              	<button class="btn btn-warning btn-sm" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
+		              </h3>
+		              <div class="box-tools pull-right">
+		                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+		              </div>
+		            </div><!-- /.box-header -->
+		            <div class="box-body" style="display: block;">
+		            	<form action="${ctx}/opportunity" method="get" id="searchForm">
+						<div class="row">
+							<div class="col-md-6">
+							<div class="form-group">
+								<label><spring:message code="opportunity.task"/></label>
+								<input type="text" class="form-control" name="task" id="task" value="<c:out value="${pages.searchMap['task']}"/>" placeholder="<spring:message code='opportunity.task.placeholder'/>">
+							</div>
+							</div>
+						</div><!-- /.row -->
+						</form>
+					</div><!-- /.box-body -->
+					</div>
+                	
+                	<div class="box-body  table-responsive no-padding">
+          
+	                  <table class="table table-striped table-condensed table-hover">
+	                    <tbody><tr>
+	                      <th style="width: 10px">#</th>
+	                      <th <tags:sort column="task" page="${pages}"/>><spring:message code="opportunity.task"/><i class="fa fa-w fa-sort"></i></th>
+	                      <th><spring:message code="opportunity.progress"/></th>
+	                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
+	                      <th style="width: 152px"><spring:message code="opportunity.operate"/></th>
 	                    </tr>
-                    </c:forEach>
+                    
+	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
+	                    	<tr>
+		                      <td>${status.index + 1}.</td>
+		                      <td>${opportunity.task}</td>
+		                      <td>
+		                        <div class="progress progress-xs progress-striped active">
+		                          <div class="progress-bar ${opportunity.progressBar.barClass}" style="width: ${opportunity.progressBar.value}%"></div>
+		                        </div>
+		                      </td>
+		                      <td><span class="badge ${opportunity.progressBar.bgClass}">${opportunity.progressBar.value}%</span></td>
+		                      <td>
+		                      		<a href="#" onclick="view(${opportunity.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-file-text-o"></i>&nbsp;<spring:message code="btn.view"/></a>
+		                      		<a href="#" onclick="del(${opportunity.id});" class="btn btn-sm btn-danger"><i class="fa fa-w fa-trash-o"></i>&nbsp;<spring:message code="btn.delete"/></a>
+		                      </td>
+		                    </tr>
+	                    </c:forEach>
                     
                   </tbody></table>
                 </div><!-- /.box-body -->
@@ -95,18 +119,35 @@
           
           
           <script type="text/javascript">
-          	function update(id){
-          		window.location.href="${ctx}/opportunity/update/"+id;
+          	function view(id){
+          		window.location.href="${ctx}/opportunity/update/"+id+"?type=view";
           	};
           	
           	function del(id){
-          		if(confirm('<spring:message code="message.confirm.del"/>?')){
-          			window.location.href="${ctx}/opportunity/delete/"+id;
-          		}
+          		bootbox.dialog({
+          			message: "<spring:message code="message.confirm.del"/>?",
+          		  	title: "",
+          		  	buttons: {
+          		  		cancel: {
+	          		      label: "<spring:message code='btn.cancel' />",
+	          		      className: "",
+	          		      callback: function() {
+	          		    	
+	          		      }
+	          		    },
+	          			success: {
+	          		      label: "<spring:message code='btn.delete' />",
+	          		      className: "btn-danger",
+	          		      callback: function() {
+	          		    	window.location.href="${ctx}/opportunity/delete/"+id;
+	          		      }
+	          		    }
+          		  	}
+          		});
           	};
           	
-          	function btnSearch(){
-          		
+          	function resetForm(){
+          		$("#task").val('');
           	};
           </script>
 </body>

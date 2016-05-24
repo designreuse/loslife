@@ -63,10 +63,16 @@ public class OpportunityController {
   }
 
   @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-  public String toUpdate(@PathVariable("id") Long id, Model model) {
+  public String toUpdate(@PathVariable("id") Long id, Model model, @RequestParam(value = "type", defaultValue = "update") String type) {
     model.addAttribute("opportunity", opportunityService.get(id));
-    model.addAttribute("action", "update");
-    return "opportunity/opportunityForm";
+    String returnUrl = "opportunity/opportunityForm";
+    if ("view".equalsIgnoreCase(type)) {
+      model.addAttribute("action", "view");
+      returnUrl = "opportunity/opportunityView";
+    } else {
+      model.addAttribute("action", "update");
+    }
+    return returnUrl;
   }
 
   @RequestMapping(value = "update", method = RequestMethod.POST)
@@ -89,11 +95,11 @@ public class OpportunityController {
       model.addAttribute("opportunity", opportunityService.get(id));
     }
   }
-  
-  
+
+
   @RequestMapping(value = "report", method = RequestMethod.GET)
-  public String report( HttpServletRequest request, RedirectAttributes redirectAttributes) {
-   
+  public String report(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
     return "report/opportunityList";
   }
 }
