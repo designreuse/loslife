@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,13 +95,6 @@ public class UserController {
   // redirectAttributes.addFlashAttribute("message", "delete user success");
   // return "redirect:/user";
   // }
-
-  @ModelAttribute
-  public void getUser(@RequestParam(value = "id", defaultValue = "-1") Long id, Model model) {
-    if (id != -1) {
-      model.addAttribute("user", accountService.getUser(id));
-    }
-  }
 
   /**
    * Ajax请求校验loginName是否唯一。

@@ -81,4 +81,8 @@
 		WHERE status = 'Active' and group_name = #{value}
 	</select>
 	
+	<select id="getCurrencys" parameterType="int" resultType="Currency">
+		select id , name from xmo.currencies
+	</select>
+	
 </mapper> 

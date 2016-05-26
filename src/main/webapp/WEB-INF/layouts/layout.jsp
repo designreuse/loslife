@@ -39,6 +39,9 @@
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
     
+    <!-- daterangepicker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
+    
     <!-- custom style -->
     <link rel="stylesheet" href="${ctx}/static/styles/custom.css">
     
@@ -130,6 +133,9 @@
     
     <!-- bootbox -->
     <script src="${ctx}/static/bootbox/bootbox.js"></script>
+    
+    <!-- daterangepicker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker.js"></script>
     
     <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
 	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>

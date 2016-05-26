@@ -1,2 +1,11 @@
 /*自定义的样式*/
 .disabled{cursor: pointer !important;}
+.btn-blue{background-color: #336dc6;}
+.divider-horizontal {
+  height: 1px;
+  width:100%;
+  display:block; /* for use on default inline elements like span */
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
