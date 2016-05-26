@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.BusinessOpportunityProductMapper">
+	
+	<select id="get" parameterType="long" resultType="BusinessOpportunityProduct">
+		select id,business_opportunity_id,product_id,sale_mode,budget
+		from pms_business_opportunity_product
+		where id=#{id}
+	</select>
+	
+	<select id="getByBusinessOpportunityId" parameterType="long" resultType="BusinessOpportunityProduct">
+		select id,business_opportunity_id,product_id,sale_mode,budget
+		from pms_business_opportunity_product
+		where business_opportunity_id=#{business_opportunity_id}
+	</select>
+
+	<insert id="save" parameterType="BusinessOpportunityProduct" useGeneratedKeys="true" keyProperty="id">
+		insert into pms_business_opportunity_product (business_opportunity_id,product_id,sale_mode,budget)
+		values (#{business_opportunity_id},#{product_id},#{sale_mode},#{budget})
+	</insert>
+	
+	<insert id="update" parameterType="BusinessOpportunityProduct">
+		update pms_business_opportunity_product set 
+			business_opportunity_id=#{business_opportunity_id},
+			product_id=#{product_id},
+			sale_mode=#{sale_mode},
+			budget=#{budget}
+		where id = #{id}
+	</insert>
+	
+</mapper> 

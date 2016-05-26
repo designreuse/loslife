@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.BusinessOpportunityMapper">
+	
+	<select id="get" parameterType="long" resultType="BusinessOpportunity">
+		select id,advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
+				exist_msa,exist_service,status,progress,remark
+		from pms_business_opportunity
+		where id=#{id}
+	</select>
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="search" parameterType="map" resultType="BusinessOpportunity">
+		select id,advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
+				exist_msa,exist_service,status,progress,remark
+		from pms_business_opportunity where 1 = 1
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="sort != null and sort!=''">
+			order by ${sort}
+		</if>
+	</select>
+	
+	<select id="count" parameterType="map" resultType="int">
+		select count(1) 
+		from pms_business_opportunity where 1 = 1
+		<if test="status != null">
+			and status = #{status}
+		</if>
+	</select>
+
+	<insert id="save" parameterType="BusinessOpportunity" useGeneratedKeys="true" keyProperty="id">
+		insert into pms_business_opportunity (advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
+				exist_msa,exist_service,status,progress,remark)
+		values (#{advertiser_id},#{budget},#{currency_id},#{deliver_start_date},#{deliver_end_date},#{owner_sale},
+				#{cooperate_sales},#{exist_msa},#{exist_service},#{status},#{progress},#{remark})
+	</insert>
+	
+	<insert id="update" parameterType="BusinessOpportunity">
+		update pms_business_opportunity set 
+			advertiser_id=#{advertiser_id},
+			budget=#{budget},
+			currency_id=#{currency_id},
+			deliver_start_date=#{deliver_start_date},
+			deliver_end_date=#{deliver_end_date},
+			owner_sale=#{owner_sale},
+			cooperate_sales=#{cooperate_sales},
+			exist_msa=#{exist_msa},
+			exist_service=#{exist_service},
+			status=#{status},
+			progress=#{progress},
+			remark=#{remark}
+		where id = #{id}
+	</insert>
+	
+</mapper> 
