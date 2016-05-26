@@ -41,10 +41,11 @@
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
                    		
-					            <div class="box box-default ">
-					            <div class="box-header ">
+					            <div class="box box-info ">
+					            <div class="box-header with-border">
 					              <h3 class="box-title">
-					              
+                   					<button class=" btn   btn-xs ">查询</button>
+                   					<button class=" btn   btn-warning btn-xs ">重置</button>
 					              </h3>
 					              <div class="box-tools pull-right">
 					                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -91,28 +92,11 @@
 					                      <option>Washington</option>
 					                    </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0"><ul class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="-1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox" placeholder="Select a State" style="width: 476px;"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
 					                  </div><!-- /.form-group -->
-					                  <div class="form-group">
-					                    <label>Disabled Result</label>
-					                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-					                      <option selected="selected">Alabama</option>
-					                      <option>Alaska</option>
-					                      <option disabled="disabled">California (disabled)</option>
-					                      <option>Delaware</option>
-					                      <option>Tennessee</option>
-					                      <option>Texas</option>
-					                      <option>Washington</option>
-					                    </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-bg9o-container"><span class="select2-selection__rendered" id="select2-bg9o-container" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-					                  </div><!-- /.form-group -->
 					                </div><!-- /.col -->
 					              </div><!-- /.row -->
 					            </div><!-- /.box-body -->
 					          </div>
 					          
-                   		<button class="btn btn-primary   btn-xs ">new</button>
-                   		<div class="btn-group pull-right">
-                   					<button class=" btn   btn-xs ">search</button>
-                   					<button class=" btn   btn-warning btn-xs ">reset</button>
-                   		</div>
                    			
                    		<div class="box-header with-border">
 		                  <h3 class="box-title ">总销售报数 <b class="text-green">￥32,342,100</b></h3><a class="pull-right"><i class="fa fa-fw fa-download"></i>下载</a>
@@ -221,24 +205,16 @@
                     </tr>
                   </tbody></table>
                 </div>
-                   
-                   
-                   
                   </div><!-- /.tab-pane -->
-
-                 
                 </div><!-- /.tab-content -->
           </div>
-          
-          
-          
-          
-          	
-          
-         
-          
-          
-          
           </section>
+          
+          <script type="text/javascript">
+            //默认收起查询框
+            $(function(){  
+        	    $(".btn-box-tool").trigger( "click" );
+        	});  
+          </script>
 </body>
 </html>
