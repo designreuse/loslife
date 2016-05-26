@@ -5,19 +5,20 @@
 <mapper namespace="com.asgab.repository.BusinessOpportunityMapper">
 	
 	<select id="get" parameterType="long" resultType="BusinessOpportunity">
-		select id,advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
-				exist_msa,exist_service,status,progress,remark
-		from pms_business_opportunity
-		where id=#{id}
+		select o.id,o.advertiser_id,o.budget,o.currency_id,o.deliver_start_date,o.deliver_end_date,o.owner_sale,o.cooperate_sales,
+				o.exist_msa,o.exist_service,o.status,o.progress,o.remark,o.deleted,c.name as advertiser
+		from sales_booking_production.pms_business_opportunity o left join sales_booking_production.clients c on o.advertiser_id = c.id
+		where o.deleted=1 and o.id=#{id}
 	</select>
 
 	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="search" parameterType="map" resultType="BusinessOpportunity">
-		select id,advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
-				exist_msa,exist_service,status,progress,remark
-		from pms_business_opportunity where 1 = 1
-		<if test="status != null">
-			and status = #{status}
+		select o.id,o.advertiser_id,o.budget,o.currency_id,o.deliver_start_date,o.deliver_end_date,o.owner_sale,o.cooperate_sales,
+				o.exist_msa,o.exist_service,o.status,o.progress,o.remark,o.deleted,c.name as advertiser
+		from sales_booking_production.pms_business_opportunity o left join sales_booking_production.clients c on o.advertiser_id = c.id 
+		where o.deleted = 1
+		<if test="advertiser != null">
+			and c.name like "%"#{advertiser}"%"
 		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
@@ -26,21 +27,22 @@
 	
 	<select id="count" parameterType="map" resultType="int">
 		select count(1) 
-		from pms_business_opportunity where 1 = 1
-		<if test="status != null">
-			and status = #{status}
+		from sales_booking_production.pms_business_opportunity o left join sales_booking_production.clients c on o.advertiser_id = c.id 
+		where o.deleted = 1
+		<if test="advertiser != null">
+			and c.name like "%"#{advertiser}"%"
 		</if>
 	</select>
 
 	<insert id="save" parameterType="BusinessOpportunity" useGeneratedKeys="true" keyProperty="id">
-		insert into pms_business_opportunity (advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
-				exist_msa,exist_service,status,progress,remark)
+		insert into sales_booking_production.pms_business_opportunity (advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
+				exist_msa,exist_service,status,progress,remark,deleted)
 		values (#{advertiser_id},#{budget},#{currency_id},#{deliver_start_date},#{deliver_end_date},#{owner_sale},
-				#{cooperate_sales},#{exist_msa},#{exist_service},#{status},#{progress},#{remark})
+				#{cooperate_sales},#{exist_msa},#{exist_service},#{status},#{progress},#{remark},1)
 	</insert>
 	
 	<insert id="update" parameterType="BusinessOpportunity">
-		update pms_business_opportunity set 
+		update sales_booking_production.pms_business_opportunity set 
 			advertiser_id=#{advertiser_id},
 			budget=#{budget},
 			currency_id=#{currency_id},
@@ -52,8 +54,13 @@
 			exist_service=#{exist_service},
 			status=#{status},
 			progress=#{progress},
-			remark=#{remark}
+			remark=#{remark},
+			deleted=#{deleted}
 		where id = #{id}
 	</insert>
+	
+	<delete id="delete" parameterType="long">
+	     update sales_booking_production.pms_business_opportunity set deleted=2 where id=#{id}
+	</delete>
 	
 </mapper> 

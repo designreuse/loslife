@@ -39,6 +39,6 @@ public interface UserXMOMapper {
 
   List<Group> findGroupByGroupName(String groupName);
   
-  List<Currency> getCurrencies();
+  List<Currency> getCurrencys();
 
 }

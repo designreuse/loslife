@@ -12,9 +12,10 @@ public interface BusinessOpportunityProductMapper {
 
   List<BusinessOpportunityProduct> getByBusinessOpportunityId(Long businessOpportunityId);
 
-  void save(BusinessOpportunityProduct businessOpportunityProduct);
+  int save(BusinessOpportunityProduct businessOpportunityProduct);
 
-  void update(BusinessOpportunityProduct businessOpportunityProduct);
-
+  int update(BusinessOpportunityProduct businessOpportunityProduct);
+  
+  int delete(Long id);
 
 }

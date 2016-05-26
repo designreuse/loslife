@@ -42,6 +42,9 @@
 
           <!-- Main content -->
           <section class="content">
+          	<div class="nav-tabs-custom">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="activity">
                   <div class="box box-info ">
 		            <div class="box-header with-border">
 		              <h3 class="box-title">
@@ -60,7 +63,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="business.opportunity.advertiser"/></label>
-									<input type="text" class="form-control" name="brandName" id="brandName" value="<c:out value="${pages.searchMap['brandName']}"/>" placeholder="<spring:message code='opportunity.brand.name.placeholder'/>">
+									<input type="text" class="form-control" name="advertiser" id="advertiser" value="<c:out value="${pages.searchMap['advertiser']}"/>" placeholder="<spring:message code='business.opportunity.input.advertiser'/>">
 								</div>
 							</div>
 						</div><!-- /.row -->
@@ -72,8 +75,8 @@
           
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody><tr>
-	                      <th style="width: 100px"><spring:message code="opportunity.id" /></th>
-	                      <th <tags:sort column="task" page="${pages}"/>><spring:message code="opportunity.task"/><i class="fa fa-w fa-sort"></i></th>
+	                      <th <tags:sort column="id" page="${pages}"/> style="width: 120px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
+	                      <th <tags:sort column="advertiser" page="${pages}"/>><spring:message code="business.opportunity.advertiser"/><i class="fa fa-w fa-sort"></i></th>
 	                      <th><spring:message code="opportunity.progress"/></th>
 	                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
 	                      <th style="width: 152px"><spring:message code="opportunity.operate"/></th>
@@ -82,7 +85,7 @@
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
 		                      <td>${opportunity.id}</td>
-		                      <td>${opportunity.budget}</td>
+		                      <td>${opportunity.advertiser}</td>
 		                      <td>
 		                        <div class="progress progress-xs progress-striped active">
 		                          <div class="progress-bar ${opportunity.progressBar.barClass}" style="width: ${opportunity.progressBar.value}%"></div>
@@ -101,7 +104,7 @@
                 <div class="box-footer clearfix">
                   <tags:pagination page="${pages}" paginationSize="3" />
                 </div>
-
+			</div></div></div>
           </section>
           
           
@@ -111,7 +114,7 @@
         	});
           
           	function view(id){
-          		window.location.href="${ctx}/opportunity/view/"+id;
+          		window.location.href="${ctx}/businessOpportunity/view/"+id;
           	};
           	
           	function del(id){
@@ -130,7 +133,7 @@
 	          		      label: "<spring:message code='btn.delete' />",
 	          		      className: "btn-danger",
 	          		      callback: function() {
-	          		    	window.location.href="${ctx}/opportunity/delete/"+id;
+	          		    	window.location.href="${ctx}/businessOpportunity/delete/"+id;
 	          		      }
 	          		    }
           		  	}
@@ -138,7 +141,7 @@
           	};
           	
           	function resetForm(){
-          		$("#task").val('');
+          		$("#advertiser").val('');
           	};
           </script>
 </body>

@@ -17,10 +17,12 @@ public interface BusinessOpportunityMapper {
 
   List<BusinessOpportunity> search(Map<String, Object> parameters, RowBounds rowBounds);
 
-  void save(BusinessOpportunity businessOpportunity);
+  int save(BusinessOpportunity businessOpportunity);
 
-  void update(BusinessOpportunity businessOpportunity);
+  int update(BusinessOpportunity businessOpportunity);
 
   int count(Map<String, Object> map);
+  
+  int delete(Long id);
   
 }

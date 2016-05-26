@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.alibaba.fastjson.JSONArray;
+
 public class CommonUtil {
 
   public static final PropertiesLoader properties_zh = new PropertiesLoader("message_zh_CN.properties");
@@ -117,5 +119,28 @@ public class CommonUtil {
     }
 
     return lang.equalsIgnoreCase("zh") ? properties_zh.getProperty(key) : properties_en.getProperty(key);
+  }
+
+  public static String array2String(String[] array) {
+    if (array != null && array.length > 0) {
+      JSONArray jsonArray = new JSONArray();
+      for (String s : array) {
+        jsonArray.add(s);
+      }
+      return jsonArray.toJSONString();
+    }
+    return "";
+  }
+
+  public static String[] string2Array(String str) {
+    if (StringUtils.isNotBlank(str)) {
+      JSONArray jsonArray = JSONArray.parseArray(str);
+      String[] strArr = new String[jsonArray.size()];
+      for (int i = 0; i < jsonArray.size(); i++) {
+        strArr[i] = jsonArray.getString(i);
+      }
+      return strArr;
+    }
+    return new String[0];
   }
 }

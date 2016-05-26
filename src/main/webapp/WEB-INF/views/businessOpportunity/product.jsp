@@ -11,20 +11,20 @@
 		<div class="form-group">
 			<label class="col-md-3" for="product_id">产品${index}*</label>
 			<div class="col-md-9">
-				<select class="form-control select2" name="product_id" id="product_id_${index}" style="width: 100%;"></select>
+				<select class="form-control select2" name="product_id_${index}" id="product_id_${index}" style="width: 100%;"></select>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-md-3" for="sale_mode">销售模式${index}*</label>
 			<div class="col-md-9">
-				<tags:selectbox name="sale_mode" id="sale_mode_${index}" list="${saleModes}" add0="true"></tags:selectbox>
+				<tags:selectbox name="sale_mode_${index}" id="sale_mode_${index}" list="${saleModes}" addNull="true"></tags:selectbox>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-md-3" for="budget">产品预算${index}*</label>
 			<div class="col-md-9">
 				<div class="input-group">
-				<input type="text" class="form-control text-right" name="product_budget" id="product_budget_${index}"  placeholder="<spring:message code='business.opportunity.input.product.budget' />">
+				<input type="text" class="form-control text-right" name="product_budget_${index}" id="product_budget_${index}"  placeholder="<spring:message code='business.opportunity.input.product.budget' />">
 				<div class="input-group-addon"><i class="fa fa-cny"></i></div>
 				</div>
 			</div>
@@ -39,6 +39,10 @@
 
 <script>    
 	$(document).ready(function() {
+		$("#row_product_${index}").find("select[name^='product_id']").rules('add', {required:true});
+		$("#row_product_${index}").find("select[name^='sale_mode']").rules('add', {required:true});
+		$("#row_product_${index}").find("input[name^='product_budget']").rules('add', {required:true,number:true});
+		
 		$("#product_id_${index}").select2({
 			ajax: {
 		        url: "${ctx}/ajax/getProducts",

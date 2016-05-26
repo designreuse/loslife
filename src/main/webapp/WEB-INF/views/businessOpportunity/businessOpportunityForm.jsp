@@ -47,7 +47,7 @@
         </section>
           <!-- form start -->
           <form action="${ctx}/businessOpportunity/${action}" method="post" id="primaryForm" class="form-horizontal">
-          <input type="hidden" name="id" id="id" value="${opportunity.id}" />
+          <input type="hidden" name="id" id="id" value="${businessOpportunity.id}" />
         
            <!-- Main content -->
           <section class="content">
@@ -260,10 +260,11 @@
 				
 				$("#primaryForm").validate({
 					rules:{
-						/*advertiser_id:"required",
+						advertiser_id:"required",
 						deliver_date:"required",
 						budget:"required",
-						owner_sale:"required"*/
+						currency_id:"required",
+						owner_sale:"required"
 					}
 				});
 
@@ -272,6 +273,7 @@
 					max:100,
 					keyboard:true,
 					values:[0,10,30,50,70,90,100]
+					<c:if test="${action eq 'create' }">,disable: true</c:if>
 				});
 			});
 			
@@ -298,13 +300,15 @@
 				var array = new Array();
 				$("#products").children(".row").each(function(){
 					var tmpArray = new Array();
-					tmpArray.push($(this).find("select[name='product_id']").val());
-					tmpArray.push($(this).find("select[name='sale_mode']").val());
-					tmpArray.push($(this).find("input[name='product_budget']").val());
+					tmpArray.push($(this).find("select[name^='product_id']").val());
+					tmpArray.push($(this).find("select[name^='sale_mode']").val());
+					tmpArray.push($(this).find("input[name^='product_budget']").val());
 					array.push(tmpArray);
 				});
 				$("#hiddenProductArray").val(JSON.stringify(array));
-				$("#primaryForm").submit();
+				if($("#primaryForm").validate()){
+					$("#primaryForm").submit();
+				}
 			};
 		</script>
 </body>

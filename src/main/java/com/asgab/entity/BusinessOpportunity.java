@@ -3,6 +3,10 @@ package com.asgab.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.asgab.entity.xmo.Currency;
+import com.asgab.service.business.opportunity.BusinessOpportunityService;
 
 public class BusinessOpportunity {
   private Long id;
@@ -18,12 +22,19 @@ public class BusinessOpportunity {
   private Integer status;
   private Integer progress;
   private String remark;
+  private Integer deleted;
 
   private List<BusinessOpportunityProduct> businessOpportunityProducts = new ArrayList<BusinessOpportunityProduct>();
 
   private String deliver_date;
 
   private ProgressBar progressBar;
+
+  // for app
+  private String advertiser;
+  private String owner_sale_name;
+  private List<Currency> currencys = new ArrayList<Currency>();
+  private List<User> cooperate_sale_list = new ArrayList<User>();
 
   public Long getId() {
     return id;
@@ -153,5 +164,74 @@ public class BusinessOpportunity {
     this.progressBar = progressBar;
   }
 
+  public String getAdvertiser() {
+    return advertiser;
+  }
+
+  public void setAdvertiser(String advertiser) {
+    this.advertiser = advertiser;
+  }
+
+  public Integer getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Integer deleted) {
+    this.deleted = deleted;
+  }
+
+  public List<Currency> getCurrencys() {
+    return currencys;
+  }
+
+  public void setCurrencys(List<Currency> currencys) {
+    this.currencys = currencys;
+  }
+
+  public String getDecodeCurrency() {
+    for (Currency c : currencys) {
+      if (c.getId().longValue() == this.getCurrency_id().longValue()) {
+        return c.getName();
+      }
+    }
+    return "";
+  }
+
+  public String getDecodeStatus(String lang) {
+    Map<Integer, String> statuses;
+    if ("zh".equalsIgnoreCase(lang)) {
+      statuses = BusinessOpportunityService.statusZH;
+    } else {
+      statuses = BusinessOpportunityService.statusEN;
+    }
+    return statuses.get(this.status);
+  }
+
+  public String getOwner_sale_name() {
+    return owner_sale_name;
+  }
+
+  public void setOwner_sale_name(String owner_sale_name) {
+    this.owner_sale_name = owner_sale_name;
+  }
+
+  public List<User> getCooperate_sale_list() {
+    return cooperate_sale_list;
+  }
+
+  public void setCooperate_sale_list(List<User> cooperate_sale_list) {
+    this.cooperate_sale_list = cooperate_sale_list;
+  }
+
+  public String getDecodeCooperate_sale() {
+    String result = "";
+    for (int i = 0; i < cooperate_sale_list.size(); i++) {
+      if (i != 0) {
+        result += ",&nbsp;&nbsp;&nbsp;&nbsp;";
+      }
+      result += cooperate_sale_list.get(i).getName();
+    }
+    return result;
+  }
 }
 

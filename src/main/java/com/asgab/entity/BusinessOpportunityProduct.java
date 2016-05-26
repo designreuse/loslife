@@ -8,6 +8,8 @@ public class BusinessOpportunityProduct {
   private Long product_id;
   private String sale_mode;
   private BigDecimal budget;
+  
+  private Integer deleted;
 
   public Long getId() {
     return id;
@@ -48,4 +50,13 @@ public class BusinessOpportunityProduct {
   public void setBudget(BigDecimal budget) {
     this.budget = budget;
   }
+
+  public Integer getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Integer deleted) {
+    this.deleted = deleted;
+  }
+  
 }
