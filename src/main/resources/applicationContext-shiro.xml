@@ -65,7 +65,7 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/opportunity" />
+		<property name="successUrl" value="/businessOpportunity" />
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="myFormAuthenticationFilter" />
