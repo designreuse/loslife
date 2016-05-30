@@ -60,7 +60,11 @@
 	                    <div class="form-group">
 	                      <label for="advertiser_id" class="col-md-3"><spring:message code="business.opportunity.advertiser" />*</label>
 	                      <div class="col-md-9">
-	                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;"></select>
+	                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;">
+	                      		<c:if test="${advertiser !=null}">
+	                      			<option value="${advertiser.id}" selected>${advertiser.name}</option>
+	                      		</c:if>
+	                      	</select>
 	                      </div>
 	                    </div>
 	                    
@@ -69,7 +73,7 @@
 	                      <div class="col-md-9">
 	                      	<div class="input-group">
 	                      		<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-	                      		<input type="text" class="form-control pull-right" name="deliver_date" id="deliver_date" placeholder="<spring:message code='business.opportunity.input.deliverdate' />">
+	                      		<input type="text" value="${businessOpportunity.decodeDeliver_date }" class="form-control pull-right" name="deliver_date" id="deliver_date" placeholder="<spring:message code='business.opportunity.input.deliverdate' />">
 	                      	</div>
 	                      </div>
 	                    </div>
@@ -77,7 +81,7 @@
 	                    <div class="form-group">
 	                      <label for="currency_id" class="col-md-3"><spring:message code="business.opportunity.currency" />*</label>
 	                      <div class="col-md-9">
-	                      		<tags:selectbox name="currency_id" list="${currencys}" addNull="true"></tags:selectbox>
+	                      		<tags:selectbox name="currency_id" list="${currencys}" addNull="true" value="${businessOpportunity.currency_id }"></tags:selectbox>
 	                      </div>
 	                    </div>
 	                    
@@ -85,7 +89,7 @@
 	                      <label for="budget" class="col-md-3"><spring:message code="business.opportunity.budget" />*</label>
 	                      <div class="col-md-9">
 	                      	<div class="input-group">
-	                      		<input type="text" class="form-control text-right" name="budget" id="budget" placeholder="<spring:message code='business.opportunity.input.budget' />">
+	                      		<input type="text" value="${businessOpportunity.budget }" class="form-control text-right" name="budget" id="budget" placeholder="<spring:message code='business.opportunity.input.budget' />">
 	                      		<div class="input-group-addon"><i class="fa fa-cny"></i></div>
 	                      	</div>
 	                      </div>
@@ -94,7 +98,7 @@
 	                    <div class="form-group">
 	                      <label for="progress" class="col-md-3"><spring:message code="business.opportunity.progress" /></label>
 	                      <div class="col-md-9">
-				          	<input id="progress" class="form-control" data-slider-id="blue" type="text" name="progress" value="${opportunity.progress}">
+				          	<input id="progress" class="form-control" data-slider-id="blue" type="text" name="progress" value="${businessOpportunity.progress}">
 				          </div>
 	                    </div>
 	                    
@@ -114,10 +118,10 @@
            			<div class="col-md-6">
 	                    <div class="form-group">
 	                    	<label for="exist_msa" class="col-md-3"><spring:message code="business.opportunity.msa" />*</label>
-	                     	<input type="hidden" name="exist_msa" id="exist_msa" value="${businessOpportunity.exist_service}">
+	                     	<input type="hidden" name="exist_msa" id="exist_msa" value="${businessOpportunity.exist_msa}">
 	                      	<div class="col-md-9">
-	                      		<input type="button" class="btn btn-primary btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_msa',this);" value="<spring:message code="business.opportunity.yes" />">
-	                      		<input type="button" class="btn btn-default btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_msa',this);" value="<spring:message code="business.opportunity.no" />">
+	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_msa ==1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_msa',this);" id="btn_exist_msa_1" value="<spring:message code="business.opportunity.yes" />">
+	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_msa ==0 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_msa',this);" id="btn_exist_msa_0" value="<spring:message code="business.opportunity.no" />">
 	                     	</div>
 	                    </div>
 	                    
@@ -125,22 +129,32 @@
 	                    	<label for="exist_service" class="col-md-3"><spring:message code="business.opportunity.service" />*</label>
 	                     	<input type="hidden" name="exist_service" id="exist_service" value="${businessOpportunity.exist_service}">
 	                      	<div class="col-md-9">
-	                      		<input type="button" class="btn btn-primary btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_service',this);" value="<spring:message code="business.opportunity.service" />">
-	                      		<input type="button" class="btn btn-default btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_service',this);" value="<spring:message code="business.opportunity.exec" />">
+	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_service ==1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose> btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_service',this);" value="<spring:message code="business.opportunity.service" />">
+	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_service ==0 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose> btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_service',this);" value="<spring:message code="business.opportunity.exec" />">
 	                     	</div>
 	                    </div>
 	                    
 	                    <div class="form-group">
 	                      <label for="owner_sale" class="col-md-3"><spring:message code="business.opportunity.sale" />*</label>
 	                      <div class="col-md-9">
-	                      	<select class="form-control select2" name="owner_sale" id="owner_sale" style="width: 100%;"></select>
+	                      	<select class="form-control select2" name="owner_sale" id="owner_sale" style="width: 100%;">
+	                      		<c:if test="${ownerSale !=null}">
+	                      			<option value="${ownerSale.id}" selected>${ownerSale.name}</option>
+	                      		</c:if>
+	                      	</select>
 	                      </div>
 	                    </div>
 	                    
 	                    <div class="form-group">
 	                      <label for="cooperate_sales" class="col-md-3"><spring:message code="business.opportunity.cooperate" /></label>
 	                      <div class="col-md-9">
-	                      	<select class="form-control select2" name="cooperate_sales" id="cooperate_sales" style="width: 100%;" multiple="multiple"></select>
+	                      	<select class="form-control select2" name="cooperate_sales" id="cooperate_sales" style="width: 100%;" multiple="multiple">
+	                      		<c:if test="${businessOpportunity.cooperate_sale_list !=null}">
+	                      			<c:forEach items="${businessOpportunity.cooperate_sale_list}" var="sale">
+	                      				<option value="${sale.id}" selected>${sale.name}</option>
+	                      			</c:forEach>
+	                      		</c:if>
+	                      	</select>
 	                      </div>
 	                    </div>
 	                    
@@ -165,7 +179,7 @@
                     
                     <!--  -->
                     <div class="products" id="products">
-                    
+                    	<jsp:include page="productEdit.jsp"></jsp:include>
                     </div>
                     
                    	<div class="row">
@@ -177,16 +191,24 @@
 	                    <div class="form-group">
 	                      <label for="remark" class="col-md-3"><spring:message code="business.opportunity.remark" /></label>
 	                      <div class="col-md-9">
-	                      	<textarea rows="3" class="form-control" name="remark" id="remark" placeholder="<spring:message code="business.opportunity.input.remark" />"></textarea>
+	                      	<textarea rows="3" class="form-control" name="remark" id="remark" placeholder="<spring:message code="business.opportunity.input.remark" />">${businessOpportunity.remark}</textarea>
 	                      </div>
 	                    </div>
 	                  
-	                    <input type="hidden" id="hiddenProductArray" name="hiddenProductArray">
                     </div>
                   </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat" onclick="submitForm();"><spring:message code="btn.submit"/></button> 
+                	<div class="row">
+	           			<div class="col-md-6" id="budgetSumError" style="display: none;">
+		                	<div class="alert alert-error alert-dismissable" style="margin: 10px 0 0 0">
+		                    <button type="button" class="close" onclick="$('#budgetSumError').hide();" aria-hidden="true">×</button>
+			                   <spring:message code="business.opportunity.budget.sum.error" />
+		            		</div>
+	            		</div>
+            		</div>
+            		<br/>
+                    <button type="button" class="btn btn-primary btn-sm btn-flat" onclick="submitForm();"><spring:message code="btn.submit"/></button> 
                     <button type="button" class="btn btn-primary btn-sm disabled btn-sm btn-flat" onclick="cancel();"><spring:message code="btn.cancel"/></button>
                 </div>
               </div>
@@ -194,6 +216,9 @@
           
           
          </form>
+         
+         <div id="shield" style="position: fixed; left: 0px; top: 0px; display: none; z-index: 9998; opacity: 0.8; background: #7D7159; width: 100%; height: 100%;">
+		<img src="${ctx}/static/images/loading_s.gif" style="position: absolute; top: 300px; left: 48%;" /></div>
           
 		<script>    
 			$(document).ready(function() {
@@ -201,6 +226,9 @@
 				$("#menu_business_opportunity").addClass("active");
 				
 				$("#deliver_date").daterangepicker({opens:"right",cancelClass:"btn-info",format:'YYYY-MM-DD'});
+				
+				$("#btn_exist_service_${businessOpportunity.exist_service}").trigger('click');
+				$("#btn_exist_msa_service_${businessOpportunity.exist_msa}").trigger('click');
 				
 				// 广告主
 				$("#advertiser_id").select2({
@@ -220,6 +248,7 @@
 				    placeholder: "<spring:message code='business.opportunity.input.advertiser' />",
 				    allowClear: true
 				});
+				
 				
 				// 销售
 				$("#owner_sale").select2({
@@ -267,13 +296,19 @@
 						owner_sale:"required"
 					}
 				});
+				
+				$("div[id^='row_product']").each(function(i){
+					$(this).find("select[name='businessOpportunityProducts["+i+"].product_id']").rules('add', {required:true});
+					$(this).find("select[name='businessOpportunityProducts["+i+"].sale_mode']").rules('add', {required:true});
+					$(this).find("input[name='businessOpportunityProducts["+i+"].product_budget']").rules('add', {required:true,number:true});
+				});
 
 				$("#progress").ionRangeSlider({
 					min:0,
 					max:100,
-					keyboard:true,
-					values:[0,10,30,50,70,90,100]
-					<c:if test="${action eq 'create' }">,disable: true</c:if>
+					keyboard:true
+					<c:if test="${action eq 'create' }">,values:[10]</c:if>
+					<c:if test="${action eq 'update' }">,values:[0,10,30,50,70,90,100]</c:if>
 				});
 			});
 			
@@ -290,24 +325,26 @@
 			};
 			
 			function addProduct(){
-				var productIndex = $(".products").children(".row").length+1
+				var productIndex = $(".products").children(".row").length;
 				$.post("${ctx}/ajax/addProduct",{index:productIndex},function(html){
 					$(".products").append(html);
 				},"html");
 			};
 			
 			function submitForm(){
-				var array = new Array();
-				$("#products").children(".row").each(function(){
-					var tmpArray = new Array();
-					tmpArray.push($(this).find("select[name^='product_id']").val());
-					tmpArray.push($(this).find("select[name^='sale_mode']").val());
-					tmpArray.push($(this).find("input[name^='product_budget']").val());
-					array.push(tmpArray);
+				var budget = +$("#budget").val();
+				var subBudget = 0;
+				$("input[name*='product_budget']").each(function(i){
+					subBudget += +$(this).val();
 				});
-				$("#hiddenProductArray").val(JSON.stringify(array));
-				if($("#primaryForm").validate()){
-					$("#primaryForm").submit();
+				if(subBudget!=budget){
+					$("#budgetSumError").show();
+				}else{
+					if($("#primaryForm").validate()){
+						$("#budgetSumError").hide();
+						$("#shield").show();
+						$("#primaryForm").submit();
+					}
 				}
 			};
 		</script>

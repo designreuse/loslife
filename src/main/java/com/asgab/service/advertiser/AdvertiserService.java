@@ -22,4 +22,9 @@ public class AdvertiserService {
     page.setContent(advertisers);
     return page;
   }
+
+  public Advertiser get(Long id) {
+    return advertiserXMOMapper.get(id);
+  }
+
 }

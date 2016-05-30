@@ -13,4 +13,9 @@
 		</if>
 	</select>
 	
+	<select id="get" parameterType="Long" resultType="Advertiser">
+		select id,clientname as name
+		from clients where id=#{id}
+	</select>
+	
 </mapper> 

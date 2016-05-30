@@ -114,10 +114,13 @@ public class CommonUtil {
   public static String getProperty(HttpServletRequest request, String key) {
     LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
     String lang = localeResolver.resolveLocale(request).getLanguage();
+    return getProperty(lang, key);
+  }
+
+  public static String getProperty(String lang, String key) {
     if (properties_zh == null || properties_en == null || !StringUtils.isNotBlank(key)) {
       return "";
     }
-
     return lang.equalsIgnoreCase("zh") ? properties_zh.getProperty(key) : properties_en.getProperty(key);
   }
 

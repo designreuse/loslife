@@ -2,14 +2,18 @@ package com.asgab.entity;
 
 import java.math.BigDecimal;
 
+import com.asgab.entity.xmo.Product;
+
 public class BusinessOpportunityProduct {
   private Long id;
   private Long business_opportunity_id;
   private Long product_id;
   private String sale_mode;
-  private BigDecimal budget;
-  
+  private BigDecimal product_budget;
+
   private Integer deleted;
+
+  private Product product;
 
   public Long getId() {
     return id;
@@ -43,12 +47,12 @@ public class BusinessOpportunityProduct {
     this.sale_mode = sale_mode;
   }
 
-  public BigDecimal getBudget() {
-    return budget;
+  public BigDecimal getProduct_budget() {
+    return product_budget;
   }
 
-  public void setBudget(BigDecimal budget) {
-    this.budget = budget;
+  public void setProduct_budget(BigDecimal product_budget) {
+    this.product_budget = product_budget;
   }
 
   public Integer getDeleted() {
@@ -58,5 +62,19 @@ public class BusinessOpportunityProduct {
   public void setDeleted(Integer deleted) {
     this.deleted = deleted;
   }
-  
+
+  public Product getProduct() {
+    return product;
+  }
+
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  public String getDecodeProductId() {
+    if (product != null) {
+      return product.getName();
+    }
+    return "";
+  }
 }
