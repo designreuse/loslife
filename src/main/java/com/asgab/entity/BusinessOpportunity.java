@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.asgab.entity.xmo.Currency;
 import com.asgab.service.business.opportunity.BusinessOpportunityService;
+import com.asgab.util.CommonUtil;
 
 public class BusinessOpportunity {
   private Long id;
@@ -84,6 +87,13 @@ public class BusinessOpportunity {
     this.deliver_end_date = deliver_end_date;
   }
 
+  public String getDecodeDeliver_date() {
+    if (StringUtils.isNotBlank(getDeliver_start_date()) && StringUtils.isNotBlank(getDeliver_end_date())) {
+      return getDeliver_start_date() + " - " + getDeliver_end_date();
+    }
+    return "";
+  }
+
   public Long getOwner_sale() {
     return owner_sale;
   }
@@ -104,6 +114,13 @@ public class BusinessOpportunity {
     return exist_msa;
   }
 
+  public String getDecodeExist_msa(String lang) {
+    if (getExist_msa().intValue() == 1) {
+      return CommonUtil.getProperty(lang, "business.opportunity.yes");
+    }
+    return CommonUtil.getProperty(lang, "business.opportunity.no");
+  }
+
   public void setExist_msa(Integer exist_msa) {
     this.exist_msa = exist_msa;
   }
@@ -112,12 +129,19 @@ public class BusinessOpportunity {
     return exist_service;
   }
 
+  public String getDecodeExist_service(String lang) {
+    if (getExist_service().intValue() == 1) {
+      return CommonUtil.getProperty(lang, "business.opportunity.service");
+    }
+    return CommonUtil.getProperty(lang, "business.opportunity.exec");
+  }
+
   public void setExist_service(Integer exist_service) {
     this.exist_service = exist_service;
   }
 
   public Integer getStatus() {
-    return status;
+    return BusinessOpportunityService.statusMap.get(progress);
   }
 
   public void setStatus(Integer status) {

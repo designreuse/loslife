@@ -22,4 +22,8 @@ public class ProductService {
     page.setContent(products);
     return page;
   }
+
+  public Product get(Long id) {
+    return productXMOMapper.get(id);
+  }
 }

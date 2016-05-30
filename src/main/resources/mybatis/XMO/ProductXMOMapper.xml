@@ -15,4 +15,9 @@
 		</if>
 	</select>
 	
+	<select id="get" parameterType="Long" resultType="Product">
+		select id,name,name_en as nameEn
+		from sell_product_types where id=#{id}
+	</select>
+	
 </mapper> 

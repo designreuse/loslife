@@ -66,6 +66,10 @@ public class AccountService {
     map.put("loginName", loginName);
     return userXMOMapper.findUserGroupByLoginName(map);
   }
+  
+  public User get(Long id) {
+    return userXMOMapper.get(id);
+  }
 
   public static void main(String[] args) {
     byte[] hashPassword = Digests.sha1("0123456789".getBytes());

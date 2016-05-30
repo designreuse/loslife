@@ -17,6 +17,7 @@ import com.asgab.entity.xmo.Currency;
 import com.asgab.repository.BusinessOpportunityMapper;
 import com.asgab.repository.BusinessOpportunityProductMapper;
 import com.asgab.repository.xmo.UserXMOMapper;
+import com.asgab.service.product.ProductService;
 import com.asgab.util.SelectMapper;
 
 @Component
@@ -31,6 +32,9 @@ public class BusinessOpportunityService {
 
   @Autowired
   private UserXMOMapper userXMOMapper;
+
+  @Autowired
+  private ProductService productService;
 
   public static Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
   public static Map<Integer, String> statusZH = new HashMap<Integer, String>();
@@ -77,6 +81,10 @@ public class BusinessOpportunityService {
     BusinessOpportunity businessOpportunity = businessOpportunityMapper.get(id);
     if (businessOpportunity != null) {
       businessOpportunity.setBusinessOpportunityProducts(businessOpportunityProductMapper.getByBusinessOpportunityId(id));
+      for (int i = 0; i < businessOpportunity.getBusinessOpportunityProducts().size(); i++) {
+        BusinessOpportunityProduct businessOpportunityProduct = businessOpportunity.getBusinessOpportunityProducts().get(i);
+        businessOpportunityProduct.setProduct(productService.get(businessOpportunityProduct.getProduct_id()));
+      }
     }
     return businessOpportunity;
   }
@@ -85,8 +93,10 @@ public class BusinessOpportunityService {
     businessOpportunity.setStatus(statusMap.get(businessOpportunity.getProgress()));
     businessOpportunityMapper.save(businessOpportunity);
     for (BusinessOpportunityProduct businessOpportunityProduct : businessOpportunity.getBusinessOpportunityProducts()) {
-      businessOpportunityProduct.setBusiness_opportunity_id(businessOpportunity.getId());
-      businessOpportunityProductMapper.save(businessOpportunityProduct);
+      if (businessOpportunityProduct != null && businessOpportunityProduct.getProduct_id() != null) {
+        businessOpportunityProduct.setBusiness_opportunity_id(businessOpportunity.getId());
+        businessOpportunityProductMapper.save(businessOpportunityProduct);
+      }
     }
   }
 

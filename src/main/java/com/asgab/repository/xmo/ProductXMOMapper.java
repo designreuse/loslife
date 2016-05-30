@@ -15,4 +15,6 @@ public interface ProductXMOMapper {
 
   List<Product> search(Map<String, Object> parameters, RowBounds rowBounds);
 
+  Product get(Long id);
+
 }

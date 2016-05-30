@@ -1,6 +1,8 @@
 package com.asgab.web.business.opportunity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -17,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.alibaba.fastjson.JSONArray;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.BusinessOpportunity;
-import com.asgab.entity.BusinessOpportunityProduct;
 import com.asgab.repository.xmo.UserXMOMapper;
+import com.asgab.service.account.AccountService;
+import com.asgab.service.advertiser.AdvertiserService;
 import com.asgab.service.business.opportunity.BusinessOpportunityService;
 import com.asgab.util.CommonUtil;
+import com.asgab.util.SelectMapper;
 import com.asgab.util.Servlets;
 
 @Controller
@@ -36,6 +39,12 @@ public class BusinessOpportunityController {
 
   @Autowired
   private UserXMOMapper userXMOMapper;
+
+  @Autowired
+  private AdvertiserService advertiserService;
+
+  @Autowired
+  private AccountService accountService;
 
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
@@ -57,8 +66,9 @@ public class BusinessOpportunityController {
   @RequestMapping(value = "create", method = RequestMethod.GET)
   public String toCreate(Model model, HttpServletRequest request) {
     BusinessOpportunity businessOpportunity = new BusinessOpportunity();
-    businessOpportunity.setExist_msa(0);
-    businessOpportunity.setExist_service(0);
+    businessOpportunity.setProgress(10);
+    businessOpportunity.setExist_msa(1);
+    businessOpportunity.setExist_service(1);
     model.addAttribute("businessOpportunity", businessOpportunity);
     model.addAttribute("currencys", businessOpportunityService.getCurrencyMappers());
     model.addAttribute("action", "create");
@@ -67,18 +77,6 @@ public class BusinessOpportunityController {
 
   @RequestMapping(value = "create", method = RequestMethod.POST)
   public String create(BusinessOpportunity businessOpportunity, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    String productArray = request.getParameter("hiddenProductArray");
-    JSONArray jsonArray = JSONArray.parseArray(productArray);
-    for (int i = 0; i < jsonArray.size(); i++) {
-      JSONArray tmpArray = jsonArray.getJSONArray(i);
-      BusinessOpportunityProduct tmpProduct = new BusinessOpportunityProduct();
-      tmpProduct.setProduct_id(tmpArray.getLong(0));
-      tmpProduct.setSale_mode(tmpArray.getString(1));
-      tmpProduct.setBudget(tmpArray.getBigDecimal(2));
-      businessOpportunity.getBusinessOpportunityProducts().add(tmpProduct);
-    }
-
-    businessOpportunity.setCooperate_sales(CommonUtil.array2String(request.getParameterValues("cooperate_sales")));
     businessOpportunity.setDeliver_start_date(businessOpportunity.getDeliver_date().substring(0, 10));
     businessOpportunity.setDeliver_end_date(businessOpportunity.getDeliver_date().substring(13, 23));
     businessOpportunityService.save(businessOpportunity);
@@ -94,7 +92,7 @@ public class BusinessOpportunityController {
     businessOpportunity.setOwner_sale_name(userXMOMapper.get(businessOpportunity.getOwner_sale()).getName());
     // 设置coop_sale
     String coopSales = businessOpportunity.getCooperate_sales();
-    String[] userIds = CommonUtil.string2Array(coopSales);
+    String[] userIds = coopSales.split(",");
     for (int i = 0; i < userIds.length; i++) {
       businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(userIds[i])));
     }
@@ -104,8 +102,21 @@ public class BusinessOpportunityController {
 
   @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
   public String toUpdate(@PathVariable("id") Long id, Model model) {
-    model.addAttribute("businessOpportunity", businessOpportunityService.get(id));
+    BusinessOpportunity businessOpportunity = businessOpportunityService.get(id);
+    model.addAttribute("businessOpportunity", businessOpportunity);
     model.addAttribute("action", "update");
+    model.addAttribute("currencys", businessOpportunityService.getCurrencyMappers());
+    List<SelectMapper> mappers = new ArrayList<SelectMapper>();
+    mappers.add(new SelectMapper("CPC", "CPC"));
+    mappers.add(new SelectMapper("CPM", "CPM"));
+    model.addAttribute("saleModes", mappers);
+    model.addAttribute("advertiser", advertiserService.get(businessOpportunity.getAdvertiser_id()));
+    model.addAttribute("ownerSale", accountService.get(businessOpportunity.getOwner_sale()));
+    String[] cooperateSales = businessOpportunity.getCooperate_sales().split(",");
+    for (int i = 0; i < cooperateSales.length; i++) {
+      businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(cooperateSales[i])));
+    }
+    model.addAttribute("cooperateSales", businessOpportunity.getCooperate_sale_list());
     return "businessOpportunity/businessOpportunityForm";
   }
 

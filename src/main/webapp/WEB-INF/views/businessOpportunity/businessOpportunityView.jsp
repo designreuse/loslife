@@ -37,7 +37,7 @@
  <!-- Content Header -->
        <section class="content-header">
           <h1>
-       		<c:if test="${action eq 'update' }"><spring:message code="opportunity.title.view"/></c:if>
+       		<spring:message code="opportunity.title.view"/>
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/businessOpportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
@@ -74,7 +74,7 @@
 	                    <div class="form-group">
 	                      <label for="deliver_date" class="col-md-3"><spring:message code="business.opportunity.deliver.date" />*</label>
 	                      <div class="col-md-9">
-	                      	<label>${businessOpportunity.deliver_start_date} - ${businessOpportunity.deliver_start_date}</label>
+	                      	<label>${businessOpportunity.decodeDeliver_date}</label>
 	                      </div>
 	                    </div>
 	                    
@@ -116,19 +116,15 @@
            			<div class="col-md-6">
 	                    <div class="form-group">
 	                    	<label for="exist_msa" class="col-md-3"><spring:message code="business.opportunity.msa" />*</label>
-	                     	<input type="hidden" name="exist_msa" id="exist_msa" value="${businessOpportunity.exist_service}">
 	                      	<div class="col-md-9">
-	                      		<input type="button" class="btn btn-primary btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_msa',this);" value="<spring:message code="business.opportunity.yes" />">
-	                      		<input type="button" class="btn btn-default btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_msa',this);" value="<spring:message code="business.opportunity.no" />">
+	                      		<label><%=businessOpportunity.getDecodeExist_msa(lang) %></label>
 	                     	</div>
 	                    </div>
 	                    
 	                    <div class="form-group">
 	                    	<label for="exist_service" class="col-md-3"><spring:message code="business.opportunity.service" />*</label>
-	                     	<input type="hidden" name="exist_service" id="exist_service" value="${businessOpportunity.exist_service}">
 	                      	<div class="col-md-9">
-	                      		<input type="button" class="btn btn-primary btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_service',this);" value="<spring:message code="business.opportunity.service" />">
-	                      		<input type="button" class="btn btn-default btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'exist_service',this);" value="<spring:message code="business.opportunity.exec" />">
+	                      		<label><%=businessOpportunity.getDecodeExist_service(lang) %></label>
 	                     	</div>
 	                    </div>
 	                    
@@ -165,9 +161,8 @@
 	                </div>
                     </div>
                     
-                    <!--  -->
                     <div class="products" id="products">
-                    
+                    	<jsp:include page="productView.jsp" flush="true"></jsp:include>
                     </div>
                     
                    	<div class="row">
@@ -180,12 +175,11 @@
 	                      </div>
 	                    </div>
 	                  
-	                    <input type="hidden" id="hiddenProductArray" name="hiddenProductArray">
                     </div>
                   </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat btn-70" onclick="edit();"><spring:message code="btn.edit"/></button> 
+                    <button type="button" class="btn btn-primary btn-sm btn-flat btn-70" onclick="edit();"><spring:message code="btn.edit"/></button> 
                     <button type="button" class="btn btn-primary btn-sm disabled btn-sm btn-flat btn-70" onclick="cancel();"><spring:message code="btn.cancel"/></button>
                 </div>
               </div>
@@ -198,74 +192,6 @@
 			$(document).ready(function() {
 				
 				$("#menu_business_opportunity").addClass("active");
-				
-				$("#deliver_date").daterangepicker({opens:"right",cancelClass:"btn-info",format:'YYYY-MM-DD'});
-				
-				// 广告主
-				$("#advertiser_id").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getAdvertisers",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='business.opportunity.input.advertiser' />",
-				    allowClear: true
-				});
-				
-				// 销售
-				$("#owner_sale").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getSales",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='business.opportunity.input.sale' />",
-				    allowClear: true
-				});
-				
-				// 合作销售
-				$("#cooperate_sales").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getSales",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='business.opportunity.input.coopsale' />"
-				});
-				
-				$("#primaryForm").validate({
-					rules:{
-						advertiser_id:"required",
-						deliver_date:"required",
-						budget:"required",
-						currency_id:"required",
-						owner_sale:"required"
-					}
-				});
 
 				$("#progress").ionRangeSlider({
 					min:0,
@@ -280,34 +206,8 @@
 				window.location.href='${ctx}/businessOpportunity';
 			};
 			
-			function changeRadio(val,id,name){
-				$('#'+id).val(val);
-				$(name).parent().children().each(function(){
-					$(this).removeClass("btn-primary").addClass("btn-default");
-				});
-				$(name).removeClass("btn-default").addClass("btn-primary");
-			};
-			
-			function addProduct(){
-				var productIndex = $(".products").children(".row").length+1
-				$.post("${ctx}/ajax/addProduct",{index:productIndex},function(html){
-					$(".products").append(html);
-				},"html");
-			};
-			
-			function submitForm(){
-				var array = new Array();
-				$("#products").children(".row").each(function(){
-					var tmpArray = new Array();
-					tmpArray.push($(this).find("select[name^='product_id']").val());
-					tmpArray.push($(this).find("select[name^='sale_mode']").val());
-					tmpArray.push($(this).find("input[name^='product_budget']").val());
-					array.push(tmpArray);
-				});
-				$("#hiddenProductArray").val(JSON.stringify(array));
-				if($("#primaryForm").validate()){
-					$("#primaryForm").submit();
-				}
+			function edit(){
+				window.location.href='${ctx}/businessOpportunity/update/${businessOpportunity.id}';
 			};
 		</script>
 </body>

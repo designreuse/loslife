@@ -15,4 +15,6 @@ public interface AdvertiserXMOMapper {
 
   List<Advertiser> search(Map<String, Object> parameters, RowBounds rowBounds);
 
+  Advertiser get(Long id);
+
 }
