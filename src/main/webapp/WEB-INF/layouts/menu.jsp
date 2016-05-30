@@ -18,7 +18,14 @@
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
               <ul class="nav navbar-nav">
                 <li id="menu_business_opportunity"><a href="#"><spring:message code="menu.business.opportunity"/></a></li>
-                <li id="menu_advertiser"><a href="#"><spring:message code="menu.advertiser"/></a></li>
+                <li id="menu_report" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="menu.advertiser"/><span class="caret"></span></a>
+                 
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#"><spring:message code="menu.advertiser"/></a></li>
+                    <li><a href="${ctx}/advertiser/review"><spring:message code="menu.advertiser.review"/></a></li>
+                  </ul>
+                </li>
                 <li id="menu_agency"><a href="#"><spring:message code="menu.agency"/></a></li>
                 <li id="menu_report" class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="menu.report"/><span class="caret"></span></a>
