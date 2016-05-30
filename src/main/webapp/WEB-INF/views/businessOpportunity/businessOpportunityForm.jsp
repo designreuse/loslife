@@ -249,7 +249,6 @@
 				    allowClear: true
 				});
 				
-				
 				// 销售
 				$("#owner_sale").select2({
 					ajax: {
