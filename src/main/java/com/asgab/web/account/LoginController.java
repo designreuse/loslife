@@ -45,7 +45,7 @@ public class LoginController {
       // 如果已经登录，则退出or跳转到主页
       if (null != (ShiroUser) currentUser.getPrincipal()) {
         //currentUser.logout(); //安全起见，用这种，退出再登录
-        return "redirect:/opportunity";
+        return "redirect:/businessOpportunity";
       }
     }
     return "account/login";
