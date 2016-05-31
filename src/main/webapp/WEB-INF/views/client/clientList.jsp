@@ -1,0 +1,164 @@
+<%@page import="org.apache.shiro.SecurityUtils"%>
+<%@page import="com.asgab.service.account.ShiroDbRealm.ShiroUser"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%
+	ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+%>
+
+<html>
+<head>
+<title><spring:message code="menu.advertiser"/></title>
+</head>
+<body>
+	<style type="text/css">
+		.btn-sm{line-height: 1.1}
+	</style>
+	 <!-- Content Header -->
+       <section class="content-header">
+          <h1>
+            <spring:message code="menu.advertiser"/>
+          </h1>
+          
+          <ol class="breadcrumb">
+            <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
+            <li class="active">广告主信息</li>
+          </ol>
+		
+		<c:if test="${message != null}">
+			<div class="alert alert-success alert-dismissable" style="margin: 10px 0 0 0">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4>	<i class="icon fa fa-check"></i> <spring:message code="message.alert.success"/>!</h4>
+                    ${message}
+            </div>
+        </c:if>
+		          
+        </section>
+
+          <!-- Main content -->
+          <section class="content">
+          	<div class="nav-tabs-custom">
+          		<!-- 
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">销售数据</a></li>
+                </ul>
+                 -->
+                <div class="tab-content">
+                  <div class="tab-pane active" id="activity">
+                  <div class="box box-info ">
+		            <div class="box-header with-border">
+		              <h3 class="box-title">
+		              <!-- 没有title -->
+		             	<button class="btn btn-primary btn-sm" onclick="window.location.href='${ctx}/client/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
+                		<button class="btn btn-sm" onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
+		              	<button class="btn btn-warning btn-sm" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
+		              </h3>
+		              <div class="box-tools pull-right">
+		                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+		              </div>
+		            </div><!-- /.box-header -->
+		            <div class="box-body" style="display: block;">
+		            	<form action="${ctx}/client" method="get" id="searchForm">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>广告主</label>
+									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" 
+									placeholder="请输入广告主名称">
+								</div>
+							</div>
+							
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>品牌</label>
+									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" 
+									placeholder="请输入品牌名称">
+								</div>
+							</div>
+						</div><!-- /.row -->
+						</form>
+					</div><!-- /.box-body -->
+					</div>
+                	
+                	<div class="box-body  table-responsive no-padding">
+          
+	                  <table class="table table-striped table-condensed table-hover">
+	                    <tbody>
+		                    <tr>
+		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>>广告主&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th>状态</th>
+		                    	<th style="cursor: pointer;" <tags:sort column="brand" page="${pages}"/>>品牌&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th>代理</th>
+		                    	<th style="cursor: pointer;" <tags:sort column="industry_name" page="${pages}"/>>行业&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th><spring:message code="opportunity.operate"/></th>
+		                    </tr>
+                    
+	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
+	                    	<tr>
+		                     	<td>${client.name}</td>
+		                     	<td>${client.id}</td>
+		                     	<td>${client.brand}</td>
+		                     	<td>${client.channel_name}</td>
+		                     	<td>${client.industry_name}</td>
+		                     	<td>
+		                      		<a href="#" onclick="view(${client.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-file-text-o"></i>&nbsp;<spring:message code="btn.view"/></a>
+		                      	</td>
+		                    </tr>
+	                    </c:forEach>
+                    
+                  </tbody></table>
+                </div><!-- /.box-body -->
+                <div class="box-footer clearfix">
+                  <tags:pagination page="${pages}" paginationSize="5" />
+                </div>
+              </div><!-- /.box -->
+
+              
+            </div>
+            </div>
+          </section>
+          
+          
+          <script type="text/javascript">
+          	$(document).ready(function() {
+        		$("#menu_advertiser").addClass("active");  
+        	});
+          
+          	function view(id){
+          		window.location.href="${ctx}/client/view/"+id;
+          	};
+          	
+          	function del(id){
+          		bootbox.dialog({
+          			message: "<spring:message code="message.confirm.del"/>?",
+          		  	title: "",
+          		  	buttons: {
+          		  		cancel: {
+	          		      label: "<spring:message code='btn.cancel' />",
+	          		      className: "",
+	          		      callback: function() {
+	          		    	
+	          		      }
+	          		    },
+	          			success: {
+	          		      label: "<spring:message code='btn.delete' />",
+	          		      className: "btn-danger",
+	          		      callback: function() {
+	          		    	window.location.href="${ctx}/opportunity/delete/"+id;
+	          		      }
+	          		    }
+          		  	}
+          		});
+          	};
+          	
+          	function resetForm(){
+          		$("#searchForm input").val('');
+          	};
+          </script>
+</body>
+</html>

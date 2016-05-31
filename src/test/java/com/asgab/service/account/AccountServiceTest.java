@@ -16,7 +16,6 @@ public class AccountServiceTest {
 
   @Test
   public void testGetAllUser() {
-    System.out.println(accountService.getAllUser().size());
   }
 
 }
