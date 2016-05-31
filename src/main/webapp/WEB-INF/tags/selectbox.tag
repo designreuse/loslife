@@ -6,9 +6,10 @@
 <%@ attribute name="value" type="java.lang.String" %>
 <%@ attribute name="map" type="java.util.Map" required="true"%>
 <%@ attribute name="add0" type="java.lang.Boolean" %>
+<%@ attribute name="style" type="java.lang.String" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<select name="<%=name%>" class="form-control <%=name%>" id="<%=name%>">
+<select name="<%=name%>" class="form-control <%=name%>" id="<%=name%>" style="<%=style%>">
 	<%
 		if(add0!=null && add0){
 			boolean isZH = "zh".equalsIgnoreCase(request.getLocale().getLanguage());
