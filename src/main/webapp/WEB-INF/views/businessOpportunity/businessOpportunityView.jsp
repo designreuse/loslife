@@ -42,7 +42,7 @@
           <ol class="breadcrumb">
             <li><a href="${ctx}/businessOpportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
             <li class="active">
-            	<c:if test="${action eq 'update' }"><spring:message code="opportunity.title.view"/></c:if>
+            	<spring:message code="opportunity.title.view"/>
             </li>
           </ol>
         </section>
