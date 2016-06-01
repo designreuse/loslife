@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.ClientContactMapper">
+
+    <sql id="client_contact_columns">
+        client_id, contact_person, phone, email, position, address, is_delete, created_at, updated_at
+    </sql>
+    
+    <select id="get" parameterType="long" resultType="ClientContact">
+        select id, <include refid="client_contact_columns" />
+		from client_contacts
+		where is_delete = 1 and id = #{id}
+    </select>
+    
+	<select id="search" parameterType="map" resultType="ClientContact">
+		select id, <include refid="client_contact_columns" />
+		from client_contacts
+		where is_delete = 1
+		<if test="client_id != null">
+			and client_id = #{client_id}		    
+		</if>
+	</select>
+	
+	<insert id="save" parameterType="ClientContact" useGeneratedKeys="true" keyProperty="id">
+		insert into client_contacts (<include refid="client_contact_columns" />)
+		values ( #{client_id}, #{contact_person}, #{phone}, #{email}, #{position}, #{address}, 1, #{created_at}, #{updated_at} )
+	</insert>
+	
+	<update id="update" parameterType="ClientContact">
+		update client_contacts set 
+			contact_person = #{contact_person}, phone = #{phone}, email = #{email}, position = #{position}, 
+			address = #{address}, is_delete = #{is_delete}, updated_at = #{updated_at}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="long">
+	    update client_contacts set is_delete = 2 where id = #{id}
+	</delete>
+	
+</mapper> 

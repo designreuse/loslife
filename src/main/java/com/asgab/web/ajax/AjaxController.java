@@ -36,15 +36,15 @@ public class AjaxController {
 
   @Autowired
   private AccountService accountService;
-  
+
   @Autowired
   private ProductService productService;
 
   @RequestMapping(value = "addProduct", method = RequestMethod.POST)
   public String addProduct(HttpServletRequest request, Model model) {
     List<SelectMapper> mappers = new ArrayList<SelectMapper>();
-    mappers.add(new SelectMapper("CPC","CPC"));
-    mappers.add(new SelectMapper("CPM","CPM"));
+    mappers.add(new SelectMapper("CPC", "CPC"));
+    mappers.add(new SelectMapper("CPM", "CPM"));
     model.addAttribute("index", request.getParameter("index"));
     model.addAttribute("saleModes", mappers);
     return "businessOpportunity/product";
@@ -91,7 +91,7 @@ public class AjaxController {
     return array.toJSONString();
 
   }
-  
+
   @ResponseBody
   @RequestMapping(value = "getProducts", method = RequestMethod.GET)
   public String getProducts(@RequestParam("q") String name) {
@@ -112,6 +112,12 @@ public class AjaxController {
     }
     return array.toJSONString();
 
+  }
+  
+  @RequestMapping(value = "addContact", method = RequestMethod.POST)
+  public String addContact(HttpServletRequest request, Model model) {
+    model.addAttribute("index", request.getParameter("index"));
+    return "client/include/clientContact";
   }
 
 }

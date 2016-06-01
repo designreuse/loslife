@@ -1,3 +1,4 @@
+<%@tag import="org.apache.commons.lang3.ArrayUtils"%>
 <%@tag import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <%@tag import="org.springframework.web.servlet.LocaleResolver"%>
 <%@tag import="com.asgab.util.SelectMapper"%>
@@ -20,7 +21,7 @@
 	}
 %>
 
-<select name="<%=name%>" class="form-control <%=name%>" id="<%=id%>" style="<%=style%>">
+<select name="<%=name%>" class="form-control <%=name%>" id="<%=id%>" style="<%=style%>" multiple="multiple">
 	<%
 	  	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
 		String lang =localeResolver.resolveLocale(request).getLanguage();
@@ -39,7 +40,7 @@
 		for(int i = 0 ;i<list.size();i++){
 		  String selected = "";
 		  SelectMapper mapper = (SelectMapper)list.get(i);
-		  if(StringUtils.isNoneBlank(value) && value.equals(String.valueOf(mapper.getId()))){
+		  if(StringUtils.isNoneBlank(value) && ArrayUtils.contains(value.split(","), String.valueOf(mapper.getId()))){
 			selected="selected=\"selected\"";
 			}
 		  %>

@@ -76,5 +76,9 @@ public class AccountService {
 
     System.out.println(Encodes.encodeHex(hashPassword));
   }
+  
+  public List<User> getAllXMOUser() {
+    return (List<User>) userXMOMapper.search(null);
+  }
 
 }
