@@ -8,6 +8,12 @@
         client_id, contact_person, phone, email, position, address, is_delete, created_at, updated_at
     </sql>
     
+    <select id="get" parameterType="long" resultType="ClientContact">
+        select id, <include refid="client_contact_columns" />
+		from client_contacts
+		where is_delete = 1 and id = #{id}
+    </select>
+    
 	<select id="search" parameterType="map" resultType="ClientContact">
 		select id, <include refid="client_contact_columns" />
 		from client_contacts

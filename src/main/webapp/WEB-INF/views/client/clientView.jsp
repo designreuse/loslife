@@ -23,9 +23,17 @@
 </head>
 
 <body>
-	
- <!-- Content Header -->
-       <section class="content-header">
+
+<style>
+	.box{}
+	.box-noborder{border-top: 0}
+	.btn-100{width: 100px;line-height: 1.1}
+	.products{padding: 0 15px 0 15px;}
+	.content{padding-bottom: 0;min-height:0}
+</style>
+
+	<!-- Content Header -->
+      	 <section class="content-header">
           <h1>
             广告主详情
           </h1>
@@ -37,192 +45,176 @@
             </li>
           </ol>
         </section>
-        
-           <!-- Main content -->
-          <section class="content">
-         
-              <div class="box box-info">
-              
-                <!-- form start -->
-                  <div class="box-body">
-                   <form role="form" class="form-horizontal">
-                   	 <div class="col-md-8">
-	                 		<div class="form-group">
+
+<div class="form-horizontal">
+	
+	<!-- Main content -->
+		<section class="content">
+     		 <div class="box box-info">
+      			 <div class="box-body">
+      			 	<div class="row">
+					 	<div class="col-md-6">
+							<div class="form-group">
 								<label for="name" class="col-md-3">广告主名称<em> *</em></label>
-								<div class="col-sm-9">${client.name}</div>
+			                    <div class="col-sm-9">${client.name}</div>
 							</div>
-							
-							<div class="form-group">
-								<label for="brand" class="col-md-3">品牌名称<em> *</em></label>
-								<div class="col-sm-9">${client.brand}</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="whether_channel" class="col-md-3">代理下单</label>
-								<div class="col-sm-9">
-									<tags:decode items="${agencys}" value="${client.channel}"></tags:decode>
+						
+	                		<div class="form-group">
+	                			<label for="brand" class="col-md-3">品牌名称<em> *</em></label>
+		                      	<div class="col-sm-9">${client.brand}</div>
+	                		</div>
+		                	
+		                	 <div class="form-group">
+		                	 	<label for="name" class="col-md-3">代理下单</label>
+		                	 	<div class="col-sm-9">
+									<tags:decodeList list="${agencys}" value="${client.channel}"></tags:decodeList>
 								</div>
-							</div>
-							
-							<div class="form-group">
+		                	</div>	
+			                	
+		                	<div class="form-group">
 	                			<label for="industry_id" class="col-md-3">行业</label>
-	                			<div class="col-sm-9">
-	                				<tags:decode items="${industryTypes}" value="${client.industry_id}"></tags:decode>
+		                      	<div class="col-sm-9">
+	                				<tags:decodeList list="${industryTypes}" value="${client.industry_id}"></tags:decodeList>
 	                			</div>
 	                		</div>
 	                		
 	                		<div class="form-group">
 	                			<label for="currency_id" class="col-md-3">货币</label>
-	                			<div class="col-sm-9">
-	                				<tags:decode items="${currencyTypes}" value="${client.currency_id}"></tags:decode>
+		                      	<div class="col-sm-9">
+	                				<tags:decodeList list="${currencyTypes}" value="${client.currency_id}"></tags:decodeList>
 	                			</div>
 	                		</div>
-                   	 </div>
-                   	 
-                   	 <%-- 广告组联系人 --%>
-                   	 
-                   	 <div class="col-md-8">
-                   		<c:forEach var="contact" items="${client.contacts}" varStatus="status">
-                   		
-							<div class="form-group">
-								<label for="" class="col-md-3">
-									<c:if test="${status.first == true}">
-										广告主联系人
-									</c:if>
-									<c:if test="${status.first == false}">
-										广告主联系人${status.index}
-									</c:if>
-								</label>
-                      			<div class="div-0 col-md-9">
-                      				${contact.contact_person}
-                      			</div>
-							</div> 
-							
-							<div class="form-group">
-								<label for="" class="col-md-3">
-									<c:if test="${status.first == true}">
-										联络人职位
-									</c:if>
-									<c:if test="${status.first == false}">
-										联络人职位${status.index}
-									</c:if>
-								</label>
-                      			<div class="div-0 col-md-9">
-                      				${contact.position}
-                      			</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="" class="col-md-3">
-									<c:if test="${status.first == true}">
-										联络人电话
-									</c:if>
-									<c:if test="${status.first == false}">
-										联络人电话${status.index}
-									</c:if>
-								</label>
-                      			<div class="div-0 col-md-9">
-                      				${contact.phone}
-                      			</div>
-							</div> 
-							
-							<div class="form-group">
-								<label for="" class="col-md-3">
-									<c:if test="${status.first == true}">
-										联络人邮箱
-									</c:if>
-									<c:if test="${status.first == false}">
-										联络人邮箱${status.index}
-									</c:if>
-								</label>
-                      			<div class="div-0 col-md-9">
-                      				${contact.email}
-                      			</div>
-							</div>     
-							
-							<div class="form-group addresses">
-                      			<label for="" class="col-md-3">
-                      				<c:if test="${status.first == true}">
-										公司地址
-									</c:if>
-									<c:if test="${status.first == false}">
-										公司地址${status.index}
-									</c:if>
-                      			</label>
-                      			<div class="div-0 col-md-9">
-                      				${contact.address}
-                      			</div>
-                      		</div>
-
-                   		</c:forEach>
-                   	 
-                   	 </div>
-                   	 
-                     <%-- 销售人员 --%>
-		             <div class="col-md-8">
-		             
-		                	<div class="form-group">
-								<label for="name" class="col-md-3">销售人员<em> *</em></label>
-			                    <div class="col-md-9">
-			                    	<c:forEach var="userId" items="${client.userIds}" varStatus="status">
-			                    		<tags:decode items="${users}" value="${userId}" />
-			                    		<c:if test="${status.last!= true}">,</c:if>
-			                    	</c:forEach>
-			                    </div>
-							</div>
-							
-							<div class="form-group">
-								<label for="name" class="col-md-3">是否跨区<br/>（跨区的需要跨区特批）</label>
-			                    <div class="col-md-9">
-			                    	<c:if test="${client.cross_regional == 1}" >
-			                    		<input type="checkbox" disabled="disabled" checked="checked"/>
-			                    	</c:if>
-			                    	<c:if test="${client.cross_regional != 1}" >
-			                    		<input type="checkbox" disabled="disabled" />
-			                    	</c:if>	
-			                    </div>
-							</div>
+	                	  </div>	
+		             </div>
+      			</div><!-- /.box-body -->
+     		 </div><!-- /.box-info -->
+		 </section><!--  /Main content -->  
+		 
+		 
+		  <!-- part2 -->
+		 <section class="content">
+		 		<div class="box box-noborder">
+		 				<div class="box-body">
+		 						<div class="row">
+									<div class="col-md-12">
+							            <div class="form-group">
+						                  	<label class="col-md-3">广告主联系人&nbsp;<i class="fa fa-w fa-caret-down"></i></label>
+						                 	<div class="divider-horizontal"></div>
+						                </div>
+								    </div>
+								</div>
+								
+								
+								<div class="client_contacts col-md-6" id="client_contacts">
+									<div class="row">
+									<c:forEach var="contact" items="${client.contacts}" varStatus="status">
+										<div class="form-group">
+											<label for="" class="col-md-3">
+												广告主联系人${status.index+1}
+											</label>
+			                      			<div class="div-0 col-md-9">
+			                      				${contact.contact_person}
+			                      			</div>
+										</div> 
+										
+										<div class="form-group">
+											<label for="" class="col-md-3">
+												联络人职位${status.index+1}
+											</label>
+			                      			<div class="div-0 col-md-9">
+			                      				${contact.position}
+			                      			</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="" class="col-md-3">
+												联络人电话${status.index+1}
+											</label>
+			                      			<div class="div-0 col-md-9">
+			                      				${contact.phone}
+			                      			</div>
+										</div> 
+										
+										<div class="form-group">
+											<label for="" class="col-md-3">
+												联络人邮箱${status.index+1}
+											</label>
+			                      			<div class="div-0 col-md-9">
+			                      				${contact.email}
+			                      			</div>
+										</div>     
+										
+										<div class="form-group addresses">
+			                      			<label for="" class="col-md-3">
+			                      				公司地址${status.index+1}
+			                      			</label>
+			                      			<div class="div-0 col-md-9">
+			                      				${contact.address}
+			                      			</div>
+			                      		</div>
+			                   		</c:forEach>
+			                   		</div>
+								</div>
+						</div><!-- /.box-body -->
+		 		</div><!-- /.box-noborder -->
+		 </section><!-- /part2 -->
+		 
+		 
+		 <!-- part3 -->
+		 <section class="content">
+		 		<div class="box box-noborder">
+		 				<div class="box-body">
+		 						<div class="row">
+		 							<div class="col-md-6">
 		                
-		               </div>
-                   	</form> 
-                  </div><!-- /.box-body -->
-
-                  <div class="box-footer">
-                    <button  class="btn btn-primary btn-sm" onclick="update(${client.id});"><spring:message code="btn.edit"/></button>
-                    <button  class="btn btn-primary btn-sm disabled" onclick="list();"><spring:message code="btn.back"/></button>
-                  </div>
-              </div>
-           
-          </section>
-          
-		<script>    
-			$(document).ready(function() {
-				$("#menu_advertiser").addClass("active");
-				
-				$("#primaryForm").validate({
-					rules:{
-						task:"required"
-					}
-				});
-
-				$("#progress").ionRangeSlider({
-					min:0,
-					max:100,
-					keyboard:true,
-					keyboard_step:10
-				});
-			});
-			
-			function list(){
-				window.location.href="${ctx}/client";
-			};
-			function update(id){
-				window.location.href="${ctx}/client/update/"+id;
-			};
-		</script>
+					                	<div class="form-group">
+											<label for="name" class="col-md-3">销售人员<em> *</em></label>
+						                    <div class="col-md-9">
+						                    	<c:forEach var="userId" items="${client.userIds}" varStatus="status">
+						                    		<tags:decodeList list="${users}" value="${userId}" />
+						                    		<c:if test="${status.last!= true}">,</c:if>
+						                    	</c:forEach>
+						                    </div>
+										</div>
+										
+										<div class="form-group">
+											<label for="name" class="col-md-3">是否跨区<br/>（跨区的需要跨区特批）</label>
+						                    <div class="col-md-9">
+						                    	<c:if test="${client.cross_regional == 1}" >
+						                    		<input type="checkbox" disabled="disabled" checked="checked"/>
+						                    	</c:if>
+						                    	<c:if test="${client.cross_regional != 1}" >
+						                    		<input type="checkbox" disabled="disabled" />
+						                    	</c:if>	
+						                    </div>
+										</div>
+										
+					                </div>
+		 					</div><!-- /.row -->
+		 				</div><!-- /.box-body -->
+		 				
+		      		 	<div class="box-footer">
+		                    <button type="button" class="btn btn-primary btn-sm btn-70" onclick="window.location.href='${ctx}/client/update/${client.id}'"><spring:message code="btn.edit"/></button>
+		                    <button class="btn btn-primary btn-sm disabled btn-70" onclick="window.location.href='${ctx}/client'"><spring:message code="btn.back"/></button>
+		                </div>
+		 		</div><!-- /.box-noborder -->
+		 </section><!-- /part3 -->
+	</div>
 </body>
 </html>
- 
+
+<script type="text/javascript">    
+	$(document).ready(function() {
+		$("#menu_advertiser").addClass("active");
+		
+		$("#primaryForm").validate({
+			rules:{
+				task:"required"
+			}
+		});
+		
+	});
+</script>
 
 
 

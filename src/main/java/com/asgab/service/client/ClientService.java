@@ -56,6 +56,17 @@ public class ClientService {
     // 再添加销售人员
     addClientShares(client.getUserIds(), client.getId());
 
+    if (client.getDeleteContactIds() != null && client.getDeleteContactIds().length > 0) {
+      for (String deleteId : client.getDeleteContactIds()) {
+        ClientContact cc_db = clientContactMapper.get(Long.valueOf(deleteId));
+        if (cc_db != null) {
+          cc_db.setIs_delete(0);
+          cc_db.setUpdated_at(new Date());
+          clientContactMapper.update(cc_db);
+        }
+      }
+    }
+
     for (ClientContact cc : client.getContacts()) {
       if (cc.getId() == null) {
         cc.setClient_id(client.getId());
@@ -65,6 +76,7 @@ public class ClientService {
         ClientContact cc_db = clientContactMapper.get(cc.getId());
         if (cc_db != null) {
           cc_db.update(cc);
+          clientContactMapper.update(cc_db);
         }
       }
     }

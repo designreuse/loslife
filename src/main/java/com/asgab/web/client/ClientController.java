@@ -1,9 +1,9 @@
 package com.asgab.web.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.asgab.core.pagination.Page;
-import com.asgab.entity.Agency;
 import com.asgab.entity.Client;
-import com.asgab.entity.CurrencyType;
-import com.asgab.entity.IndustryType;
 import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.agency.AgencyService;
@@ -32,6 +30,7 @@ import com.asgab.service.client.ClientService;
 import com.asgab.service.management.CurrencyTypeService;
 import com.asgab.service.management.IndustryTypeService;
 import com.asgab.util.CommonUtil;
+import com.asgab.util.SelectMapper;
 import com.asgab.util.Servlets;
 
 @Controller
@@ -101,9 +100,14 @@ public class ClientController {
   }
 
   @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-  public String toUpdate(@PathVariable("id") Long id, Model model) {
-    model.addAttribute("client", clientService.get(id));
+  public String toUpdate(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+    Map<String, Object> searchMap = new HashMap<String, Object>();
+    searchMap.put("client_id", id);
+    Client client = clientService.get(id);
+    client.setContacts(clientContactService.getList(searchMap));
+    model.addAttribute("client", client);
     model.addAttribute("action", "update");
+    setSelect(request);
     return "client/clientForm";
   }
 
@@ -133,34 +137,26 @@ public class ClientController {
   }
 
   private void setSelect(HttpServletRequest request) {
-    Map<String, String> aMap = new TreeMap<String, String>();
-    List<Agency> agencys = agencyService.getList(null);
-    for (Agency a : agencys) {
-      aMap.put(String.valueOf(a.getId()), a.getChannel_name());
-    }
-    request.setAttribute("agencys", aMap);
+    Map<String, Object> searchMap = new HashMap<String, Object>();
+    searchMap.put("lang", request.getLocale().getLanguage());
 
-    Map<String, String> ctMap = new TreeMap<String, String>();
-    List<CurrencyType> currencyTypes = currencyTypeService.getList(null);
-    for (CurrencyType ct : currencyTypes) {
-      ctMap.put(String.valueOf(ct.getId()), ct.getName());
-    }
-    request.setAttribute("currencyTypes", ctMap);
+    request.setAttribute("agencys", agencyService.getOptions(null));
+    request.setAttribute("currencyTypes", currencyTypeService.getOptions(null));
+    request.setAttribute("industryTypes", industryTypeService.getOptions(searchMap));
 
-    Map<String, String> itMap = new TreeMap<String, String>();
-    List<IndustryType> industryTypes = industryTypeService.getList(null);
-    for (IndustryType it : industryTypes) {
-      itMap.put(String.valueOf(it.getId()), ("zh".equalsIgnoreCase(request.getLocale()
-          .getLanguage()) ? it.getName() : it.getName_en()));
-    }
-    request.setAttribute("industryTypes", itMap);
-
-    Map<String, String> uMap = new TreeMap<String, String>();
     List<User> users = accountService.getAllXMOUser();
+    List<SelectMapper> options = new ArrayList<SelectMapper>();
     for (User u : users) {
-      uMap.put(String.valueOf(u.getId()), u.getName());
+      options.add(new SelectMapper(String.valueOf(u.getId()), u.getName()));
     }
-    request.setAttribute("users", uMap);
+    request.setAttribute("users", options);
+  }
+
+  @RequestMapping(value = "addContact/{index}", method = RequestMethod.POST)
+  @ResponseBody
+  public String addContact(@PathVariable("index") int index, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("index", index);
+    return "client/include/clientContact";
   }
 
 }

@@ -30,6 +30,9 @@ public class Client {
   // 广告主联系人
   private List<ClientContact> contacts;
 
+  // 删除的联系人ID
+  private String[] deleteContactIds;
+
   // 销售人员
   private String userIds;
 
@@ -39,6 +42,14 @@ public class Client {
 
   public void setUserIds(String userIds) {
     this.userIds = userIds;
+  }
+
+  public String[] getDeleteContactIds() {
+    return deleteContactIds;
+  }
+
+  public void setDeleteContactIds(String[] deleteContactIds) {
+    this.deleteContactIds = deleteContactIds;
   }
 
   public List<ClientContact> getContacts() {

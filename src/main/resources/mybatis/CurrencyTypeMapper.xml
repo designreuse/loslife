@@ -7,7 +7,7 @@
 
 	<select id="search" parameterType="map" resultType="CurrencyType">
 		select id, name
-		from currencies
+		from xmo.currencies
 	</select>
 	
 	

@@ -27,7 +27,6 @@ public class ClientContact {
     this.setEmail(cc.getEmail());
     this.setPosition(cc.getPosition());
     this.setAddress(cc.getAddress());
-    this.setIs_delete(cc.getIs_delete());
     this.setUpdated_at(new Date());
   }
 

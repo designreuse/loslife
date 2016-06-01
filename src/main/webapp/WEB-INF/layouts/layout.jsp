@@ -1,51 +1,200 @@
-<%@tag import="org.springframework.web.servlet.support.RequestContextUtils"%>
-<%@tag import="org.springframework.web.servlet.LocaleResolver"%>
-<%@tag import="com.asgab.util.SelectMapper"%>
-<%@tag import="org.apache.commons.lang3.StringUtils"%>
-<%@tag import="java.util.Map"%>
-<%@tag import="java.util.Iterator"%>
-<%@tag pageEncoding="UTF-8"%>
-<%@ attribute name="name" type="java.lang.String" required="true"%>
-<%@ attribute name="id" type="java.lang.String" %>
-<%@ attribute name="value" type="java.lang.String" %>
-<%@ attribute name="list" type="java.util.List" required="true"%>
-<%@ attribute name="add0" type="java.lang.Boolean" %>
-<%@ attribute name="addNull" type="java.lang.Boolean" %>
-<%@ attribute name="style" type="java.lang.String" %>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
+<%@page import="org.springframework.web.servlet.LocaleResolver"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%
-	if(StringUtils.isBlank(id)){
-	  id = name;
+<%@ page import="org.springframework.context.i18n.LocaleContextHolder"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="${ctx}/static/images/favicon.ico">
+    <title>PMS | <sitemesh:title/></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="${ctx}/static/styles/font-awesome.min.css">
+    
+    <!-- Ion Slider -->
+    <link rel="stylesheet" href="${ctx}/static/styles/normalize.css">
+    <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.css">
+    <link rel="stylesheet" href="${ctx}/static/styles/ion.rangeSlider.skinFlat.css">
+    
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/iCheck/all.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/colorpicker/bootstrap-colorpicker.min.css">
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/select2/select2.min.css">
+    
+    <!-- Theme style -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/dist/css/skins/_all-skins.css">
+    
+    <!-- daterangepicker -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
+    
+    <!-- custom style -->
+    <link rel="stylesheet" href="${ctx}/static/styles/custom.css">
+    
+    <style type="text/css">
+    body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei, Tahoma, Helvetica, Arial,  sans-serif;}
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
 	}
-%>
-
-<select name="<%=name%>" class="form-control <%=name%>" id="<%=id%>" style="<%=style%>">
-	<%
-	  	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
-		String lang =localeResolver.resolveLocale(request).getLanguage();
-		boolean isZH = "zh".equalsIgnoreCase(lang);
-		if(add0!=null && add0){
-			%>
-			<option value="0" ><%= isZH?"请选择":"Please Select" %></option>
-			<%
-		}else if(addNull!=null && addNull){
-		   %>
-			<option value="" ><%= isZH?"请选择":"Please Select" %></option>
-			<%
-		}
-
+	body {
+	    font-family: "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
+	    color: #424242;
+	    font-size: 12px;
+	}
+	 /*langauage ch or en*/
+	.x-lang{
+	    position: fixed;
+	    top: 2px;
+	    right: 5px;
+	}
+	.x-lang-en{
+	    width: 24px;
+	    height: 24px;
+	    border: 1px solid #acb0bc;
+	    display: inline-block;
+	    background-color: #acb0bc;
+	    border-radius: 24px;
+	    text-align: center;
+	    color: #434343;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    line-height: 24px;
+	    box-sizing:border-box;
+	}
+	.x-lang-en:after{content: "E"}
 	
-		for(int i = 0 ;i<list.size();i++){
-		  String selected = "";
-		  SelectMapper mapper = (SelectMapper)list.get(i);
-		  if(StringUtils.isNoneBlank(value) && value.equals(String.valueOf(mapper.getId()))){
-			selected="selected=\"selected\"";
-			}
-		  %>
-			<option value="<%=mapper.getId() %>" <%=selected %> ><%=mapper.getValue() %></option>
-			<%
-		}
-		
+	.x-lang-ch{
+	    width: 24px;
+	    height: 24px;
+	    border: 1px solid #acb0bc;
+	    display: inline-block;
+	    background-color: #acb0bc;
+	    border-radius: 24px;
+	    text-align: center;
+	    color: #434343;
+	    vertical-align: middle;
+	    cursor: pointer;
+	    line-height: 24px;
+	    box-sizing:border-box;
+	}
+	.x-lang-ch:after{content: "中"}
+	
+	.x-lang-ch.selected,.x-lang-en.selected{background-color: #336dc6;color: white}
+    </style>
+   
+
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- jQuery 2.1.4 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    
+    <!-- Bootstrap 3.3.5 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
+    
+   <!-- Select2 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/select2/select2.full.min.js"></script>
+    <!-- InputMask -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    <!-- date-range-picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/moment.min.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap color picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <!-- bootstrap time picker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- SlimScroll 1.3.0 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/iCheck/icheck.min.js"></script>
+    <!-- FastClick -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+    
+    <!-- Ion Slider -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/ionslider/ion.rangeSlider.js"></script>
+    
+    <!-- bootbox -->
+    <script src="${ctx}/static/bootbox/bootbox.js"></script>
+    
+    <!-- daterangepicker -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker.js"></script>
+    
+    <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
+	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>
+	
+    <!-- AdminLTE App -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/demo.js"></script>
+    
+    <%
+    LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
+	String lang =localeResolver.resolveLocale(request).getLanguage();
+	if("zh".equals(lang)){
+		%>
+		<script src="${ctx}/static/jquery-validation/1.14.0/dist/localization/messages_zh.js" type="text/javascript"></script>
+		<%
+	}
 	%>
-</select>
+    
+    <script type="text/javascript">
+	    function changeLang(lang){
+	    	url = window.location.href;
+	    	if(url.indexOf("#")>-1){
+	    		window.location.href = url.replace("#","");
+	    	}
+	    	if(url.indexOf("lang=zh_CN")>-1){
+	    		window.location.href = url.replace("lang=zh_CN","lang="+lang);
+	    	}
+	    	else if(url.indexOf("lang=en_US")>-1){
+	    		window.location.href = url.replace("lang=en_US","lang="+lang);
+	    	}else if( url.indexOf("?")==-1){
+    			window.location.href = url+"?lang="+lang;
+    		}else {
+    			window.location.href = url+"&lang="+lang;
+    		}
+	    }
+	    
+	    
+    </script>
+    
+  </head>
+  <body class="hold-transition layout-top-nav skin-black">
+    <div class="wrapper">
+	<%@ include file="/WEB-INF/layouts/menu.jsp"%>
+      <!-- Full Width Column -->
+      <div class="content-wrapper">
+        <div class="container">
+         <sitemesh:body/>
+        </div><!-- /.container -->
+      </div><!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <div class="container">
+          <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+          </div>
+          <strong>Copyright &copy; 2016 <a href="http://www.i-click.com/">iClick Interactive Asia Limited</a>.</strong> All rights reserved.
+        </div><!-- /.container -->
+      </footer>
+    </div><!-- ./wrapper -->
+    
+  </body>
+</html>

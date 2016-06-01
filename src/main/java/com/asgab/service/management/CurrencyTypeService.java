@@ -1,5 +1,6 @@
 package com.asgab.service.management;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.asgab.entity.CurrencyType;
 import com.asgab.repository.CurrencyTypeMapper;
+import com.asgab.util.SelectMapper;
 
 @Component
 @Transactional
@@ -19,5 +21,17 @@ public class CurrencyTypeService {
 
   public List<CurrencyType> getList(Map<String, Object> searchMap) {
     return currencyTypeMapper.search(searchMap);
+  }
+
+  public List<SelectMapper> getOptions(Map<String, Object> searchMap) {
+
+    List<SelectMapper> options = new ArrayList<SelectMapper>();
+    List<CurrencyType> list = currencyTypeMapper.search(searchMap);
+
+    for (CurrencyType ct : list) {
+      options.add(new SelectMapper(String.valueOf(ct.getId()), ct.getName()));
+    }
+
+    return options;
   }
 }
