@@ -1,3 +1,5 @@
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
+<%@page import="org.springframework.web.servlet.LocaleResolver"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="com.asgab.service.account.ShiroDbRealm.ShiroUser"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
@@ -9,6 +11,8 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%
 	ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
+	request.setAttribute("lang",localeResolver.resolveLocale(request).getLanguage());
 %>
 
 <html>
@@ -17,7 +21,8 @@
 </head>
 <body>
 	<style type="text/css">
-		.btn-sm{line-height: 1.1}
+		.btn-sm{line-height: 1.1;}
+		.btn-50{width: 50px;}
 	</style>
 	 <!-- Content Header -->
        <section class="content-header">
@@ -35,6 +40,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4>	<i class="icon fa fa-check"></i> <spring:message code="message.alert.success"/>!</h4>
                     ${message}
+                    <c:if test="${orderMessage != null}"><br/>${orderMessage}</c:if>
             </div>
         </c:if>
 		          
@@ -45,13 +51,13 @@
           	<div class="nav-tabs-custom">
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
-                  <div class="box box-info ">
+                  <div class="box">
 		            <div class="box-header with-border">
 		              <h3 class="box-title">
 		              <!-- 没有title -->
-		             	<button class="btn btn-primary btn-sm" onclick="window.location.href='${ctx}/businessOpportunity/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
-                		<button class="btn btn-sm" onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
-		              	<button class="btn btn-warning btn-sm" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
+		             	<button class="btn btn-primary btn-sm btn-flat" onclick="window.location.href='${ctx}/businessOpportunity/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
+                		<button class="btn btn-primary btn-sm btn-flat" onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
+		              	<button class="btn btn-warning btn-sm btn-flat" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
 		              </h3>
 		              <div class="box-tools pull-right">
 		                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -75,17 +81,26 @@
           
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody><tr>
-	                      <th <tags:sort column="id" page="${pages}"/> style="width: 120px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
+	                      <th <tags:sort column="id" page="${pages}"/> style="width: 110px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
 	                      <th <tags:sort column="advertiser" page="${pages}"/>><spring:message code="business.opportunity.advertiser"/><i class="fa fa-w fa-sort"></i></th>
+	                      <th style="width: 80px"><spring:message code="business.opportunity.status"/></th>
 	                      <th><spring:message code="opportunity.progress"/></th>
 	                      <th style="width: 40px"><spring:message code="opportunity.label"/></th>
-	                      <th style="width: 152px"><spring:message code="opportunity.operate"/></th>
+	                      <th style="width: 60px"><spring:message code="opportunity.operate"/></th>
 	                    </tr>
                     
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
-		                      <td>${opportunity.id}</td>
+		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.id}</a></td>
 		                      <td>${opportunity.advertiser}</td>
+		                      <td>
+		                      	<c:if test="${lang eq 'zh' }">
+		                      		${opportunity.getDecodeStatus('zh')}
+		                      	</c:if>
+		                      	<c:if test="${lang ne 'zh' }">
+		                      		${opportunity.getDecodeStatus('en')}
+		                      	</c:if>
+		                      </td>
 		                      <td>
 		                        <div class="progress progress-xs progress-striped active">
 		                          <div class="progress-bar ${opportunity.progressBar.barClass}" style="width: ${opportunity.progressBar.value}%"></div>
@@ -93,8 +108,7 @@
 		                      </td>
 		                      <td><span class="badge ${opportunity.progressBar.bgClass}">${opportunity.progressBar.value}%</span></td>
 		                      <td>
-		                      		<a href="#" onclick="view(${opportunity.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-file-text-o"></i>&nbsp;<spring:message code="btn.view"/></a>
-		                      		<a href="#" onclick="del(${opportunity.id});" class="btn btn-sm btn-danger"><i class="fa fa-w fa-trash-o"></i>&nbsp;<spring:message code="btn.delete"/></a>
+		                      		<a href="#" onclick="del(${opportunity.id});" class="btn btn-sm btn-danger btn-flat btn-50"><i class="fa fa-w fa-trash-o"></i></a>
 		                      </td>
 		                    </tr>
 	                    </c:forEach>

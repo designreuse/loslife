@@ -1,3 +1,4 @@
+<%@page import="com.asgab.entity.ProgressBar"%>
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <%@page import="org.springframework.web.servlet.LocaleResolver"%>
 <%@page import="com.asgab.entity.BusinessOpportunity"%>
@@ -59,7 +60,7 @@
            <!-- Main content -->
           <section class="content">
          
-              <div class="box box-info">
+              <div class="box">
               
                 <div class="box-body">
                    <div class="row">
@@ -95,8 +96,15 @@
 	                    <div class="form-group">
 	                      <label for="progress" class="col-md-3"><spring:message code="business.opportunity.progress" /></label>
 	                      <div class="col-md-9">
-				          	<input id="progress" class="form-control" data-slider-id="blue" type="text" name="progress" value="${businessOpportunity.progress}">
-				          	<label><%=businessOpportunity.getDecodeStatus(lang) %></label>
+				          	<h4 class="control-sidebar-subheading">
+                   			<%=businessOpportunity.getDecodeStatus(lang) %>
+                    		<span class="label ${businessOpportunity.progressBar.labelClass} pull-right">${businessOpportunity.progress}%</span>
+                  			</h4>
+                  			<div class="progress progress-xxs">
+                    			<div class="progress-bar ${businessOpportunity.progressBar.barClass}" style="width: ${businessOpportunity.progress}%"></div>
+                  			</div>
+				          	
+				          	
 				          </div>
 	                    </div>
 	                    

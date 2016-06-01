@@ -53,7 +53,7 @@
            <!-- Main content -->
           <section class="content">
          
-              <div class="box box-info">
+              <div class="box">
               
                 <div class="box-body">
                    <div class="row">
