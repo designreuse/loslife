@@ -1,5 +1,11 @@
 package com.asgab.service.business.opportunity;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,21 +56,21 @@ public class BusinessOpportunityService {
     statusMap.put(90, 6);
     statusMap.put(100, 7);
 
-    statusZH.put(1, "商机丢失");
-    statusZH.put(2, "销售创建brief");
-    statusZH.put(3, "转为订单");
-    statusZH.put(4, "商机下任一订单审批通过");
-    statusZH.put(5, "排期已分享给客户");
-    statusZH.put(6, "客户已确认排期");
-    statusZH.put(7, "商机下任一订单合同确认审批通过");
+    statusZH.put(1, "丢失");
+    statusZH.put(2, "跟进中");
+    statusZH.put(3, "订单");
+    statusZH.put(4, "订单");
+    statusZH.put(5, "订单");
+    statusZH.put(6, "订单");
+    statusZH.put(7, "已签约");
 
-    statusEN.put(1, "sales opportunity lost");
-    statusEN.put(2, "sales create a sales opportunity");
-    statusEN.put(3, "sales opportunity kicks start internal process - booking");
-    statusEN.put(4, "booking order approved");
-    statusEN.put(5, "media plan shared to client");
-    statusEN.put(6, "client confirmed media plan");
-    statusEN.put(6, "IO signed");
+    statusEN.put(1, "Lost");
+    statusEN.put(2, "In progress");
+    statusEN.put(3, "Won");
+    statusEN.put(4, "Won");
+    statusEN.put(5, "Won");
+    statusEN.put(6, "Won");
+    statusEN.put(6, "Signed");
   }
 
   public Page<BusinessOpportunity> search(Page<BusinessOpportunity> page) {
@@ -80,6 +86,7 @@ public class BusinessOpportunityService {
 
   public BusinessOpportunity get(Long id) {
     BusinessOpportunity businessOpportunity = businessOpportunityMapper.get(id);
+    businessOpportunity.setProgressBar(new ProgressBar(businessOpportunity.getProgress()));
     if (businessOpportunity != null) {
       businessOpportunity.setBusinessOpportunityProducts(businessOpportunityProductMapper.getByBusinessOpportunityId(id));
       for (int i = 0; i < businessOpportunity.getBusinessOpportunityProducts().size(); i++) {
@@ -103,7 +110,7 @@ public class BusinessOpportunityService {
     }
   }
 
-  public void update(BusinessOpportunity businessOpportunity) {
+  public String update(BusinessOpportunity businessOpportunity) {
     businessOpportunity.setUpdated_at(new Date());
     businessOpportunityMapper.update(businessOpportunity);
     for (BusinessOpportunityProduct businessOpportunityProduct : businessOpportunity.getBusinessOpportunityProducts()) {
@@ -116,6 +123,12 @@ public class BusinessOpportunityService {
         businessOpportunityProductMapper.save(businessOpportunityProduct);
       }
     }
+    String result = null;
+    // 如果进度为30 创建订单
+    if (businessOpportunity.getProgress() == 30) {
+      result = createOrder(businessOpportunity.getId());
+    }
+    return result;
   }
 
   public List<Currency> getCurrencys() {
@@ -141,6 +154,52 @@ public class BusinessOpportunityService {
     delOpportunity.setId(id);
     delOpportunity.setDeleted_at(new Date());
     return businessOpportunityMapper.delete(delOpportunity);
+  }
+
+  private String createOrder(Long businessOpportunityId) {
+    OutputStreamWriter out = null;
+    BufferedReader in = null;
+    String result = "";
+    try {
+      URL realUrl = new URL("http://salesstg.optimix.asia/zh-cn/orders/create_order_by_business_opportunity");
+      HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
+      conn.setDoOutput(true);
+      conn.setDoInput(true);
+      conn.setRequestMethod("POST");
+      conn.setRequestProperty("accept", "*/*");
+      conn.setRequestProperty("connection", "Keep-Alive");
+      conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+      conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      conn.setRequestProperty("Authorization", "Token token=c576f0136149a2e2d9127b3901019855");
+
+      conn.connect();
+      out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+      // 发送请求参数
+      out.write("business_opportunity_id=" + businessOpportunityId);
+      // flush输出流的缓冲
+      out.flush();
+      // 定义BufferedReader输入流来读取URL的响应
+      in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      String line;
+      while ((line = in.readLine()) != null) {
+        result += line;
+      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
+    } finally {
+      try {
+        if (out != null) {
+          out.close();
+        }
+        if (in != null) {
+          in.close();
+        }
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    }
+    return result;
   }
 
 }

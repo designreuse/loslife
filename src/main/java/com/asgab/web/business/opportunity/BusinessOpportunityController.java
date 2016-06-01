@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.BusinessOpportunity;
 import com.asgab.repository.xmo.UserXMOMapper;
@@ -124,7 +125,23 @@ public class BusinessOpportunityController {
   @RequestMapping(value = "update", method = RequestMethod.POST)
   public String update(@ModelAttribute("businessOpportunity") BusinessOpportunity businessOpportunity, HttpServletRequest request,
       RedirectAttributes redirectAttributes) {
-    businessOpportunityService.update(businessOpportunity);
+    String result = businessOpportunityService.update(businessOpportunity);
+    if (result != null) {
+      String orderMessage = "";
+      JSONObject jsonObject = JSONObject.parseObject(result);
+      if (jsonObject.containsKey("success")) {
+        if (jsonObject.getBoolean("success")) {
+          orderMessage = CommonUtil.getProperty(request, "message.create.order.success") + ", ";
+          orderMessage += CommonUtil.getProperty(request, "message.create.order.id") + ": " + jsonObject.getInteger("order_id");
+        } else {
+          orderMessage = CommonUtil.getProperty(request, "message.create.order.error");
+        }
+      } else {
+        // token access denied
+        orderMessage = CommonUtil.getProperty(request, "message.token.denied");
+      }
+      redirectAttributes.addFlashAttribute("orderMessage", orderMessage);
+    }
     redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.update.success"));
     return "redirect:/businessOpportunity";
   }
