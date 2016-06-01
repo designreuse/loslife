@@ -23,6 +23,6 @@ public interface BusinessOpportunityMapper {
 
   int count(Map<String, Object> map);
   
-  int delete(Long id);
+  int delete(BusinessOpportunity businessOpportunity);
   
 }

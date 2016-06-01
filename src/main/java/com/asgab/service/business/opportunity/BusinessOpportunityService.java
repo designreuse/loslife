@@ -1,6 +1,7 @@
 package com.asgab.service.business.opportunity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,19 +92,29 @@ public class BusinessOpportunityService {
 
   public void save(BusinessOpportunity businessOpportunity) {
     businessOpportunity.setStatus(statusMap.get(businessOpportunity.getProgress()));
+    businessOpportunity.setCreated_at(new Date());
     businessOpportunityMapper.save(businessOpportunity);
     for (BusinessOpportunityProduct businessOpportunityProduct : businessOpportunity.getBusinessOpportunityProducts()) {
       if (businessOpportunityProduct != null && businessOpportunityProduct.getProduct_id() != null) {
         businessOpportunityProduct.setBusiness_opportunity_id(businessOpportunity.getId());
+        businessOpportunityProduct.setCreated_at(new Date());
         businessOpportunityProductMapper.save(businessOpportunityProduct);
       }
     }
   }
 
   public void update(BusinessOpportunity businessOpportunity) {
+    businessOpportunity.setUpdated_at(new Date());
     businessOpportunityMapper.update(businessOpportunity);
     for (BusinessOpportunityProduct businessOpportunityProduct : businessOpportunity.getBusinessOpportunityProducts()) {
-      businessOpportunityProductMapper.update(businessOpportunityProduct);
+      if (businessOpportunityProduct.getId() != null) {
+        businessOpportunityProduct.setUpdated_at(new Date());
+        businessOpportunityProductMapper.update(businessOpportunityProduct);
+      } else {
+        businessOpportunityProduct.setBusiness_opportunity_id(businessOpportunity.getId());
+        businessOpportunityProduct.setCreated_at(new Date());
+        businessOpportunityProductMapper.save(businessOpportunityProduct);
+      }
     }
   }
 
@@ -123,9 +134,13 @@ public class BusinessOpportunityService {
   public int delete(Long id) {
     List<BusinessOpportunityProduct> products = businessOpportunityProductMapper.getByBusinessOpportunityId(id);
     for (BusinessOpportunityProduct p : products) {
-      businessOpportunityProductMapper.delete(p.getId());
+      p.setDeleted_at(new Date());
+      businessOpportunityProductMapper.delete(p);
     }
-    return businessOpportunityMapper.delete(id);
+    BusinessOpportunity delOpportunity = new BusinessOpportunity();
+    delOpportunity.setId(id);
+    delOpportunity.setDeleted_at(new Date());
+    return businessOpportunityMapper.delete(delOpportunity);
   }
 
 }

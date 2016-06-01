@@ -21,10 +21,10 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3" for="product_budget"><spring:message code="business.opportunity.product.budget"/>${index+1}*</label>
+			<label class="col-md-3" for="budget"><spring:message code="business.opportunity.product.budget"/>${index+1}*</label>
 			<div class="col-md-9">
 				<div class="input-group">
-				<input type="text" class="form-control text-right" name="businessOpportunityProducts[${index}].product_budget" placeholder="<spring:message code='business.opportunity.input.product.budget' />">
+				<input type="text" class="form-control text-right" name="businessOpportunityProducts[${index}].budget" placeholder="<spring:message code='business.opportunity.input.product.budget' />">
 				<div class="input-group-addon"><i class="fa fa-cny"></i></div>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 	$(document).ready(function() {
 		$("#row_product_${index}").find("select[name='businessOpportunityProducts[${index}].product_id']").rules('add', {required:true});
 		$("#row_product_${index}").find("select[name='businessOpportunityProducts[${index}].sale_mode']").rules('add', {required:true});
-		$("#row_product_${index}").find("input[name='businessOpportunityProducts[${index}].product_budget']").rules('add', {required:true,number:true});
+		$("#row_product_${index}").find("input[name='businessOpportunityProducts[${index}].budget']").rules('add', {required:true,number:true});
 		
 		$("select[name='businessOpportunityProducts[${index}].product_id']").select2({
 			ajax: {
@@ -59,6 +59,8 @@
 		    minimumInputLength: 1,
 		    placeholder: "<spring:message code='business.opportunity.input.product'/>",
 		    allowClear: true
+		}).on('change',function(evt){
+			validateSelect2(this);
 		});
 	});
 </script>

@@ -36,9 +36,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3" for="product_budget"><spring:message code="business.opportunity.product.budget"/>${status.index+1}*</label>
+			<label class="col-md-3" for="budget"><spring:message code="business.opportunity.product.budget"/>${status.index+1}*</label>
 			<div class="col-md-9">
-				<label>${product.product_budget}</label>
+				<label>${product.budget}</label>
 			</div>
 		</div>
 	</div>

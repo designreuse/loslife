@@ -161,21 +161,20 @@
 	                </div>
                     </div>
                     
-                    <div class="products" id="products">
-                    	<jsp:include page="productView.jsp" flush="true"></jsp:include>
-                    </div>
+                    
+                    <jsp:include page="productView.jsp" flush="true"></jsp:include>
+                    
                     
                    	<div class="row">
-           			<div class="col-md-6">
-           				
-	                    <div class="form-group">
-	                      <label for="remark" class="col-md-3"><spring:message code="business.opportunity.remark" /></label>
-	                      <div class="col-md-9">
-	                      	${businessOpportunity.remark }
-	                      </div>
+	           			<div class="col-md-6">
+		                    <div class="form-group">
+		                      <label for="remark" class="col-md-3"><spring:message code="business.opportunity.remark" /></label>
+		                      <div class="col-md-9">
+		                      	<label>${businessOpportunity.remark }</label>
+		                      </div>
+		                    </div>
+		                  
 	                    </div>
-	                  
-                    </div>
                   </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">

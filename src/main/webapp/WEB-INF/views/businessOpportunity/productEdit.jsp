@@ -20,6 +20,7 @@
 
 <div class="row" id="row_product_${index}">
 	<div class="col-md-6">
+		<input type="hidden" name="businessOpportunityProducts[${index}].id" value="${product.id}">
 		<div class="form-group">
 			<label class="col-md-3" for="product_id"><spring:message code="business.opportunity.product"/>${index+1}*</label>
 			<div class="col-md-9">
@@ -35,10 +36,10 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3" for="product_budget"><spring:message code="business.opportunity.product.budget"/>${index+1}*</label>
+			<label class="col-md-3" for="budget"><spring:message code="business.opportunity.product.budget"/>${index+1}*</label>
 			<div class="col-md-9">
 				<div class="input-group">
-				<input type="text" class="form-control text-right" name="businessOpportunityProducts[${index}].product_budget" value="${product.product_budget}" placeholder="<spring:message code='business.opportunity.input.product.budget' />">
+				<input type="text" class="form-control text-right" name="businessOpportunityProducts[${index}].budget" value="${product.budget}" placeholder="<spring:message code='business.opportunity.input.product.budget' />">
 				<div class="input-group-addon"><i class="fa fa-cny"></i></div>
 				</div>
 			</div>

@@ -30,6 +30,7 @@
  	.btn-100{width: 100px;line-height: 1.1}
  	.products{padding: 0 15px 0 15px;}
  	.content{padding-bottom: 0;min-height:0}
+ 	.select2ErrorClass{border: 1px solid red;}
  </style>
  <!-- Content Header -->
        <section class="content-header">
@@ -102,6 +103,12 @@
 				          </div>
 	                    </div>
 	                    
+                    </div>
+                    
+                    <div class="col-lg-6">
+                    	<div class="form-group">
+	                      <label for="progress" class="col-md-3"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
+	                     </div>
                     </div>
                   </div>
                 </div><!-- /.box-body -->
@@ -247,6 +254,8 @@
 				    minimumInputLength: 1,
 				    placeholder: "<spring:message code='business.opportunity.input.advertiser' />",
 				    allowClear: true
+				}).on('change',function(evt){
+					validateSelect2(this);
 				});
 				
 				// 销售
@@ -266,6 +275,8 @@
 				    minimumInputLength: 1,
 				    placeholder: "<spring:message code='business.opportunity.input.sale' />",
 				    allowClear: true
+				}).on('change',function(evt){
+					validateSelect2(this);
 				});
 				
 				// 合作销售
@@ -284,22 +295,36 @@
 				    },
 				    minimumInputLength: 1,
 				    placeholder: "<spring:message code='business.opportunity.input.coopsale' />"
+				}).on('change',function(evt){
+					validateSelect2(this);
 				});
 				
 				$("#primaryForm").validate({
+					ignore: "",
 					rules:{
 						advertiser_id:"required",
 						deliver_date:"required",
-						budget:"required",
+						budget:{required:true,number:true},
 						currency_id:"required",
 						owner_sale:"required"
-					}
+					},
+					errorPlacement: function(error, element) {
+						if (element.attr("class").indexOf("select2")!=-1) {
+							  error.insertAfter( element.next() );
+							  element.next().addClass("select2ErrorClass");
+						} 
+						else if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+				            error.insertAfter(element.parent());
+				        } else {
+				            error.insertAfter(element);
+				        }
+				    }
 				});
 				
 				$("div[id^='row_product']").each(function(i){
 					$(this).find("select[name='businessOpportunityProducts["+i+"].product_id']").rules('add', {required:true});
 					$(this).find("select[name='businessOpportunityProducts["+i+"].sale_mode']").rules('add', {required:true});
-					$(this).find("input[name='businessOpportunityProducts["+i+"].product_budget']").rules('add', {required:true,number:true});
+					$(this).find("input[name='businessOpportunityProducts["+i+"].budget']").rules('add', {required:true,number:true});
 				});
 
 				$("#progress").ionRangeSlider({
@@ -333,17 +358,29 @@
 			function submitForm(){
 				var budget = +$("#budget").val();
 				var subBudget = 0;
-				$("input[name*='product_budget']").each(function(i){
+				$("input[name*='.budget']").each(function(i){
 					subBudget += +$(this).val();
 				});
-				if(subBudget!=budget){
+				var errSum = 0;
+				if(budget!=0 && subBudget!=budget){
 					$("#budgetSumError").show();
+					errSum++;
+				}
+				if(!$("#primaryForm").valid()){
+					errSum++;
+				}
+				if(errSum==0){
+					$("#budgetSumError").hide();
+					$("#shield").show();
+					$("#primaryForm").submit();
+				}
+			};
+			
+			function validateSelect2(name){
+				if($("#primaryForm").validate().element( name )){
+					$(name).next().removeClass('select2ErrorClass');
 				}else{
-					if($("#primaryForm").validate()){
-						$("#budgetSumError").hide();
-						$("#shield").show();
-						$("#primaryForm").submit();
-					}
+					$(name).next().addClass('select2ErrorClass');
 				}
 			};
 		</script>
