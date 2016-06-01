@@ -15,7 +15,7 @@ public interface BusinessOpportunityProductMapper {
   int save(BusinessOpportunityProduct businessOpportunityProduct);
 
   int update(BusinessOpportunityProduct businessOpportunityProduct);
-  
-  int delete(Long id);
+
+  int delete(BusinessOpportunityProduct businessOpportunityProduct);
 
 }

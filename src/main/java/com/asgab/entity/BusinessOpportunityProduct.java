@@ -1,6 +1,7 @@
 package com.asgab.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.asgab.entity.xmo.Product;
 
@@ -9,9 +10,11 @@ public class BusinessOpportunityProduct {
   private Long business_opportunity_id;
   private Long product_id;
   private String sale_mode;
-  private BigDecimal product_budget;
+  private BigDecimal budget;
 
-  private Integer deleted;
+  private Date deleted_at;
+  private Date created_at;
+  private Date updated_at;
 
   private Product product;
 
@@ -47,20 +50,36 @@ public class BusinessOpportunityProduct {
     this.sale_mode = sale_mode;
   }
 
-  public BigDecimal getProduct_budget() {
-    return product_budget;
+  public BigDecimal getBudget() {
+    return budget;
   }
 
-  public void setProduct_budget(BigDecimal product_budget) {
-    this.product_budget = product_budget;
+  public void setBudget(BigDecimal budget) {
+    this.budget = budget;
   }
 
-  public Integer getDeleted() {
-    return deleted;
+  public Date getDeleted_at() {
+    return deleted_at;
   }
 
-  public void setDeleted(Integer deleted) {
-    this.deleted = deleted;
+  public void setDeleted_at(Date deleted_at) {
+    this.deleted_at = deleted_at;
+  }
+
+  public Date getCreated_at() {
+    return created_at;
+  }
+
+  public void setCreated_at(Date created_at) {
+    this.created_at = created_at;
+  }
+
+  public Date getUpdated_at() {
+    return updated_at;
+  }
+
+  public void setUpdated_at(Date updated_at) {
+    this.updated_at = updated_at;
   }
 
   public Product getProduct() {

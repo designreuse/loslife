@@ -92,7 +92,7 @@ public class BusinessOpportunityController {
     businessOpportunity.setOwner_sale_name(userXMOMapper.get(businessOpportunity.getOwner_sale()).getName());
     // 设置coop_sale
     String coopSales = businessOpportunity.getCooperate_sales();
-    String[] userIds = coopSales.split(",");
+    String[] userIds = StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];
     for (int i = 0; i < userIds.length; i++) {
       businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(userIds[i])));
     }
@@ -112,7 +112,8 @@ public class BusinessOpportunityController {
     model.addAttribute("saleModes", mappers);
     model.addAttribute("advertiser", advertiserService.get(businessOpportunity.getAdvertiser_id()));
     model.addAttribute("ownerSale", accountService.get(businessOpportunity.getOwner_sale()));
-    String[] cooperateSales = businessOpportunity.getCooperate_sales().split(",");
+    String coopSales = businessOpportunity.getCooperate_sales();
+    String[] cooperateSales = StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];
     for (int i = 0; i < cooperateSales.length; i++) {
       businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(cooperateSales[i])));
     }
