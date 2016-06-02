@@ -43,7 +43,7 @@
 								<th style="vertical-align: bottom;"><input
 									id="${status.count}" type="radio" name="id"
 									class="flat-red allcheck" value="${val}"> <label
-									for="${val}"
+									for="${status.count}"
 									style="vertical-align: bottom; margin-bottom: 1px;">全选</label>
 								</th>
 							</c:forEach>

@@ -37,6 +37,24 @@
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">销售数据</a></li>
                   <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">分析</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表1</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表2</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表3</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表4</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表5</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表6</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表7</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表8</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表9</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表10</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表11</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表12</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表13</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表14</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表15</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表16</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表17</a></li>
+                  <li class=""><a href="#timeline" data-toggle="tab" aria-expanded="false">报表18</a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
