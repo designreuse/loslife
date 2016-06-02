@@ -1,7 +1,10 @@
 # 给[广告主]添加[货币类型、是否跨区域]字段
 ALTER TABLE `clients`
-ADD COLUMN `currency_id int(11) DEFAULT NULL AFTER `industry_id`,
-ADD COLUMN `cross_regional` tinyint(1) DEFAULT 0 AFTER `currency_id`;
+ADD COLUMN `currency_id int(11) DEFAULT NULL AFTER `industry_id`；
+
+# 给[广告主]添加[状态]字段
+ALTER TABLE `clients`
+ADD COLUMN `client_status` varchar(20) DEFAULT 'Active',
 
 # 创建[货币类型]表
 CREATE TABLE `currencies` (

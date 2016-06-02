@@ -1,14 +1,15 @@
 package com.asgab.web.client;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +23,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.Client;
-import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
+import com.asgab.service.account.ShiroDbRealm.ShiroUser;
 import com.asgab.service.agency.AgencyService;
 import com.asgab.service.client.ClientContactService;
 import com.asgab.service.client.ClientService;
 import com.asgab.service.management.CurrencyTypeService;
 import com.asgab.service.management.IndustryTypeService;
 import com.asgab.util.CommonUtil;
-import com.asgab.util.SelectMapper;
 import com.asgab.util.Servlets;
 
 @Controller
@@ -82,6 +82,14 @@ public class ClientController {
   @RequestMapping(value = "create", method = RequestMethod.POST)
   public String create(Client client, HttpServletRequest request,
       RedirectAttributes redirectAttributes) {
+
+    ShiroUser user = getCurrUser();
+    if (user != null) {
+      client.setCreated_user(user.loginName);
+      client.setUser_id(user.id);
+    }
+    client.setCreated_at(new Date());
+    client.setClient_status("Active");
     clientService.save(client);
     redirectAttributes.addFlashAttribute("message",
         CommonUtil.getProperty(request, "message.create.success"));
@@ -114,6 +122,7 @@ public class ClientController {
   @RequestMapping(value = "update", method = RequestMethod.POST)
   public String update(@ModelAttribute("client") Client client, HttpServletRequest request,
       RedirectAttributes redirectAttributes) {
+    client.setUpdated_at(new Date());
     clientService.update(client);
     redirectAttributes.addFlashAttribute("message",
         CommonUtil.getProperty(request, "message.update.success"));
@@ -139,17 +148,8 @@ public class ClientController {
   private void setSelect(HttpServletRequest request) {
     Map<String, Object> searchMap = new HashMap<String, Object>();
     searchMap.put("lang", request.getLocale().getLanguage());
-
-    request.setAttribute("agencys", agencyService.getOptions(null));
     request.setAttribute("currencyTypes", currencyTypeService.getOptions(null));
     request.setAttribute("industryTypes", industryTypeService.getOptions(searchMap));
-
-    List<User> users = accountService.getAllXMOUser();
-    List<SelectMapper> options = new ArrayList<SelectMapper>();
-    for (User u : users) {
-      options.add(new SelectMapper(String.valueOf(u.getId()), u.getName()));
-    }
-    request.setAttribute("users", options);
   }
 
   @RequestMapping(value = "addContact/{index}", method = RequestMethod.POST)
@@ -157,6 +157,13 @@ public class ClientController {
   public String addContact(@PathVariable("index") int index, RedirectAttributes redirectAttributes) {
     redirectAttributes.addFlashAttribute("index", index);
     return "client/include/clientContact";
+  }
+
+  private ShiroUser getCurrUser() {
+    Subject currentUser = SecurityUtils.getSubject();
+    if (null == currentUser)
+      return null;
+    return (ShiroUser) currentUser.getPrincipal();
   }
 
 }

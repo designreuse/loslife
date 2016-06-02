@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
+import com.asgab.entity.Agency;
 import com.asgab.entity.User;
 import com.asgab.entity.xmo.Advertiser;
 import com.asgab.entity.xmo.Product;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.advertiser.AdvertiserService;
+import com.asgab.service.agency.AgencyService;
 import com.asgab.service.product.ProductService;
 import com.asgab.util.SelectMapper;
 
@@ -39,6 +41,9 @@ public class AjaxController {
 
   @Autowired
   private ProductService productService;
+
+  @Autowired
+  private AgencyService agencyService;
 
   @RequestMapping(value = "addProduct", method = RequestMethod.POST)
   public String addProduct(HttpServletRequest request, Model model) {
@@ -113,11 +118,33 @@ public class AjaxController {
     return array.toJSONString();
 
   }
-  
+
   @RequestMapping(value = "addContact", method = RequestMethod.POST)
   public String addContact(HttpServletRequest request, Model model) {
     model.addAttribute("index", request.getParameter("index"));
     return "client/include/clientContact";
+  }
+
+  @ResponseBody
+  @RequestMapping(value = "getAgencys", method = RequestMethod.GET)
+  public String getAgencys(@RequestParam("q") String name) {
+
+    Map<String, Object> params = new HashMap<String, Object>();
+    if (StringUtils.isNotBlank(name)) {
+      params.put("name", name);
+    }
+    Page<Agency> page = new Page<Agency>(1, 10, null, params);
+    Page<Agency> pages = agencyService.search(page);
+
+    JSONArray array = new JSONArray();
+    for (int i = 0; i < pages.getContent().size(); i++) {
+      JSONObject tmp = new JSONObject();
+      tmp.put("id", pages.getContent().get(i).getId());
+      tmp.put("text", pages.getContent().get(i).getChannel_name());
+      array.add(tmp);
+    }
+
+    return array.toJSONString();
   }
 
 }
