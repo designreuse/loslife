@@ -67,16 +67,20 @@ public class ClientService {
       }
     }
 
-    for (ClientContact cc : client.getContacts()) {
-      if (cc.getId() == null) {
-        cc.setClient_id(client.getId());
-        cc.setCreated_at(new Date());
-        clientContactMapper.save(cc);
-      } else {
-        ClientContact cc_db = clientContactMapper.get(cc.getId());
-        if (cc_db != null) {
-          cc_db.update(cc);
-          clientContactMapper.update(cc_db);
+    if (client.getContacts() != null && client.getContacts().size() > 0) {
+      for (ClientContact cc : client.getContacts()) {
+        if (cc.getId() == null) {
+          if (cc.getContact_person() != null) {
+            cc.setClient_id(client.getId());
+            cc.setCreated_at(new Date());
+            clientContactMapper.save(cc);
+          }
+        } else {
+          ClientContact cc_db = clientContactMapper.get(cc.getId());
+          if (cc_db != null) {
+            cc_db.update(cc);
+            clientContactMapper.update(cc_db);
+          }
         }
       }
     }
@@ -89,10 +93,12 @@ public class ClientService {
    * @param client_id 广告主ID
    */
   private void addClientContacts(List<ClientContact> ccs, long client_id) {
-    for (ClientContact cc : ccs) {
-      cc.setClient_id(client_id);
-      cc.setCreated_at(new Date());
-      clientContactMapper.save(cc);
+    if (ccs != null && ccs.size() > 0) {
+      for (ClientContact cc : ccs) {
+        cc.setClient_id(client_id);
+        cc.setCreated_at(new Date());
+        clientContactMapper.save(cc);
+      }
     }
   }
 

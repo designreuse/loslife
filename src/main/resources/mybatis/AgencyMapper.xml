@@ -22,6 +22,9 @@
 		select id, <include refid="agency_columns" />
 		from channels
 		where is_delete is null
+		<if test="name != null and name != ''">
+		    and channel_name like "%"#{name}"%"
+		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
 		</if>
@@ -31,6 +34,9 @@
 		select count(1) 
 		from channels
 		where is_delete is null
+		<if test="name != null and name != ''">
+		    and channel_name like "%"#{name}"%"
+		</if>
 	</select>
 
 	<insert id="save" parameterType="Agency" useGeneratedKeys="true" keyProperty="id">

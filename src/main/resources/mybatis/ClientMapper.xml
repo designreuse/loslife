@@ -5,16 +5,20 @@
 <mapper namespace="com.asgab.repository.ClientMapper">
 
     <sql id="client_columns">
-        name, brand, address, industry_id, whether_channel, channel, currency_id, cross_regional
+        name, brand, address, industry_id, whether_channel, channel, currency_id, whether_cross_district, client_status,
+        created_at, created_user, user_id, updated_at
     </sql>
     
     <sql id="client_columns_for_join">
-        a.name, a.brand, a.address, a.industry_id, a.whether_channel, a.channel, a.currency_id, a.cross_regional
+        a.name, a.brand, a.address, a.industry_id, a.whether_channel, a.channel, a.currency_id, a.whether_cross_district, a.client_status,
+        a.created_at, a.created_user, a.user_id, a.updated_at
     </sql>
     
 	<select id="get" parameterType="long" resultType="Client">
-		select a.id, <include refid="client_columns_for_join" />, GROUP_CONCAT(b.`share_id`) as userIds
-		from clients a left join share_clients b on a.id = b.client_id
+		select a.id, <include refid="client_columns_for_join" />, GROUP_CONCAT(d.`id`) as userIds, GROUP_CONCAT(d.`name`) as userNames,
+		c.channel_name as channel_name 
+		from clients a left join share_clients b on a.id = b.client_id left join channels c on a.channel = c.id
+		left join xmo.users d on b.share_id = d.id
 		where a.id = #{id}
 	</select>
 
@@ -46,13 +50,15 @@
 
 	<insert id="save" parameterType="Client" useGeneratedKeys="true" keyProperty="id">
 		insert into clients (<include refid="client_columns" />)
-		values ( #{name}, #{brand}, #{address}, #{industry_id}, #{whether_channel}, #{channel}, #{currency_id}, #{cross_regional} )
+		values ( #{name}, #{brand}, #{address}, #{industry_id}, #{whether_channel}, #{channel}, #{currency_id}, #{whether_cross_district}, #{client_status},
+		#{created_at}, #{created_user}, #{user_id}, #{updated_at} )
 	</insert>
 	
 	<update id="update" parameterType="Client">
 		update clients set 
 			name = #{name}, brand = #{brand}, address = #{address}, industry_id = #{industry_id}, whether_channel = #{whether_channel}, 
-			channel = #{channel}, currency_id = #{currency_id}, cross_regional = #{cross_regional}
+			channel = #{channel}, currency_id = #{currency_id}, whether_cross_district = #{whether_cross_district},
+			created_at = #{created_at}, created_user = #{created_user}, user_id = #{user_id}, updated_at = #{updated_at}
 		where id = #{id}
 	</update>
 	
