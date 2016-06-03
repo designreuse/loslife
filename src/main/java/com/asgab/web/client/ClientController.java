@@ -73,7 +73,9 @@ public class ClientController {
 
   @RequestMapping(value = "create", method = RequestMethod.GET)
   public String toCreate(Model model, HttpServletRequest request) {
-    model.addAttribute("client", new Client());
+    Client client = new Client();
+    client.setCurrency_id(2);// 默认RMB
+    model.addAttribute("client", client);
     model.addAttribute("action", "create");
     setSelect(request);
     return "client/clientForm";

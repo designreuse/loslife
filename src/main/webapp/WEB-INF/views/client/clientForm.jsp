@@ -186,9 +186,11 @@
 										<div class="form-group">
 											<label for="name" class="col-md-3"><spring:message code="client.cross.regional" /><br/><spring:message code="client.cross.regional.remark" /></label>
 						                    <div class="col-md-9">
-						                    	<input type="checkbox" id="whether_cross_district_cbk" class="whether_cross_district_cbk" 
-													<c:if test="${client.whether_cross_district==1}">checked="checked"</c:if> />
-												<input type="hidden" id="whether_cross_district" name="whether_cross_district" value="${client.whether_cross_district}" />
+						                    		<input type="hidden" name="whether_cross_district" id="whether_cross_district" value="${client.whether_cross_district}">
+						                    		<input type="button" class="btn <c:choose><c:when test="${client.whether_cross_district == 1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'whether_cross_district',this);" id="btn_whether_cross_district_1" 
+						                    		value="<spring:message code="client.channel.yes" />">
+	                      							<input type="button" class="btn <c:choose><c:when test="${client.whether_cross_district != 1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(0,'whether_cross_district',this);" id="btn_whether_cross_district_0" 
+	                      							value="<spring:message code="client.channel.no" />">
 						                    </div>
 										</div>
 					                
@@ -215,6 +217,7 @@
 		if('${client.whether_channel}' == 1){
 			$('#channel').attr('disabled',false);
 		}
+		
 		
 		$("#primaryForm").validate({
 			ignore: "",
@@ -318,6 +321,14 @@
 		<c:if test="${action eq 'update' }">bind_hover();bind_remove();</c:if>
 	});
 	
+	function changeRadio(val,id,name){
+		$('#'+id).val(val);
+		$(name).parent().children().each(function(){
+			$(this).removeClass("btn-primary").addClass("btn-default");
+		});
+		$(name).removeClass("btn-default").addClass("btn-primary");
+	};
+	
 	// 再添加一个联系人
 	function add_client_contacts(){
 		var index = $("#client_contacts div.contacts").size();
@@ -368,4 +379,3 @@
 </script>
 </body>
 </html>
- 
