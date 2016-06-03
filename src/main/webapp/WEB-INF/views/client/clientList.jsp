@@ -144,7 +144,7 @@
 	          		      label: "<spring:message code='btn.delete' />",
 	          		      className: "btn-danger",
 	          		      callback: function() {
-	          		    	window.location.href="${ctx}/opportunity/delete/"+id;
+	          		    	window.location.href="${ctx}/client/delete/"+id;
 	          		      }
 	          		    }
           		  	}
