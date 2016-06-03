@@ -27,7 +27,7 @@
           
           <ol class="breadcrumb">
             <li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
-            <li class="active">广告主信息</li>
+            <li class="active"><spring:message code="menu.advertiser" /></li>
           </ol>
 		
 		<c:if test="${message != null}">
@@ -43,11 +43,6 @@
           <!-- Main content -->
           <section class="content">
           	<div class="nav-tabs-custom">
-          		<!-- 
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">销售数据</a></li>
-                </ul>
-                 -->
                 <div class="tab-content">
                   <div class="tab-pane active" id="activity">
                   <div class="box box-info ">
@@ -67,17 +62,17 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>广告主</label>
+									<label><spring:message code="client" /></label>
 									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" 
-									placeholder="请输入广告主名称">
+									placeholder="<spring:message code="client.name.remark" />">
 								</div>
 							</div>
 							
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>品牌</label>
+									<label><spring:message code="client.brand" /></label>
 									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" 
-									placeholder="请输入品牌名称">
+									placeholder="<spring:message code="client.brand.remark" />">
 								</div>
 							</div>
 						</div><!-- /.row -->
@@ -90,18 +85,18 @@
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody>
 		                    <tr>
-		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>>广告主&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th>状态</th>
-		                    	<th style="cursor: pointer;" <tags:sort column="brand" page="${pages}"/>>品牌&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th>代理</th>
-		                    	<th style="cursor: pointer;" <tags:sort column="industry_name" page="${pages}"/>>行业&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th><spring:message code="public.status"/></th>
+		                    	<th style="cursor: pointer;" <tags:sort column="brand" page="${pages}"/>><spring:message code="client.brand" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th><spring:message code="client.agency" /> </th>
+		                    	<th style="cursor: pointer;" <tags:sort column="industry_name" page="${pages}"/>><spring:message code="client.industry" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
 		                    	<th><spring:message code="opportunity.operate"/></th>
 		                    </tr>
                     
 	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
 	                    	<tr>
 		                     	<td>${client.name}</td>
-		                     	<td>${client.id}</td>
+		                     	<td>${client.client_status}</td>
 		                     	<td>${client.brand}</td>
 		                     	<td>${client.channel_name}</td>
 		                     	<td>${client.industry_name}</td>
@@ -149,7 +144,7 @@
 	          		      label: "<spring:message code='btn.delete' />",
 	          		      className: "btn-danger",
 	          		      callback: function() {
-	          		    	window.location.href="${ctx}/opportunity/delete/"+id;
+	          		    	window.location.href="${ctx}/client/delete/"+id;
 	          		      }
 	          		    }
           		  	}

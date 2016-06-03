@@ -21,7 +21,7 @@
 	}
 %>
 
-<select name="<%=name%>" class="form-control <%=name%>" id="<%=id%>" style="<%=style%>" multiple="multiple">
+<select name="<%=name%>" class="form-control select2 <%=name%>" id="<%=id%>" style="<%=style%>" multiple="multiple">
 	<%
 	  	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
 		String lang =localeResolver.resolveLocale(request).getLanguage();

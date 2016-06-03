@@ -19,10 +19,12 @@ public class Client {
   private String channel;
   private int currency_id;
   private String address;
-  private int cross_regional;
+  private int whether_cross_district;
   private Date created_at;
+  private String created_user;
+  private Long user_id;
   private Date updated_at;
-  private String status;
+  private String client_status;
 
   private String channel_name;
   private String industry_name;
@@ -35,30 +37,7 @@ public class Client {
 
   // 销售人员
   private String userIds;
-
-  public String getUserIds() {
-    return userIds;
-  }
-
-  public void setUserIds(String userIds) {
-    this.userIds = userIds;
-  }
-
-  public String[] getDeleteContactIds() {
-    return deleteContactIds;
-  }
-
-  public void setDeleteContactIds(String[] deleteContactIds) {
-    this.deleteContactIds = deleteContactIds;
-  }
-
-  public List<ClientContact> getContacts() {
-    return contacts;
-  }
-
-  public void setContacts(List<ClientContact> contacts) {
-    this.contacts = contacts;
-  }
+  private String userNames;
 
   public Client() {
     super();
@@ -128,12 +107,12 @@ public class Client {
     this.address = address;
   }
 
-  public int getCross_regional() {
-    return cross_regional;
+  public int getWhether_cross_district() {
+    return whether_cross_district;
   }
 
-  public void setCross_regional(int cross_regional) {
-    this.cross_regional = cross_regional;
+  public void setWhether_cross_district(int whether_cross_district) {
+    this.whether_cross_district = whether_cross_district;
   }
 
   public Date getCreated_at() {
@@ -144,6 +123,22 @@ public class Client {
     this.created_at = created_at;
   }
 
+  public String getCreated_user() {
+    return created_user;
+  }
+
+  public void setCreated_user(String created_user) {
+    this.created_user = created_user;
+  }
+
+  public Long getUser_id() {
+    return user_id;
+  }
+
+  public void setUser_id(Long user_id) {
+    this.user_id = user_id;
+  }
+
   public Date getUpdated_at() {
     return updated_at;
   }
@@ -152,12 +147,12 @@ public class Client {
     this.updated_at = updated_at;
   }
 
-  public String getStatus() {
-    return status;
+  public String getClient_status() {
+    return client_status;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
+  public void setClient_status(String client_status) {
+    this.client_status = client_status;
   }
 
   public String getChannel_name() {
@@ -174,6 +169,38 @@ public class Client {
 
   public void setIndustry_name(String industry_name) {
     this.industry_name = industry_name;
+  }
+
+  public List<ClientContact> getContacts() {
+    return contacts;
+  }
+
+  public void setContacts(List<ClientContact> contacts) {
+    this.contacts = contacts;
+  }
+
+  public String[] getDeleteContactIds() {
+    return deleteContactIds;
+  }
+
+  public void setDeleteContactIds(String[] deleteContactIds) {
+    this.deleteContactIds = deleteContactIds;
+  }
+
+  public String getUserIds() {
+    return userIds;
+  }
+
+  public void setUserIds(String userIds) {
+    this.userIds = userIds;
+  }
+
+  public String getUserNames() {
+    return userNames;
+  }
+
+  public void setUserNames(String userNames) {
+    this.userNames = userNames;
   }
 
 

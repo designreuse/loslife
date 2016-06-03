@@ -16,7 +16,7 @@
     <meta name="author" content="">
 
     <title>
-        广告主详情
+        <spring:message code="client.title.view" />
     </title>
 
 
@@ -35,13 +35,13 @@
 	<!-- Content Header -->
       	 <section class="content-header">
           <h1>
-            广告主详情
+            <spring:message code="client.title.view" />
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/client"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
-            <li><a href="${ctx}/client">广告主</a></li>
+            <li><a href="${ctx}/client"><spring:message code="menu.advertiser" /></a></li>
             <li class="active">
-            	广告主详情
+            	<spring:message code="navigat.view" />
             </li>
           </ol>
         </section>
@@ -55,31 +55,31 @@
       			 	<div class="row">
 					 	<div class="col-md-6">
 							<div class="form-group">
-								<label for="name" class="col-md-3">广告主名称<em> *</em></label>
+								<label for="name" class="col-md-3"><spring:message code="client.name" /></label>
 			                    <div class="col-sm-9">${client.name}</div>
 							</div>
 						
 	                		<div class="form-group">
-	                			<label for="brand" class="col-md-3">品牌名称<em> *</em></label>
+	                			<label for="brand" class="col-md-3"><spring:message code="client.brand.name" /></label>
 		                      	<div class="col-sm-9">${client.brand}</div>
 	                		</div>
 		                	
 		                	 <div class="form-group">
-		                	 	<label for="name" class="col-md-3">代理下单</label>
+		                	 	<label for="name" class="col-md-3"><spring:message code="client.channel" /></label>
 		                	 	<div class="col-sm-9">
-									<tags:decodeList list="${agencys}" value="${client.channel}"></tags:decodeList>
+									${client.channel_name}
 								</div>
 		                	</div>	
 			                	
 		                	<div class="form-group">
-	                			<label for="industry_id" class="col-md-3">行业</label>
+	                			<label for="industry_id" class="col-md-3"><spring:message code="client.industry" /></label>
 		                      	<div class="col-sm-9">
 	                				<tags:decodeList list="${industryTypes}" value="${client.industry_id}"></tags:decodeList>
 	                			</div>
 	                		</div>
 	                		
 	                		<div class="form-group">
-	                			<label for="currency_id" class="col-md-3">货币</label>
+	                			<label for="currency_id" class="col-md-3"><spring:message code="client.currency" /></label>
 		                      	<div class="col-sm-9">
 	                				<tags:decodeList list="${currencyTypes}" value="${client.currency_id}"></tags:decodeList>
 	                			</div>
@@ -98,7 +98,7 @@
 		 						<div class="row">
 									<div class="col-md-12">
 							            <div class="form-group">
-						                  	<label class="col-md-3">广告主联系人&nbsp;<i class="fa fa-w fa-caret-down"></i></label>
+						                  	<label class="col-md-3"><spring:message code="client.contact.setting" />&nbsp;<i class="fa fa-w fa-caret-down"></i></label>
 						                 	<div class="divider-horizontal"></div>
 						                </div>
 								    </div>
@@ -110,7 +110,7 @@
 									<c:forEach var="contact" items="${client.contacts}" varStatus="status">
 										<div class="form-group">
 											<label for="" class="col-md-3">
-												广告主联系人${status.index+1}
+												<spring:message code="client.contact.person" /> ${status.index+1}
 											</label>
 			                      			<div class="div-0 col-md-9">
 			                      				${contact.contact_person}
@@ -119,7 +119,7 @@
 										
 										<div class="form-group">
 											<label for="" class="col-md-3">
-												联络人职位${status.index+1}
+												<spring:message code="client.contact.position" /> ${status.index+1}
 											</label>
 			                      			<div class="div-0 col-md-9">
 			                      				${contact.position}
@@ -128,7 +128,7 @@
 										
 										<div class="form-group">
 											<label for="" class="col-md-3">
-												联络人电话${status.index+1}
+												<spring:message code="client.contact.phone" /> ${status.index+1}
 											</label>
 			                      			<div class="div-0 col-md-9">
 			                      				${contact.phone}
@@ -137,7 +137,7 @@
 										
 										<div class="form-group">
 											<label for="" class="col-md-3">
-												联络人邮箱${status.index+1}
+												<spring:message code="client.contact.email" /> ${status.index+1}
 											</label>
 			                      			<div class="div-0 col-md-9">
 			                      				${contact.email}
@@ -146,7 +146,7 @@
 										
 										<div class="form-group addresses">
 			                      			<label for="" class="col-md-3">
-			                      				公司地址${status.index+1}
+			                      				<spring:message code="client.contact.address" /> ${status.index+1}
 			                      			</label>
 			                      			<div class="div-0 col-md-9">
 			                      				${contact.address}
@@ -168,22 +168,23 @@
 		 							<div class="col-md-6">
 		                
 					                	<div class="form-group">
-											<label for="name" class="col-md-3">销售人员<em> *</em></label>
+											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
 						                    <div class="col-md-9">
-						                    	<c:forEach var="userId" items="${client.userIds}" varStatus="status">
-						                    		<tags:decodeList list="${users}" value="${userId}" />
-						                    		<c:if test="${status.last!= true}">,</c:if>
-						                    	</c:forEach>
+						                    	<c:if test="${client.userNames != null}">
+					                      				<c:forEach var="userName" items="${client.userNames}" varStatus="status">
+					                      					${userName}<c:if test="${status.last!= true}">,</c:if>
+					                      				</c:forEach>
+					                      		</c:if>
 						                    </div>
 										</div>
 										
 										<div class="form-group">
-											<label for="name" class="col-md-3">是否跨区<br/>（跨区的需要跨区特批）</label>
+											<label for="name" class="col-md-3"><spring:message code="client.cross.regional" /><br/><spring:message code="client.cross.regional.remark" /></label>
 						                    <div class="col-md-9">
-						                    	<c:if test="${client.cross_regional == 1}" >
+						                    	<c:if test="${client.whether_cross_district == 1}" >
 						                    		<input type="checkbox" disabled="disabled" checked="checked"/>
 						                    	</c:if>
-						                    	<c:if test="${client.cross_regional != 1}" >
+						                    	<c:if test="${client.whether_cross_district != 1}" >
 						                    		<input type="checkbox" disabled="disabled" />
 						                    	</c:if>	
 						                    </div>
@@ -206,12 +207,6 @@
 <script type="text/javascript">    
 	$(document).ready(function() {
 		$("#menu_advertiser").addClass("active");
-		
-		$("#primaryForm").validate({
-			rules:{
-				task:"required"
-			}
-		});
 		
 	});
 </script>
