@@ -8,23 +8,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.xmo.Advertiser;
-import com.asgab.repository.xmo.AdvertiserXMOMapper;
+import com.asgab.repository.AdvertiserMapper;
 
 @Component
 @Transactional
 public class AdvertiserService {
 
   @Autowired
-  private AdvertiserXMOMapper advertiserXMOMapper;
+  private AdvertiserMapper advertiserMapper;
 
   public Page<Advertiser> search(Page<Advertiser> page) {
-    List<Advertiser> advertisers = advertiserXMOMapper.search(page.getSearchMap(), page.getRowBounds());
+    List<Advertiser> advertisers = advertiserMapper.search(page.getSearchMap(), page.getRowBounds());
     page.setContent(advertisers);
     return page;
   }
 
   public Advertiser get(Long id) {
-    return advertiserXMOMapper.get(id);
+    return advertiserMapper.get(id);
+  }
+
+  public List<Advertiser> getAdvertisersByIdList(List<Long> idList) {
+    return advertiserMapper.getAdvertisersByIdList(idList);
   }
 
 }

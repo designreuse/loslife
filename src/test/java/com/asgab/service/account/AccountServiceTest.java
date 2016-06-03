@@ -16,6 +16,7 @@ public class AccountServiceTest {
 
   @Test
   public void testGetAllUser() {
+    accountService.findUserGroupByLoginName("autoadmin");
   }
 
 }

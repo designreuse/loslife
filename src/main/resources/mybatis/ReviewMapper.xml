@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.ReviewMapper">
+	
+	<sql id="reviewColumn">
+	  clientname,client_brand,industry_id,whether_channe,currency_id,company_adress,qualification_name,
+  	  website_name,website_address,organization_code,icp,business_license
+	</sql>
+	
+	<select id="get" parameterType="long" resultType="Review">
+		select id,<include refid="reviewColumn" /> from xmo.clients
+		where id = #{id}
+	</select>
+
+	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
+	<select id="search" parameterType="map" resultType="Review">
+		select  id,<include refid="reviewColumn" /> from xmo.clients
+		where 1=1
+		<if test="clientname != null">
+			and clientname like "%"#{clientname}"%"
+		</if>
+		<if test="client_brand != null">
+			and client_brand like "%"#{client_brand}"%"
+		</if>
+		<if test="industry_id != null">
+			and industry_id = #{industry_id}
+		</if>
+		<if test="sort != null and sort!=''">
+			order by ${sort}
+		</if>
+	</select>
+	
+	<select id="count" parameterType="map" resultType="int">
+		select count(1) 
+		from xmo.clients 
+		where 1=1
+		<if test="clientname != null">
+			and clientname like "%"#{clientname}"%"
+		</if>
+		<if test="client_brand != null">
+			and client_brand like "%"#{client_brand}"%"
+		</if>
+		<if test="industry_id != null">
+			and industry_id = #{industry_id}
+		</if>
+	</select>
+
+	<insert id="save" parameterType="Review" useGeneratedKeys="true" keyProperty="id">
+		insert into xmo.clients (clientname,client_brand,industry_id,whether_channe,currency_id,company_adress,qualification_name,
+  	 		 website_name,website_address,organization_code,icp,business_license)
+		values 
+			(#{clientname},#{client_brand},#{industry_id},#{whether_channe},
+			#{currency_id},#{company_adress},#{qualification_name},
+  	 		 #{website_name},#{website_address},#{organization_code},#{icp},#{business_license})
+	</insert>
+	
+	<insert id="update" parameterType="Review">
+		update xmo.clients set 
+			clientname=#{clientname},
+			client_brand=#{client_brand},
+			industry_id=#{industry_id},
+			whether_channe=#{whether_channe},
+			currency_id=#{currency_id},
+			company_adress=#{company_adress},
+			qualification_name=#{qualification_name},
+  	  		website_name=#{website_name},
+  	  		website_address=#{website_address},
+  	  		organization_code=#{organization_code},
+  	  		icp=#{icp},
+  	  		business_license=#{business_license}
+		where id = #{id}
+	</insert>
+	
+</mapper> 

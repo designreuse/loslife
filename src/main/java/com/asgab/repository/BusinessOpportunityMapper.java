@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.asgab.entity.BusinessOpportunity;
+import com.asgab.entity.xmo.Currency;
 import com.asgab.repository.mybatis.MyBatisRepository;
 
 @MyBatisRepository
@@ -22,7 +23,9 @@ public interface BusinessOpportunityMapper {
   int update(BusinessOpportunity businessOpportunity);
 
   int count(Map<String, Object> map);
-  
+
   int delete(BusinessOpportunity businessOpportunity);
-  
+
+  List<Currency> getCurrencys();
+
 }

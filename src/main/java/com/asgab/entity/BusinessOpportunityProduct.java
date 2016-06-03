@@ -3,8 +3,6 @@ package com.asgab.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.asgab.entity.xmo.Product;
-
 public class BusinessOpportunityProduct {
   private Long id;
   private Long business_opportunity_id;
