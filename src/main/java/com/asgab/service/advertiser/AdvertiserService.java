@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.xmo.Advertiser;
-import com.asgab.repository.AdvertiserMapper;
+import com.asgab.repository.xmo.AdvertiserMapper;
 
 @Component
 @Transactional
@@ -19,6 +19,8 @@ public class AdvertiserService {
 
   public Page<Advertiser> search(Page<Advertiser> page) {
     List<Advertiser> advertisers = advertiserMapper.search(page.getSearchMap(), page.getRowBounds());
+    int count = advertiserMapper.count(page.getSearchMap());
+    page.setTotal(count);
     page.setContent(advertisers);
     return page;
   }

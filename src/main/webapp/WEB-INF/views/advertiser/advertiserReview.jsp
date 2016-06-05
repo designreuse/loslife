@@ -37,6 +37,7 @@
 	<!-- Content -->
 	<section class="content">
 		<form action="${ctx}/advertiser/merge" method="post" id="primaryForm">
+		<input type="hidden" name="checkIds" value="${checkIds }">
 		<div class="box box-default">
 
 			<div class="box-body no-padding">
@@ -47,14 +48,14 @@
 							<c:forEach items="${map['id']}" var="val" varStatus="status">
 								<th style="vertical-align: bottom;">
 									<input id="${status.count}" type="radio" name="id" class="flat-red allcheck" value="${val}"> 
-									<label for="${status.count}" style="vertical-align: bottom; margin-bottom: 1px;">全选</label>
+									<label for="${status.count}" style="vertical-align: bottom; margin-bottom: 1px;"><spring:message code="btn.selectall" /></label>
 								</th>
 							</c:forEach>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th style="vertical-align: middle;">名称</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.clientname" /></th>
 							<c:forEach items="${map['clientname']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -66,7 +67,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">品牌</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.brand" /></th>
 							<c:forEach items="${map['client_brand']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -78,7 +79,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">行业</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.industry" /></th>
 							<c:forEach items="${map['industry']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -90,19 +91,19 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">公司地址</th>
-							<c:forEach items="${map['company_adress']}" var="val" varStatus="status">
+							<th style="vertical-align: middle;"><spring:message code="advertiser.company.address" /></th>
+							<c:forEach items="${map['company_address']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="company_adress_radio"></span> 
-											<input type="text" name="company_adress" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="company_address_radio"></span> 
+											<input type="text" name="company_address" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">公司地址</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.qualification.name" /></th>
 							<c:forEach items="${map['qualification_name']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -114,7 +115,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">网站名称</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.website.name"/></th>
 							<c:forEach items="${map['website_name']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -126,7 +127,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">网址</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.website.address"/></th>
 							<c:forEach items="${map['website_address']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -138,7 +139,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">组织代码</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.organization.code"/></th>
 							<c:forEach items="${map['organization_code']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -150,7 +151,7 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">ICP</th>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.icp" /></th>
 							<c:forEach items="${map['icp']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
@@ -162,13 +163,13 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<th style="vertical-align: middle;">营业执照</th>
-							<c:forEach items="${map['business_license']}" var="val" varStatus="status">
+							<th style="vertical-align: middle;"><spring:message code="advertiser.business.licence" /></th>
+							<c:forEach items="${map['business_licence']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="business_license_radio"></span> 
-											<input type="text" name="business_license" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="business_licence_radio"></span> 
+											<input type="text" name="business_licence" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>
@@ -180,8 +181,8 @@
 			</div>
 			
 			<div class="box-footer">
-              <button class=" btn   btn-primary  btn-flat" onclick="$('#primaryForm').submit();">保存</button>
-              <button class=" btn   btn-warning  btn-flat">取消</button>
+              <button class=" btn btn-sm  btn-primary  btn-flat" onclick="$('#primaryForm').submit();"><spring:message code="btn.submit" /></button>
+              <button class=" btn btn-sm btn-warning  btn-flat"><spring:message code="btn.cancel" /></button>
             </div>
 		</div>
 		</form>

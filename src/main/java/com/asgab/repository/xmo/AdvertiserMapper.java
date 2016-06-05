@@ -1,4 +1,4 @@
-package com.asgab.repository;
+package com.asgab.repository.xmo;
 
 
 import java.util.List;
@@ -15,8 +15,10 @@ public interface AdvertiserMapper {
 
   List<Advertiser> search(Map<String, Object> parameters, RowBounds rowBounds);
 
+  int count(Map<String, Object> parameters);
+
   Advertiser get(Long id);
-  
+
   List<Advertiser> getAdvertisersByIdList(List<Long> idList);
 
 }
