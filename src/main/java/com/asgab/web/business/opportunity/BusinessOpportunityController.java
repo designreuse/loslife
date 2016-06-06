@@ -24,8 +24,8 @@ import com.asgab.core.pagination.Page;
 import com.asgab.entity.BusinessOpportunity;
 import com.asgab.repository.xmo.UserXMOMapper;
 import com.asgab.service.account.AccountService;
-import com.asgab.service.advertiser.AdvertiserService;
 import com.asgab.service.business.opportunity.BusinessOpportunityService;
+import com.asgab.service.client.ClientService;
 import com.asgab.util.CommonUtil;
 import com.asgab.util.SelectMapper;
 import com.asgab.util.Servlets;
@@ -42,7 +42,7 @@ public class BusinessOpportunityController {
   private UserXMOMapper userXMOMapper;
 
   @Autowired
-  private AdvertiserService advertiserService;
+  private ClientService clientService;
 
   @Autowired
   private AccountService accountService;
@@ -111,7 +111,7 @@ public class BusinessOpportunityController {
     mappers.add(new SelectMapper("CPC", "CPC"));
     mappers.add(new SelectMapper("CPM", "CPM"));
     model.addAttribute("saleModes", mappers);
-    model.addAttribute("advertiser", advertiserService.get(businessOpportunity.getAdvertiser_id()));
+    model.addAttribute("advertiser", clientService.get(businessOpportunity.getAdvertiser_id()));
     model.addAttribute("ownerSale", accountService.get(businessOpportunity.getOwner_sale()));
     String coopSales = businessOpportunity.getCooperate_sales();
     String[] cooperateSales = StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];

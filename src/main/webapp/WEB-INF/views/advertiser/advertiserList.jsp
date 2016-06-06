@@ -69,17 +69,17 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="advertiser.clientname"/></label>
-									<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
+									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
 								</div>
 								<div class="form-group">
 									<label><spring:message code="advertiser.sales"/></label>
-									<input type="text" class="form-control" name="sales" id="sales" value="<c:out value="${pages.searchMap['sales']}"/>" placeholder="<spring:message code='advertiser.input.sales'/>">
+									<input type="text" class="form-control" name="user_id" id="user_id" value="<c:out value="${pages.searchMap['user_id']}"/>" placeholder="<spring:message code='advertiser.input.sales'/>">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="advertiser.brand"/></label>
-									<input type="text" class="form-control" name="client_brand" id="client_brand" value="<c:out value="${pages.searchMap['client_brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
+									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
 								</div>
 								<div class="form-group">
 									<label><spring:message code="advertiser.platform"/></label>
@@ -87,14 +87,11 @@
 								</div>
 							</div>
 							<div class="col-md-4">
-								<div class="form-group">
-									<label><spring:message code="advertiser.companyname"/></label>
-									<input type="text" class="form-control" name="company_name" id="company_name" value="<c:out value="${pages.searchMap['company_name']}"/>" placeholder="<spring:message code='advertiser.input.companyname'/>">
-								</div>
-								<div class="form-group">
-									<label><spring:message code="advertiser.dateDuring"/></label>
-									<input type="text" class="form-control" name="dateDuring" id="dateDuring" value="<c:out value="${pages.searchMap['dateDuring']}"/>" placeholder="<spring:message code='advertiser.input.dateDuring'/>">
-								</div>
+								<label><spring:message code="advertiser.dateDuring"/></label>
+								<div class="input-group">
+	                      			<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+	                      			<input type="text" value="<c:out value="${pages.searchMap['dateDuring']}"/>" class="form-control pull-right" name="deliver_date" id="deliver_date" placeholder="<spring:message code='advertiser.input.dateDuring' />">
+	                      		</div>
 							</div>
 						</div><!-- /.row -->
 						</form>
@@ -106,8 +103,8 @@
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody>
 	                    <tr>
-	                      <th><input type="checkbox" class="allcheck" id="allcheck" tyle="width: 10px"> </th>
-	                      <th <tags:sort column="id" page="${pages}"/> style="width: 110px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
+	                      <th><input type="checkbox" class="allcheck" id="allcheck" style="width: 10px"> </th>
+	                      <th <tags:sort column="id" page="${pages}"/> style="width: 100px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
 	                      <th <tags:sort column="clientname" page="${pages}"/>><spring:message code="advertiser.clientname" /><i class="fa fa-w fa-sort"></i></th>
 	                      <th ><spring:message code="advertiser.brand" /></th>
 						  <th ><spring:message code="advertiser.companyname" /></th>
@@ -118,18 +115,18 @@
 	                      <th ><spring:message code="advertiser.sales" /></th>
 	                    </tr>
                     
-	                    <c:forEach items="${pages.content}" var="advertiser" varStatus="status">
+	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
 	                    	<tr>
-	                    	  <th><input type="checkbox" class="idBox" name="checkIds" value="${advertiser.id}"> </th>
-		                      <td>${advertiser.id}</td>
-		                      <td>${advertiser.clientname}</td>
-		                      <td>${advertiser.client_brand}</td>
-		                      <td>${advertiser.company_name}</td>
-		                      <td>${advertiser.clientcontact}</td>
-		                      <td>${advertiser.clientphone}</td>
-		                      <td>${advertiser.clientposition}</td>
-		                      <td>${advertiser.clientaddress }</td>
-		                      <td>${advertiser.sales }</td>
+	                    	  <th><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
+		                      <td>${client.id}</td>
+		                      <td>${client.name}</td>
+		                      <td>${client.brand}</td>
+		                      <td>${client.name}</td>
+		                      <td>${client.linkman_name}</td>
+		                      <td>${client.linkman_tel}</td>
+		                      <td>${client.linkman_position}</td>
+		                      <td>${client.address }</td>
+		                      <td>${client.user_id }</td>
 		                    </tr>
 	                    </c:forEach>
                     
@@ -162,7 +159,11 @@
         	});
           	
           	function resetForm(){
-          		$("#clientname").val('');
+          		$("#name").val('');
+          		$("#brand").val('');
+          		$("#user_id").val('');
+          		$("#platform").val('');
+          		$("#dateDuring").val('');
           	};
           	
           	function compare(){
@@ -170,10 +171,7 @@
           		var count = 0;
           		$("input[name='checkIds']").each(function(index,element){
           			if($(this).is(':checked')){
-	          			if(index!=0){
-		          			checkIdStr+=",";
-	          			}
-	          			checkIdStr+=$(this).val();
+	          			checkIdStr += $(this).val()+",";
 	          			count++;
           			}
           		});

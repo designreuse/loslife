@@ -56,24 +56,24 @@
 					<tbody>
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.clientname" /></th>
-							<c:forEach items="${map['clientname']}" var="val" varStatus="status">
+							<c:forEach items="${map['name']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="clientname_radio"></span> 
-											<input type="text" name="clientname" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="name_radio"></span> 
+											<input type="text" name="name" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>
 						</tr>
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.brand" /></th>
-							<c:forEach items="${map['client_brand']}" var="val" varStatus="status">
+							<c:forEach items="${map['brand']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="client_brand_radio"></span> 
-											<input type="text" name="client_brand" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="brand_radio"></span> 
+											<input type="text" name="brand" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>
@@ -92,24 +92,24 @@
 						</tr>
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.company.address" /></th>
-							<c:forEach items="${map['company_address']}" var="val" varStatus="status">
+							<c:forEach items="${map['address']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="company_address_radio"></span> 
-											<input type="text" name="company_address" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="address_radio"></span> 
+											<input type="text" name="address" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>
 						</tr>
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.qualification.name" /></th>
-							<c:forEach items="${map['qualification_name']}" var="val" varStatus="status">
+							<c:forEach items="${map['qualification']}" var="val" varStatus="status">
 								<th>
 									<div class="input-group col-xs-10">
 										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="qualification_name_radio"></span> 
-											<input type="text" name="qualification_name" class="form-control input-sm ${status.count}" value="${val}" disabled>
+											<input type="radio" class="${status.count}" name="qualification_radio"></span> 
+											<input type="text" name="qualification" class="form-control input-sm ${status.count}" value="${val}" disabled>
 									</div>
 								</th>
 							</c:forEach>

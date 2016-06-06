@@ -12,14 +12,45 @@ public class Client {
    */
 
   private Long id;
+  // 广告主名称/公司名称
   private String name;
+  // 品牌
   private String brand;
+  // 行业
   private int industry_id;
+  // 是否是代理
   private int whether_channel;
+  // 代理
   private String channel;
+  // 货币
   private int currency_id;
+  // 公司地址
   private String address;
+  // 是否跨区
   private int whether_cross_district;
+  // 资质名称
+  private String qualification_name;
+  // 网站名称
+  private String website_name;
+  // 网址
+  private String website_address;
+  // 组织代码
+  private String organization_code;
+  // icp
+  private String icp;
+  // 营业执照
+  private String business_licence;
+  //
+  private String organization_code_scan_file;
+  private String business_licence_scan_file;
+  private String icp_scan_file;
+
+  private String linkman_name;
+  private String linkman_tel;
+  private String linkman_position;
+  // 平台
+  private String platform;
+
   private Date created_at;
   private String created_user;
   private Long user_id;
@@ -203,5 +234,108 @@ public class Client {
     this.userNames = userNames;
   }
 
+  public String getQualification_name() {
+    return qualification_name;
+  }
+
+  public void setQualification_name(String qualification_name) {
+    this.qualification_name = qualification_name;
+  }
+
+  public String getWebsite_name() {
+    return website_name;
+  }
+
+  public void setWebsite_name(String website_name) {
+    this.website_name = website_name;
+  }
+
+  public String getWebsite_address() {
+    return website_address;
+  }
+
+  public void setWebsite_address(String website_address) {
+    this.website_address = website_address;
+  }
+
+  public String getOrganization_code() {
+    return organization_code;
+  }
+
+  public void setOrganization_code(String organization_code) {
+    this.organization_code = organization_code;
+  }
+
+  public String getIcp() {
+    return icp;
+  }
+
+  public void setIcp(String icp) {
+    this.icp = icp;
+  }
+
+  public String getBusiness_licence() {
+    return business_licence;
+  }
+
+  public void setBusiness_licence(String business_licence) {
+    this.business_licence = business_licence;
+  }
+
+  public String getOrganization_code_scan_file() {
+    return organization_code_scan_file;
+  }
+
+  public void setOrganization_code_scan_file(String organization_code_scan_file) {
+    this.organization_code_scan_file = organization_code_scan_file;
+  }
+
+  public String getBusiness_licence_scan_file() {
+    return business_licence_scan_file;
+  }
+
+  public void setBusiness_licence_scan_file(String business_licence_scan_file) {
+    this.business_licence_scan_file = business_licence_scan_file;
+  }
+
+  public String getIcp_scan_file() {
+    return icp_scan_file;
+  }
+
+  public void setIcp_scan_file(String icp_scan_file) {
+    this.icp_scan_file = icp_scan_file;
+  }
+
+  public String getLinkman_name() {
+    return linkman_name;
+  }
+
+  public void setLinkman_name(String linkman_name) {
+    this.linkman_name = linkman_name;
+  }
+
+  public String getLinkman_tel() {
+    return linkman_tel;
+  }
+
+  public void setLinkman_tel(String linkman_tel) {
+    this.linkman_tel = linkman_tel;
+  }
+
+  public String getLinkman_position() {
+    return linkman_position;
+  }
+
+  public void setLinkman_position(String linkman_position) {
+    this.linkman_position = linkman_position;
+  }
+
+  public String getPlatform() {
+    return platform;
+  }
+
+  public void setPlatform(String platform) {
+    this.platform = platform;
+  }
 
 }

@@ -24,5 +24,7 @@ public interface ClientMapper {
   void delete(Long id);
 
   int count(Map<String, Object> map);
+  
+  List<Client> getAdvertisersByIdList(List<Long> idList);
 
 }
