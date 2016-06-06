@@ -125,4 +125,8 @@ public class ClientService {
   public void delete(Long id) {
     clientMapper.delete(id);
   }
+
+  public List<Client> getAdvertisersByIdList(List<Long> idList) {
+    return clientMapper.getAdvertisersByIdList(idList);
+  }
 }

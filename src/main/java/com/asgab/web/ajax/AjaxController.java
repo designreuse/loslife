@@ -20,12 +20,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.Agency;
+import com.asgab.entity.Client;
 import com.asgab.entity.Product;
 import com.asgab.entity.User;
-import com.asgab.entity.xmo.Advertiser;
 import com.asgab.service.account.AccountService;
-import com.asgab.service.advertiser.AdvertiserService;
 import com.asgab.service.agency.AgencyService;
+import com.asgab.service.client.ClientService;
 import com.asgab.service.product.ProductService;
 import com.asgab.util.SelectMapper;
 
@@ -34,7 +34,7 @@ import com.asgab.util.SelectMapper;
 public class AjaxController {
 
   @Autowired
-  private AdvertiserService advertiserService;
+  private ClientService clientService;
 
   @Autowired
   private AccountService accountService;
@@ -62,14 +62,14 @@ public class AjaxController {
     if (StringUtils.isNotBlank(name)) {
       params.put("name", name);
     }
-    Page<Advertiser> page = new Page<Advertiser>(1, 10, null, params);
-    Page<Advertiser> pages = advertiserService.search(page);
+    Page<Client> page = new Page<Client>(1, 10, null, params);
+    Page<Client> pages = clientService.search(page);
 
     JSONArray array = new JSONArray();
     for (int i = 0; i < pages.getContent().size(); i++) {
       JSONObject tmp = new JSONObject();
       tmp.put("id", pages.getContent().get(i).getId());
-      tmp.put("text", pages.getContent().get(i).getClientname());
+      tmp.put("text", pages.getContent().get(i).getName());
       array.add(tmp);
     }
     return array.toJSONString();

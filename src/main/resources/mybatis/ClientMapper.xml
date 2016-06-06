@@ -5,14 +5,19 @@
 <mapper namespace="com.asgab.repository.ClientMapper">
 
     <sql id="client_columns">
-        name, brand, address, industry_id, whether_channel, channel, currency_id, whether_cross_district, client_status,
-        created_at, created_user, user_id, updated_at
+  		name, brand,industry_id,whether_channel,channel,currency_id,address,whether_cross_district,qualification_name,
+  		website_name,website_address,organization_code,icp,business_licence,organization_code_scan_file,
+  		business_licence_scan_file,icp_scan_file,linkman_name,linkman_tel,linkman_position,platform,created_at,created_user,
+  		user_id,updated_at,client_status
     </sql>
     
     <sql id="client_columns_for_join">
-        a.name, a.brand, a.address, a.industry_id, a.whether_channel, a.channel, a.currency_id, a.whether_cross_district, a.client_status,
-        a.created_at, a.created_user, a.user_id, a.updated_at
+        a.name, a.brand,a.industry_id,a.whether_channel,a.channel,a.currency_id,a.address,a.whether_cross_district,
+        a.qualification_name,a.website_name,a.website_address,a.organization_code,a.icp,a.business_licence,
+        a.organization_code_scan_file,a.business_licence_scan_file,a.icp_scan_file,a.linkman_name,a.linkman_tel,
+        a.linkman_position,a.platform,a.created_at,a.created_user,a.user_id,a.updated_at,a.client_status
     </sql>
+    
     
 	<select id="get" parameterType="long" resultType="Client">
 		select a.id, <include refid="client_columns_for_join" />, GROUP_CONCAT(d.`id`) as userIds, GROUP_CONCAT(d.`name`) as userNames,
@@ -32,6 +37,9 @@
 		<if test="brand != null">
 			and a.brand like "%"#{brand}"%"
 		</if>
+		<if test="platform != null">
+			and a.platform like "%"#{platform}"%"
+		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
 		</if>
@@ -39,31 +47,51 @@
 	
 	<select id="count" parameterType="map" resultType="int">
 		select count(1) 
-		from clients where 1 = 1
+		from clients a left join channels b on a.channel = b.id left join industries c on a.industry_id = c.id
+		where 1 = 1
 		<if test="name != null">
-			and name like "%"#{name}"%"
+			and a.name like "%"#{name}"%"
 		</if>
 		<if test="brand != null">
-			and brand like "%"#{brand}"%"
+			and a.brand like "%"#{brand}"%"
+		</if>
+		<if test="platform != null">
+			and a.platform like "%"#{platform}"%"
 		</if>
 	</select>
 
 	<insert id="save" parameterType="Client" useGeneratedKeys="true" keyProperty="id">
 		insert into clients (<include refid="client_columns" />)
-		values ( #{name}, #{brand}, #{address}, #{industry_id}, #{whether_channel}, #{channel}, #{currency_id}, #{whether_cross_district}, #{client_status},
-		#{created_at}, #{created_user}, #{user_id}, #{updated_at} )
+		values ( #{name}, #{brand},#{industry_id},#{whether_channel},#{channel},#{currency_id},#{address},
+			#{whether_cross_district},#{qualification_name},#{website_name},#{website_address},#{organization_code},
+			#{icp},#{business_licence},#{organization_code_scan_file},#{business_licence_scan_file},
+			#{icp_scan_file},#{linkman_name},#{linkman_tel},#{linkman_position},#{platform},#{created_at},
+			#{created_user},#{user_id},#{updated_at},#{client_status} )
 	</insert>
 	
 	<update id="update" parameterType="Client">
 		update clients set 
-			name = #{name}, brand = #{brand}, address = #{address}, industry_id = #{industry_id}, whether_channel = #{whether_channel}, 
-			channel = #{channel}, currency_id = #{currency_id}, whether_cross_district = #{whether_cross_district},
-			created_at = #{created_at}, created_user = #{created_user}, user_id = #{user_id}, updated_at = #{updated_at}
+			name=#{name}, brand=#{brand},industry_id=#{industry_id},whether_channel=#{whether_channel},channel=#{channel},
+			currency_id=#{currency_id},address=#{address},whether_cross_district=#{whether_cross_district},
+			qualification_name=#{qualification_name},website_name=#{website_name},website_address=#{website_address},
+			organization_code=#{organization_code},icp=#{icp},business_licence=#{business_licence},
+			organization_code_scan_file=#{organization_code_scan_file},business_licence_scan_file=#{business_licence_scan_file},
+			icp_scan_file=#{icp_scan_file},linkman_name=#{linkman_name},linkman_tel=#{linkman_tel},linkman_position=#{linkman_position},
+			platform=#{platform},created_at=#{created_at},created_user=#{created_user},user_id=#{user_id},updated_at=#{updated_at},
+			client_status=#{client_status}
 		where id = #{id}
 	</update>
 	
 	<delete id="delete" parameterType="long">
 	     update clients set deleted=2 where id=#{id}
 	</delete>
+	
+	<select id="getAdvertisersByIdList" parameterType="list" resultType="Client">
+	select id,<include refid="client_columns" /> from sales_booking_production.clients
+	where id in
+	<foreach collection="list" item="id" separator="," open="(" close=")">
+		#{id}
+	</foreach>
+	</select>
 	
 </mapper> 
