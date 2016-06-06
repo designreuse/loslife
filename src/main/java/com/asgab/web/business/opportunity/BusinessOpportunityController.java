@@ -55,6 +55,9 @@ public class BusinessOpportunityController {
     if (StringUtils.isNotBlank(request.getParameter("advertiser"))) {
       params.put("advertiser", request.getParameter("advertiser"));
     }
+    if (StringUtils.isNotBlank(request.getParameter("name"))) {
+      params.put("name", request.getParameter("name"));
+    }
 
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);
