@@ -63,4 +63,8 @@
 	     update sales_booking_production.business_opportunities set deleted_at=#{deleted_at} where id=#{id}
 	</delete>
 	
+	<select id="getCurrencys" parameterType="int" resultType="Currency">
+		select id , name from sales_booking_production.currencies
+	</select>
+	
 </mapper> 

@@ -20,9 +20,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.Agency;
+import com.asgab.entity.Product;
 import com.asgab.entity.User;
 import com.asgab.entity.xmo.Advertiser;
-import com.asgab.entity.xmo.Product;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.advertiser.AdvertiserService;
 import com.asgab.service.agency.AgencyService;
@@ -69,7 +69,7 @@ public class AjaxController {
     for (int i = 0; i < pages.getContent().size(); i++) {
       JSONObject tmp = new JSONObject();
       tmp.put("id", pages.getContent().get(i).getId());
-      tmp.put("text", pages.getContent().get(i).getName());
+      tmp.put("text", pages.getContent().get(i).getClientname());
       array.add(tmp);
     }
     return array.toJSONString();

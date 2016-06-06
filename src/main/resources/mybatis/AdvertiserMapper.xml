@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.xmo.AdvertiserMapper">
+	
+	<sql id="advertiserColumns">
+		clientname,client_brand,industry_id,whether_channel,currency_id,
+		company_name,company_address,clientcontact,clientphone,clientposition,
+		clientaddress,whether_cross_district,qualification_name,
+		website_name,website_address,organization_code,
+  		icp,business_licence,organization_code_scan_file,business_licence_scan_file,platform
+	</sql>
+	
+	<select id="search" parameterType="map" resultType="Advertiser">
+		select id,<include refid="advertiserColumns" />
+		from xmo.clients where 1=1
+		<if test="clientname != null">
+			and clientname like "%"#{clientname}"%"
+		</if>
+		<if test="client_brand != null">
+			and client_brand like "%"#{client_brand}"%"
+		</if>
+		<if test="company_name != null">
+			and company_name like "%"#{company_name}"%"
+		</if>
+		<if test="sort != null and sort!=''">
+			order by ${sort}
+		</if>
+	</select>
+	<select id="count" parameterType="map" resultType="int">
+		select count(0)
+		from xmo.clients where 1=1
+		<if test="clientname != null">
+			and clientname like "%"#{clientname}"%"
+		</if>
+		<if test="client_brand != null">
+			and client_brand like "%"#{client_brand}"%"
+		</if>
+		<if test="company_name != null">
+			and company_name like "%"#{company_name}"%"
+		</if>
+	</select>
+	
+	<select id="get" parameterType="Long" resultType="Advertiser">
+		select id,<include refid="advertiserColumns" />
+		from xmo.clients where id=#{id}
+	</select>
+	
+</mapper> 

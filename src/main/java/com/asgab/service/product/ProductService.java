@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.asgab.core.pagination.Page;
-import com.asgab.entity.xmo.Product;
-import com.asgab.repository.xmo.ProductXMOMapper;
+import com.asgab.entity.Product;
+import com.asgab.repository.ProductMapper;
 
 @Component
 @Transactional
 public class ProductService {
 
   @Autowired
-  private ProductXMOMapper productXMOMapper;
+  private ProductMapper productXMOMapper;
 
   public Page<Product> search(Page<Product> page) {
     List<Product> products = productXMOMapper.search(page.getSearchMap(), page.getRowBounds());

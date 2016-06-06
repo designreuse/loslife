@@ -1,9 +1,8 @@
-package com.asgab.entity.xmo;
+package com.asgab.entity;
 
 public class Product {
   private Long id;
   private String name;
-  private String nameEn;
 
   public Long getId() {
     return id;
@@ -19,14 +18,6 @@ public class Product {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getNameEn() {
-    return nameEn;
-  }
-
-  public void setNameEn(String nameEn) {
-    this.nameEn = nameEn;
   }
 
 }

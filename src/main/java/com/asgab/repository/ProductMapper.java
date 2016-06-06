@@ -1,4 +1,4 @@
-package com.asgab.repository.xmo;
+package com.asgab.repository;
 
 
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
-import com.asgab.entity.xmo.Product;
-import com.asgab.repository.mybatis.MyBatisRepositoryXMO;
+import com.asgab.entity.Product;
+import com.asgab.repository.mybatis.MyBatisRepository;
 
-@MyBatisRepositoryXMO
-public interface ProductXMOMapper {
+@MyBatisRepository
+public interface ProductMapper {
 
 
   List<Product> search(Map<String, Object> parameters, RowBounds rowBounds);

@@ -23,7 +23,6 @@ import com.asgab.entity.ProgressBar;
 import com.asgab.entity.xmo.Currency;
 import com.asgab.repository.BusinessOpportunityMapper;
 import com.asgab.repository.BusinessOpportunityProductMapper;
-import com.asgab.repository.xmo.UserXMOMapper;
 import com.asgab.service.product.ProductService;
 import com.asgab.util.SelectMapper;
 
@@ -36,9 +35,6 @@ public class BusinessOpportunityService {
 
   @Autowired
   private BusinessOpportunityProductMapper businessOpportunityProductMapper;
-
-  @Autowired
-  private UserXMOMapper userXMOMapper;
 
   @Autowired
   private ProductService productService;
@@ -132,11 +128,11 @@ public class BusinessOpportunityService {
   }
 
   public List<Currency> getCurrencys() {
-    return userXMOMapper.getCurrencys();
+    return businessOpportunityMapper.getCurrencys();
   }
 
   public List<SelectMapper> getCurrencyMappers() {
-    List<Currency> currencys = userXMOMapper.getCurrencys();
+    List<Currency> currencys = businessOpportunityMapper.getCurrencys();
     List<SelectMapper> mappers = new ArrayList<SelectMapper>();
     for (int i = 0; i < currencys.size(); i++) {
       mappers.add(new SelectMapper(currencys.get(i).getId() + "", currencys.get(i).getName()));
