@@ -212,7 +212,7 @@
           
 <script>    
 	$(document).ready(function() {
-		$("#menu_advertiser").addClass("active");
+		$("#menu_client").addClass("active");  
 
 		if('${client.whether_channel}' == 1){
 			$('#channel').attr('disabled',false);

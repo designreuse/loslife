@@ -201,15 +201,14 @@
 		 		</div><!-- /.box-noborder -->
 		 </section><!-- /part3 -->
 	</div>
+
+	<script type="text/javascript">
+		$(function() {
+			$("#menu_client").addClass("active");
+		});
+	</script>
 </body>
 </html>
-
-<script type="text/javascript">    
-	$(document).ready(function() {
-		$("#menu_advertiser").addClass("active");
-		
-	});
-</script>
 
 
 
