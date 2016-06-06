@@ -8,7 +8,6 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.asgab.entity.Group;
 import com.asgab.entity.User;
-import com.asgab.entity.xmo.Currency;
 import com.asgab.repository.mybatis.MyBatisRepositoryXMO;
 
 /**
@@ -38,7 +37,5 @@ public interface UserXMOMapper {
   List<User> findUsersByGroupName(Map<String, Object> parameters);
 
   List<Group> findGroupByGroupName(String groupName);
-  
-  List<Currency> getCurrencys();
 
 }
