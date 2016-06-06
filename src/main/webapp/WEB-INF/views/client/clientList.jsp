@@ -49,9 +49,9 @@
 		            <div class="box-header with-border">
 		              <h3 class="box-title">
 		              <!-- 没有title -->
-		             	<button class="btn btn-primary btn-sm" onclick="window.location.href='${ctx}/client/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
-                		<button class="btn btn-sm" onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
-		              	<button class="btn btn-warning btn-sm" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
+		             	<button class="btn btn-primary btn-flat btn-sm" onclick="window.location.href='${ctx}/client/create';"><i class="fa fa-w fa-pencil-square-o"></i>&nbsp;<spring:message code="btn.create"/></button>
+                		<button class="btn btn-primary btn-flat btn-sm " onclick="$('#searchForm').submit();"><i class="fa fa-w fa-search"></i>&nbsp;<spring:message code="btn.search"/></button>
+		              	<button class="btn btn-warning btn-flat btn-sm" onclick="resetForm();"><i class="fa fa-w fa-undo"></i>&nbsp;<spring:message code="btn.reset"/></button>
 		              </h3>
 		              <div class="box-tools pull-right">
 		                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -86,22 +86,23 @@
 	                    <tbody>
 		                    <tr>
 		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th><spring:message code="public.status"/></th>
 		                    	<th style="cursor: pointer;" <tags:sort column="brand" page="${pages}"/>><spring:message code="client.brand" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
 		                    	<th><spring:message code="client.agency" /> </th>
 		                    	<th style="cursor: pointer;" <tags:sort column="industry_name" page="${pages}"/>><spring:message code="client.industry" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th><spring:message code="public.status"/></th>
 		                    	<th><spring:message code="opportunity.operate"/></th>
 		                    </tr>
                     
 	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
 	                    	<tr>
-		                     	<td>${client.name}</td>
-		                     	<td>${client.client_status}</td>
+		                     	<td>
+		                     		<a href="javascript:void(0);" onclick="view(${client.id});" >${client.name}</a>
+		                     	</td>
 		                     	<td>${client.brand}</td>
 		                     	<td>${client.channel_name}</td>
 		                     	<td>${client.industry_name}</td>
+		                     	<td>${client.client_status}</td>
 		                     	<td>
-		                      		<a href="#" onclick="view(${client.id});" class="btn btn-sm btn-warning"><i class="fa fa-w fa-file-text-o"></i>&nbsp;<spring:message code="btn.view"/></a>
 		                      	</td>
 		                    </tr>
 	                    </c:forEach>
@@ -121,7 +122,7 @@
           
           <script type="text/javascript">
           	$(document).ready(function() {
-        		$("#menu_advertiser").addClass("active");  
+        		$("#menu_client").addClass("active");  
         	});
           
           	function view(id){
