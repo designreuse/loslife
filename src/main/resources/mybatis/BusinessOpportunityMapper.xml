@@ -4,19 +4,25 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="com.asgab.repository.BusinessOpportunityMapper">
 	
+	<sql id="businessOpportunityColumns-join">
+		o.name,o.advertiser_id,o.budget,o.currency_id,o.deliver_start_date,o.deliver_end_date,o.owner_sale,o.cooperate_sales,
+		o.exist_msa,o.exist_service,o.status,o.progress,o.remark,o.deleted_at,o.created_at,o.updated_at
+	</sql>
+	
 	<select id="get" parameterType="long" resultType="BusinessOpportunity">
-		select o.id,o.advertiser_id,o.budget,o.currency_id,o.deliver_start_date,o.deliver_end_date,o.owner_sale,o.cooperate_sales,
-				o.exist_msa,o.exist_service,o.status,o.progress,o.remark,o.deleted_at,o.created_at,o.updated_at,c.name as advertiser
+		select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id
 		where o.deleted_at is null and o.id=#{id}
 	</select>
 
 	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="search" parameterType="map" resultType="BusinessOpportunity">
-		select o.id,o.advertiser_id,o.budget,o.currency_id,o.deliver_start_date,o.deliver_end_date,o.owner_sale,o.cooperate_sales,
-				o.exist_msa,o.exist_service,o.status,o.progress,o.remark,o.deleted_at,o.created_at,o.updated_at,c.name as advertiser
+		select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
+		<if test="name != null">
+			and o.name like "%"#{name}"%"
+		</if>
 		<if test="advertiser != null">
 			and c.name like "%"#{advertiser}"%"
 		</if>
@@ -29,20 +35,24 @@
 		select count(1) 
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
+		<if test="name != null">
+			and o.name like "%"#{name}"%"
+		</if>
 		<if test="advertiser != null">
 			and c.name like "%"#{advertiser}"%"
 		</if>
 	</select>
 
 	<insert id="save" parameterType="BusinessOpportunity" useGeneratedKeys="true" keyProperty="id">
-		insert into sales_booking_production.business_opportunities (advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
+		insert into sales_booking_production.business_opportunities (name,advertiser_id,budget,currency_id,deliver_start_date,deliver_end_date,owner_sale,cooperate_sales,
 				exist_msa,exist_service,status,progress,remark,created_at)
-		values (#{advertiser_id},#{budget},#{currency_id},#{deliver_start_date},#{deliver_end_date},#{owner_sale},
+		values (#{name},#{advertiser_id},#{budget},#{currency_id},#{deliver_start_date},#{deliver_end_date},#{owner_sale},
 				#{cooperate_sales},#{exist_msa},#{exist_service},#{status},#{progress},#{remark},#{created_at})
 	</insert>
 	
 	<insert id="update" parameterType="BusinessOpportunity">
 		update sales_booking_production.business_opportunities set 
+			name=#{name},
 			advertiser_id=#{advertiser_id},
 			budget=#{budget},
 			currency_id=#{currency_id},

@@ -70,6 +70,10 @@ public class Client {
   private String userIds;
   private String userNames;
 
+  private String dateRange;
+  private String createDateStart;
+  private String createDateEnd;
+
   public Client() {
     super();
   }
@@ -336,6 +340,30 @@ public class Client {
 
   public void setPlatform(String platform) {
     this.platform = platform;
+  }
+
+  public String getDateRange() {
+    return dateRange;
+  }
+
+  public void setDateRange(String dateRange) {
+    this.dateRange = dateRange;
+  }
+
+  public String getCreateDateStart() {
+    return createDateStart;
+  }
+
+  public void setCreateDateStart(String createDateStart) {
+    this.createDateStart = createDateStart;
+  }
+
+  public String getCreateDateEnd() {
+    return createDateEnd;
+  }
+
+  public void setCreateDateEnd(String createDateEnd) {
+    this.createDateEnd = createDateEnd;
   }
 
 }

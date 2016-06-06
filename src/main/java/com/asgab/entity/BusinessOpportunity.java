@@ -14,6 +14,7 @@ import com.asgab.util.CommonUtil;
 
 public class BusinessOpportunity {
   private Long id;
+  private String name;
   private Long advertiser_id;
   private BigDecimal budget;
   private Long currency_id;
@@ -275,6 +276,14 @@ public class BusinessOpportunity {
 
   public void setUpdated_at(Date updated_at) {
     this.updated_at = updated_at;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
 }
