@@ -35,7 +35,7 @@
 	<!-- Content Header -->
       	 <section class="content-header">
           <h1>
-            <spring:message code="client.title.view" />21231
+            <spring:message code="client.title.view" />
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/client"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
