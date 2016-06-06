@@ -35,7 +35,7 @@
 	<!-- Content Header -->
       	 <section class="content-header">
           <h1>
-            <spring:message code="client.title.view" />
+            <spring:message code="client.title.view" />21231
           </h1>
           <ol class="breadcrumb">
             <li><a href="${ctx}/client"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
@@ -201,15 +201,14 @@
 		 		</div><!-- /.box-noborder -->
 		 </section><!-- /part3 -->
 	</div>
+
+	<script type="text/javascript">
+		$(function() {
+			$("#menu_client").addClass("active");
+		});
+	</script>
 </body>
 </html>
-
-<script type="text/javascript">    
-	$(document).ready(function() {
-		$("#menu_advertiser").addClass("active");
-		
-	});
-</script>
 
 
 
