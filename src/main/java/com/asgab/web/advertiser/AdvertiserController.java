@@ -40,6 +40,16 @@ public class AdvertiserController {
     if (StringUtils.isNotBlank(request.getParameter("brand"))) {
       params.put("brand", request.getParameter("brand"));
     }
+    if (StringUtils.isNotBlank(request.getParameter("dateRange"))) {
+      params.put("dateRange", request.getParameter("dateRange"));
+      if (request.getParameter("dateRange").length() >= 10) {
+        params.put("createDateStart", request.getParameter("dateRange").substring(0, 10) + " 00:00:00");
+      }
+      if (request.getParameter("dateRange").length() >= 23) {
+        params.put("createDateEnd", request.getParameter("dateRange").substring(13, 23) + " 23:59:59");
+      }
+    }
+    params.put("client_status", "Active");
 
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);

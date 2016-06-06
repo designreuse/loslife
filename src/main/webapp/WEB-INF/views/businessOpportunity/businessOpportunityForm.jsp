@@ -58,17 +58,33 @@
                 <div class="box-body">
                    <div class="row">
            			<div class="col-md-6">
-	                    <div class="form-group">
-	                      <label for="advertiser_id" class="col-md-3"><spring:message code="business.opportunity.advertiser" />*</label>
+           				<div class="form-group">
+	                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
 	                      <div class="col-md-9">
-	                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;">
-	                      		<c:if test="${advertiser !=null}">
-	                      			<option value="${advertiser.id}" selected>${advertiser.name}</option>
-	                      		</c:if>
-	                      	</select>
+	                      	<input type="text" name="name" id="name" class="form-control" value="${businessOpportunity.name }" placeholder="<spring:message code='business.opportunity.input.name'/>">
 	                      </div>
 	                    </div>
-	                    
+	                </div>
+	                <div class="col-md-12">
+	                	<div class="col-md-6" style="padding-left: 0;">
+		                    <div class="form-group">
+		                      <label for="advertiser_id" class="col-md-3"><spring:message code="business.opportunity.advertiser" />*</label>
+		                      <div class="col-md-9" >
+		                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;">
+		                      		<c:if test="${advertiser !=null}">
+		                      			<option value="${advertiser.id}" selected>${advertiser.name}</option>
+		                      		</c:if>
+		                      	</select>
+		                      </div>
+		                    </div>
+	                    </div>
+	                    <div class="col-md-6" style="padding-left: 0;">
+	                    	<div class="form-group">
+	                      		<label  class="col-md-12"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
+	                     	</div>
+	                    </div>
+	                </div>
+	                <div class="col-md-6">
 	                    <div class="form-group">
 	                      <label for="deliver_date" class="col-md-3"><spring:message code="business.opportunity.deliver.date" />*</label>
 	                      <div class="col-md-9">
@@ -105,11 +121,6 @@
 	                    
                     </div>
                     
-                    <div class="col-lg-6">
-                    	<div class="form-group">
-	                      <label for="progress" class="col-md-3"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
-	                     </div>
-                    </div>
                   </div>
                 </div><!-- /.box-body -->
                 
@@ -302,6 +313,7 @@
 				$("#primaryForm").validate({
 					ignore: "",
 					rules:{
+						name:"required",
 						advertiser_id:"required",
 						deliver_date:"required",
 						budget:{required:true,number:true},

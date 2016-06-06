@@ -40,6 +40,19 @@
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
 		</if>
+		<if test="client_status != null">
+			and a.client_status = #{client_status}
+		</if>
+		<if test="createDateStart != null">
+			<![CDATA[
+			and a.created_at >= #{createDateStart}
+			]]>
+		</if>
+		<if test="createDateEnd != null">
+			<![CDATA[
+			and a.created_at <=  #{createDateEnd}
+			]]>
+		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
 		</if>
@@ -57,6 +70,19 @@
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
+		</if>
+		<if test="client_status != null">
+			and a.client_status = #{client_status}
+		</if>
+		<if test="createDateStart != null">
+			<![CDATA[
+			and a.created_at >= #{createDateStart}
+			]]>
+		</if>
+		<if test="createDateEnd != null">
+			<![CDATA[
+			and a.created_at <=  #{createDateEnd}
+			]]>
 		</if>
 	</select>
 

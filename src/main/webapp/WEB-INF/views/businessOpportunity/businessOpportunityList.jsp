@@ -68,6 +68,12 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
+									<label><spring:message code="business.opportunity.name"/></label>
+									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" placeholder="<spring:message code='business.opportunity.input.name'/>">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
 									<label><spring:message code="business.opportunity.advertiser"/></label>
 									<input type="text" class="form-control" name="advertiser" id="advertiser" value="<c:out value="${pages.searchMap['advertiser']}"/>" placeholder="<spring:message code='business.opportunity.input.advertiser'/>">
 								</div>
@@ -82,6 +88,7 @@
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody><tr>
 	                      <th <tags:sort column="id" page="${pages}"/> style="width: 110px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
+	                      <th <tags:sort column="name" page="${pages}"/>><spring:message code="business.opportunity.name"/><i class="fa fa-w fa-sort"></i></th>
 	                      <th <tags:sort column="advertiser" page="${pages}"/>><spring:message code="business.opportunity.advertiser"/><i class="fa fa-w fa-sort"></i></th>
 	                      <th style="width: 80px"><spring:message code="business.opportunity.status"/></th>
 	                      <th><spring:message code="opportunity.progress"/></th>
@@ -92,6 +99,7 @@
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
 		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.id}</a></td>
+		                      <td>${opportunity.name}</td>
 		                      <td>${opportunity.advertiser}</td>
 		                      <td>
 		                      	<c:if test="${lang eq 'zh' }">
@@ -155,6 +163,7 @@
           	};
           	
           	function resetForm(){
+          		$("#name").val('');
           		$("#advertiser").val('');
           	};
           </script>

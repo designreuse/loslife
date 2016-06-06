@@ -90,7 +90,7 @@
 								<label><spring:message code="advertiser.dateDuring"/></label>
 								<div class="input-group">
 	                      			<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-	                      			<input type="text" value="<c:out value="${pages.searchMap['dateDuring']}"/>" class="form-control pull-right" name="deliver_date" id="deliver_date" placeholder="<spring:message code='advertiser.input.dateDuring' />">
+	                      			<input type="text" value="<c:out value="${pages.searchMap['dateRange']}"/>" class="form-control pull-right" name="dateRange" id="dateRange" placeholder="<spring:message code='advertiser.input.dateDuring' />">
 	                      		</div>
 							</div>
 						</div><!-- /.row -->
@@ -141,7 +141,10 @@
           
           <script type="text/javascript">
           	$(document).ready(function() {
-        		$("menu_advertisor").addClass("active");  
+        		$("menu_advertisor").addClass("active");
+        		
+        		$("#dateRange").daterangepicker({opens:"left",cancelClass:"btn-info",format:'YYYY-MM-DD'});
+        		
         		//Flat red color scheme for iCheck
                 $('input[type="checkbox"]').iCheck({
                   checkboxClass: 'icheckbox_minimal-blue'
@@ -163,7 +166,7 @@
           		$("#brand").val('');
           		$("#user_id").val('');
           		$("#platform").val('');
-          		$("#dateDuring").val('');
+          		$("#dateRange").val('');
           	};
           	
           	function compare(){
