@@ -69,7 +69,7 @@ public class AjaxController {
     for (int i = 0; i < pages.getContent().size(); i++) {
       JSONObject tmp = new JSONObject();
       tmp.put("id", pages.getContent().get(i).getId());
-      tmp.put("text", pages.getContent().get(i).getName());
+      tmp.put("text", pages.getContent().get(i).getClientname());
       array.add(tmp);
     }
     return array.toJSONString();

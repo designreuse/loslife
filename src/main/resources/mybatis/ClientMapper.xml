@@ -5,43 +5,45 @@
 <mapper namespace="com.asgab.repository.ClientMapper">
 
     <sql id="client_columns">
-  		name, brand,industry_id,whether_channel,channel,currency_id,address,whether_cross_district,qualification_name,
-  		website_name,website_address,organization_code,icp,business_licence,organization_code_scan_file,
-  		business_licence_scan_file,icp_scan_file,linkman_name,linkman_tel,linkman_position,platform,created_at,created_user,
-  		user_id,updated_at,client_status
+  		clientname,client_brand,industry_id,whether_channel,channel,currency_id,company_adress,whether_cross_district,
+  		qualification_name,website_name,website_address,organization_code,icp,business_licence,organization_code_scan_file,
+ 		business_licence_scan_file,icp_scan_file,platform,status,created_at,user_id,updated_at
     </sql>
     
     <sql id="client_columns_for_join">
-        a.name, a.brand,a.industry_id,a.whether_channel,a.channel,a.currency_id,a.address,a.whether_cross_district,
-        a.qualification_name,a.website_name,a.website_address,a.organization_code,a.icp,a.business_licence,
-        a.organization_code_scan_file,a.business_licence_scan_file,a.icp_scan_file,a.linkman_name,a.linkman_tel,
-        a.linkman_position,a.platform,a.created_at,a.created_user,a.user_id,a.updated_at,a.client_status
+        a.clientname,a.client_brand,a.industry_id,a.whether_channel,a.channel,a.currency_id,a.company_adress,a.whether_cross_district,
+  		a.qualification_name,a.website_name,a.website_address,a.organization_code,a.icp,a.business_licence,a.organization_code_scan_file,
+ 		a.business_licence_scan_file,a.icp_scan_file,a.platform,a.status,a.created_at,a.user_id,a.updated_at
     </sql>
     
     
 	<select id="get" parameterType="long" resultType="Client">
-		select a.id, <include refid="client_columns_for_join" />, GROUP_CONCAT(d.`id`) as userIds, GROUP_CONCAT(d.`name`) as userNames,
-		c.channel_name as channel_name 
-		from clients a left join share_clients b on a.id = b.client_id left join channels c on a.channel = c.id
+		select a.id, <include refid="client_columns_for_join" /> ,c.channel_name as channel_name,GROUP_CONCAT(d.`id`) as saleIds, GROUP_CONCAT(d.`name`) as saleNames
+		from xmo.clients a 
+		left join sales_booking_production.share_clients b on a.id = b.client_id 
 		left join xmo.users d on b.share_id = d.id
+		left join sales_booking_production.channels c on a.channel = c.id
 		where a.id = #{id}
 	</select>
 
 	<select id="search" parameterType="map" resultType="Client">
-		select a.id, <include refid="client_columns_for_join" />, b.channel_name as channel_name, c.name as industry_name
-		from clients a left join channels b on a.channel = b.id left join industries c on a.industry_id = c.id
+		select a.id, <include refid="client_columns_for_join" />, c.channel_name as channel_name,GROUP_CONCAT(d.`id`) as saleIds, GROUP_CONCAT(d.`name`) as saleNames
+		from xmo.clients a 
+		left join sales_booking_production.share_clients b on a.id = b.client_id
+		left join xmo.users d on b.share_id = d.id
+		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
-		<if test="name != null">
-			and a.name like "%"#{name}"%"
+		<if test="clientname != null">
+			and a.clientname like "%"#{clientname}"%"
 		</if>
-		<if test="brand != null">
-			and a.brand like "%"#{brand}"%"
+		<if test="client_brand != null">
+			and a.client_brand like "%"#{client_brand}"%"
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
 		</if>
-		<if test="client_status != null">
-			and a.client_status = #{client_status}
+		<if test="status != null">
+			and a.status = #{status}
 		</if>
 		<if test="createDateStart != null">
 			<![CDATA[
@@ -53,26 +55,31 @@
 			and a.created_at <=  #{createDateEnd}
 			]]>
 		</if>
+		group by a.id
 		<if test="sort != null and sort!=''">
 			order by ${sort}
 		</if>
 	</select>
 	
 	<select id="count" parameterType="map" resultType="int">
+	select count(1) from (
 		select count(1) 
-		from clients a left join channels b on a.channel = b.id left join industries c on a.industry_id = c.id
+		from xmo.clients a 
+		left join sales_booking_production.share_clients b on a.id = b.client_id
+		left join xmo.users d on b.share_id = d.id
+		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
-		<if test="name != null">
-			and a.name like "%"#{name}"%"
+		<if test="clientname != null">
+			and a.clientname like "%"#{clientname}"%"
 		</if>
-		<if test="brand != null">
-			and a.brand like "%"#{brand}"%"
+		<if test="client_brand != null">
+			and a.client_brand like "%"#{client_brand}"%"
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
 		</if>
-		<if test="client_status != null">
-			and a.client_status = #{client_status}
+		<if test="status != null">
+			and a.status = #{status}
 		</if>
 		<if test="createDateStart != null">
 			<![CDATA[
@@ -84,36 +91,30 @@
 			and a.created_at <=  #{createDateEnd}
 			]]>
 		</if>
+		group by a.id) t 
 	</select>
 
 	<insert id="save" parameterType="Client" useGeneratedKeys="true" keyProperty="id">
-		insert into clients (<include refid="client_columns" />)
-		values ( #{name}, #{brand},#{industry_id},#{whether_channel},#{channel},#{currency_id},#{address},
-			#{whether_cross_district},#{qualification_name},#{website_name},#{website_address},#{organization_code},
-			#{icp},#{business_licence},#{organization_code_scan_file},#{business_licence_scan_file},
-			#{icp_scan_file},#{linkman_name},#{linkman_tel},#{linkman_position},#{platform},#{created_at},
-			#{created_user},#{user_id},#{updated_at},#{client_status} )
+		insert into xmo.clients (<include refid="client_columns" />)
+		values ( #{clientname},#{client_brand},#{industry_id},#{whether_channel},#{channel},#{currency_id},
+		#{company_adress},#{whether_cross_district},#{qualification_name},#{website_name},#{website_address},
+		#{organization_code},#{icp},#{business_licence},#{organization_code_scan_file},#{business_licence_scan_file},
+		#{icp_scan_file},#{platform},#{status},#{created_at},#{user_id},#{updated_at})
 	</insert>
 	
 	<update id="update" parameterType="Client">
-		update clients set 
-			name=#{name}, brand=#{brand},industry_id=#{industry_id},whether_channel=#{whether_channel},channel=#{channel},
-			currency_id=#{currency_id},address=#{address},whether_cross_district=#{whether_cross_district},
-			qualification_name=#{qualification_name},website_name=#{website_name},website_address=#{website_address},
-			organization_code=#{organization_code},icp=#{icp},business_licence=#{business_licence},
-			organization_code_scan_file=#{organization_code_scan_file},business_licence_scan_file=#{business_licence_scan_file},
-			icp_scan_file=#{icp_scan_file},linkman_name=#{linkman_name},linkman_tel=#{linkman_tel},linkman_position=#{linkman_position},
-			platform=#{platform},created_at=#{created_at},created_user=#{created_user},user_id=#{user_id},updated_at=#{updated_at},
-			client_status=#{client_status}
+		update xmo.clients set 
+			clientname=#{clientname},client_brand=#{client_brand},industry_id=#{industry_id},whether_channel=#{whether_channel},
+			channel=#{channel},currency_id=#{currency_id},company_adress=#{company_adress},whether_cross_district=#{whether_cross_district},
+  			qualification_name=#{qualification_name},website_name=#{website_name},website_address={website_address},
+  			organization_code=#{organization_code},icp=#{icp},business_licence=#{business_licence},organization_code_scan_file=#{organization_code_scan_file},
+ 			business_licence_scan_file=#{business_licence_scan_file},icp_scan_file=#{icp_scan_file},platform=#{platform},status=#{status},
+ 			updated_at=#{updated_at}
 		where id = #{id}
 	</update>
 	
-	<delete id="delete" parameterType="long">
-	     update clients set deleted=2 where id=#{id}
-	</delete>
-	
 	<select id="getAdvertisersByIdList" parameterType="list" resultType="Client">
-	select id,<include refid="client_columns" /> from sales_booking_production.clients
+	select id,<include refid="client_columns" /> from xmo.clients
 	where id in
 	<foreach collection="list" item="id" separator="," open="(" close=")">
 		#{id}

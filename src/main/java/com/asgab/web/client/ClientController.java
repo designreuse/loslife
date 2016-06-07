@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,13 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.Client;
-import com.asgab.service.account.AccountService;
 import com.asgab.service.account.ShiroDbRealm.ShiroUser;
-import com.asgab.service.agency.AgencyService;
 import com.asgab.service.client.ClientContactService;
 import com.asgab.service.client.ClientService;
-import com.asgab.service.management.CurrencyTypeService;
-import com.asgab.service.management.IndustryTypeService;
 import com.asgab.util.CommonUtil;
 import com.asgab.util.Servlets;
 
@@ -42,32 +37,25 @@ public class ClientController {
   @Autowired
   private ClientService clientService;
   @Autowired
-  private AgencyService agencyService;
-  @Autowired
-  private CurrencyTypeService currencyTypeService;
-  @Autowired
-  private IndustryTypeService industryTypeService;
-  @Autowired
-  private AccountService accountService;
-  @Autowired
   private ClientContactService clientContactService;
 
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(
-          value = "sort", defaultValue = "id desc") String sort, ServletRequest request, Model model) {
+      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
+      HttpServletRequest request, Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
-    if (StringUtils.isNotBlank(request.getParameter("name"))) {
-      params.put("name", request.getParameter("name"));
+    if (StringUtils.isNotBlank(request.getParameter("clientname"))) {
+      params.put("clientname", request.getParameter("clientname"));
     }
-    if (StringUtils.isNotBlank(request.getParameter("brand"))) {
-      params.put("brand", request.getParameter("brand"));
+    if (StringUtils.isNotBlank(request.getParameter("client_brand"))) {
+      params.put("client_brand", request.getParameter("client_brand"));
     }
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);
     Page<Client> page = new Page<Client>(pageNumber, pageSize, sort, params);
     Page<Client> pages = clientService.search(page);
     model.addAttribute("pages", pages);
+    clientService.setSelect(request);
     return "client/clientList";
   }
 
@@ -77,13 +65,12 @@ public class ClientController {
     client.setCurrency_id(2);// 默认RMB
     model.addAttribute("client", client);
     model.addAttribute("action", "create");
-    setSelect(request);
+    clientService.setSelect(request);
     return "client/clientForm";
   }
 
   @RequestMapping(value = "create", method = RequestMethod.POST)
-  public String create(Client client, HttpServletRequest request,
-      RedirectAttributes redirectAttributes) {
+  public String create(Client client, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
     ShiroUser user = getCurrUser();
     if (user != null) {
@@ -91,10 +78,9 @@ public class ClientController {
       client.setUser_id(user.id);
     }
     client.setCreated_at(new Date());
-    client.setClient_status("Active");
+    client.setStatus("Active");
     clientService.save(client);
-    redirectAttributes.addFlashAttribute("message",
-        CommonUtil.getProperty(request, "message.create.success"));
+    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.create.success"));
     return "redirect:/client";
   }
 
@@ -105,7 +91,7 @@ public class ClientController {
     Client client = clientService.get(id);
     client.setContacts(clientContactService.getList(searchMap));
     model.addAttribute("client", client);
-    setSelect(request);
+    clientService.setSelect(request);
     return "client/clientView";
   }
 
@@ -117,26 +103,22 @@ public class ClientController {
     client.setContacts(clientContactService.getList(searchMap));
     model.addAttribute("client", client);
     model.addAttribute("action", "update");
-    setSelect(request);
+    clientService.setSelect(request);
     return "client/clientForm";
   }
 
   @RequestMapping(value = "update", method = RequestMethod.POST)
-  public String update(@ModelAttribute("client") Client client, HttpServletRequest request,
-      RedirectAttributes redirectAttributes) {
+  public String update(@ModelAttribute("client") Client client, HttpServletRequest request, RedirectAttributes redirectAttributes) {
     client.setUpdated_at(new Date());
     clientService.update(client);
-    redirectAttributes.addFlashAttribute("message",
-        CommonUtil.getProperty(request, "message.update.success"));
+    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.update.success"));
     return "redirect:/client";
   }
 
   @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request,
-      RedirectAttributes redirectAttributes) {
+  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
     clientService.delete(id);
-    redirectAttributes.addFlashAttribute("message",
-        CommonUtil.getProperty(request, "message.delete.success"));
+    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.delete.success"));
     return "redirect:/client";
   }
 
@@ -145,13 +127,6 @@ public class ClientController {
     if (id != -1) {
       model.addAttribute("client", clientService.get(id));
     }
-  }
-
-  private void setSelect(HttpServletRequest request) {
-    Map<String, Object> searchMap = new HashMap<String, Object>();
-    searchMap.put("lang", request.getLocale().getLanguage());
-    request.setAttribute("currencyTypes", currencyTypeService.getOptions(null));
-    request.setAttribute("industryTypes", industryTypeService.getOptions(searchMap));
   }
 
   @RequestMapping(value = "addContact/{index}", method = RequestMethod.POST)

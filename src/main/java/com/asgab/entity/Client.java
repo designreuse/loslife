@@ -1,5 +1,6 @@
 package com.asgab.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,12 @@ public class Client {
    * @author Siuvan
    */
 
+  // db
   private Long id;
   // 广告主名称/公司名称
-  private String name;
+  private String clientname;
   // 品牌
-  private String brand;
+  private String client_brand;
   // 行业
   private int industry_id;
   // 是否是代理
@@ -25,7 +27,7 @@ public class Client {
   // 货币
   private int currency_id;
   // 公司地址
-  private String address;
+  private String company_adress;
   // 是否跨区
   private int whether_cross_district;
   // 资质名称
@@ -44,31 +46,27 @@ public class Client {
   private String organization_code_scan_file;
   private String business_licence_scan_file;
   private String icp_scan_file;
-
-  private String linkman_name;
-  private String linkman_tel;
-  private String linkman_position;
   // 平台
   private String platform;
+  private String status;
 
+  // other
   private Date created_at;
   private String created_user;
   private Long user_id;
   private Date updated_at;
-  private String client_status;
 
   private String channel_name;
-  private String industry_name;
 
   // 广告主联系人
-  private List<ClientContact> contacts;
+  private List<ClientContact> contacts = new ArrayList<>();
 
   // 删除的联系人ID
   private String[] deleteContactIds;
 
   // 销售人员
-  private String userIds;
-  private String userNames;
+  private String saleIds;
+  private String saleNames;
 
   private String dateRange;
   private String createDateStart;
@@ -84,22 +82,6 @@ public class Client {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getBrand() {
-    return brand;
-  }
-
-  public void setBrand(String brand) {
-    this.brand = brand;
   }
 
   public int getIndustry_id() {
@@ -132,14 +114,6 @@ public class Client {
 
   public void setCurrency_id(int currency_id) {
     this.currency_id = currency_id;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
   }
 
   public int getWhether_cross_district() {
@@ -182,12 +156,12 @@ public class Client {
     this.updated_at = updated_at;
   }
 
-  public String getClient_status() {
-    return client_status;
+  public String getStatus() {
+    return status;
   }
 
-  public void setClient_status(String client_status) {
-    this.client_status = client_status;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public String getChannel_name() {
@@ -196,14 +170,6 @@ public class Client {
 
   public void setChannel_name(String channel_name) {
     this.channel_name = channel_name;
-  }
-
-  public String getIndustry_name() {
-    return industry_name;
-  }
-
-  public void setIndustry_name(String industry_name) {
-    this.industry_name = industry_name;
   }
 
   public List<ClientContact> getContacts() {
@@ -222,20 +188,20 @@ public class Client {
     this.deleteContactIds = deleteContactIds;
   }
 
-  public String getUserIds() {
-    return userIds;
+  public String getSaleIds() {
+    return saleIds;
   }
 
-  public void setUserIds(String userIds) {
-    this.userIds = userIds;
+  public void setSaleIds(String saleIds) {
+    this.saleIds = saleIds;
   }
 
-  public String getUserNames() {
-    return userNames;
+  public String getSaleNames() {
+    return saleNames;
   }
 
-  public void setUserNames(String userNames) {
-    this.userNames = userNames;
+  public void setSaleNames(String saleNames) {
+    this.saleNames = saleNames;
   }
 
   public String getQualification_name() {
@@ -310,30 +276,6 @@ public class Client {
     this.icp_scan_file = icp_scan_file;
   }
 
-  public String getLinkman_name() {
-    return linkman_name;
-  }
-
-  public void setLinkman_name(String linkman_name) {
-    this.linkman_name = linkman_name;
-  }
-
-  public String getLinkman_tel() {
-    return linkman_tel;
-  }
-
-  public void setLinkman_tel(String linkman_tel) {
-    this.linkman_tel = linkman_tel;
-  }
-
-  public String getLinkman_position() {
-    return linkman_position;
-  }
-
-  public void setLinkman_position(String linkman_position) {
-    this.linkman_position = linkman_position;
-  }
-
   public String getPlatform() {
     return platform;
   }
@@ -364,6 +306,30 @@ public class Client {
 
   public void setCreateDateEnd(String createDateEnd) {
     this.createDateEnd = createDateEnd;
+  }
+
+  public String getClientname() {
+    return clientname;
+  }
+
+  public void setClientname(String clientname) {
+    this.clientname = clientname;
+  }
+
+  public String getClient_brand() {
+    return client_brand;
+  }
+
+  public void setClient_brand(String client_brand) {
+    this.client_brand = client_brand;
+  }
+
+  public String getCompany_adress() {
+    return company_adress;
+  }
+
+  public void setCompany_adress(String company_adress) {
+    this.company_adress = company_adress;
   }
 
 }

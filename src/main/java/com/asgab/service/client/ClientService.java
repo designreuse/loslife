@@ -1,12 +1,18 @@
 package com.asgab.service.client;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.Client;
@@ -15,6 +21,8 @@ import com.asgab.entity.ClientShare;
 import com.asgab.repository.ClientContactMapper;
 import com.asgab.repository.ClientMapper;
 import com.asgab.repository.ClientShareMapper;
+import com.asgab.service.management.CurrencyTypeService;
+import com.asgab.service.management.IndustryTypeService;
 
 @Component
 @Transactional
@@ -26,6 +34,10 @@ public class ClientService {
   private ClientContactMapper clientContactMapper;
   @Autowired
   private ClientShareMapper clientShareMapper;
+  @Autowired
+  private CurrencyTypeService currencyTypeService;
+  @Autowired
+  private IndustryTypeService industryTypeService;
 
   public Page<Client> search(Page<Client> page) {
     List<Client> clients = clientMapper.search(page.getSearchMap(), page.getRowBounds());
@@ -46,7 +58,7 @@ public class ClientService {
     addClientContacts(client.getContacts(), client.getId());
 
     // 添加销售人员
-    addClientShares(client.getUserIds(), client.getId());
+    addClientShares(client.getSaleIds(), client.getId());
   }
 
   public void update(Client client) {
@@ -54,7 +66,7 @@ public class ClientService {
     // 先删除销售人员,物理删除
     clientShareMapper.deleteByClientId(client.getId());
     // 再添加销售人员
-    addClientShares(client.getUserIds(), client.getId());
+    addClientShares(client.getSaleIds(), client.getId());
 
     if (client.getDeleteContactIds() != null && client.getDeleteContactIds().length > 0) {
       for (String deleteId : client.getDeleteContactIds()) {
@@ -128,5 +140,20 @@ public class ClientService {
 
   public List<Client> getAdvertisersByIdList(List<Long> idList) {
     return clientMapper.getAdvertisersByIdList(idList);
+  }
+
+  public void setSelect(HttpServletRequest request) {
+    LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+    String lang = localeResolver.resolveLocale(request).getLanguage();
+    Map<String, Object> searchMap = new HashMap<String, Object>();
+    searchMap.put("lang", lang);
+    request.setAttribute("currencyTypes", currencyTypeService.getOptions(null));
+    request.setAttribute("industryTypes", industryTypeService.getOptions(searchMap));
+  }
+
+  public void resetClientContact(Client client) {
+    Map<String, Object> searchMap = new HashMap<String, Object>();
+    searchMap.put("client_id", client.getId());
+    client.setContacts(clientContactMapper.search(searchMap));
   }
 }

@@ -1,3 +1,7 @@
+<%@page import="com.asgab.entity.ClientContact"%>
+<%@page import="java.util.List"%>
+<%@page import="com.asgab.entity.Client"%>
+<%@page import="com.asgab.core.pagination.Page"%>
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <%@page import="org.springframework.web.servlet.LocaleResolver"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
@@ -69,17 +73,17 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="advertiser.clientname"/></label>
-									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
+									<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
 								</div>
 								<div class="form-group">
 									<label><spring:message code="advertiser.sales"/></label>
-									<input type="text" class="form-control" name="user_id" id="user_id" value="<c:out value="${pages.searchMap['user_id']}"/>" placeholder="<spring:message code='advertiser.input.sales'/>">
+									<input type="text" class="form-control" name="saleIds" id="saleIds" value="<c:out value="${pages.searchMap['saleIds']}"/>" placeholder="<spring:message code='advertiser.input.sales'/>">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="advertiser.brand"/></label>
-									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
+									<input type="text" class="form-control" name="client_brand" id="client_brand" value="<c:out value="${pages.searchMap['client_brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
 								</div>
 								<div class="form-group">
 									<label><spring:message code="advertiser.platform"/></label>
@@ -104,7 +108,7 @@
 	                    <tbody>
 	                    <tr>
 	                      <th><input type="checkbox" class="allcheck" id="allcheck" style="width: 10px"> </th>
-	                      <th <tags:sort column="id" page="${pages}"/> style="width: 100px"><spring:message code="opportunity.id" /><i class="fa fa-w fa-sort"></i></th>
+	                      <th <tags:sort column="id" page="${pages}"/> style="width: 100px"><spring:message code="advertiser.id" /><i class="fa fa-w fa-sort"></i></th>
 	                      <th <tags:sort column="clientname" page="${pages}"/>><spring:message code="advertiser.clientname" /><i class="fa fa-w fa-sort"></i></th>
 	                      <th ><spring:message code="advertiser.brand" /></th>
 						  <th ><spring:message code="advertiser.companyname" /></th>
@@ -115,20 +119,38 @@
 	                      <th ><spring:message code="advertiser.sales" /></th>
 	                    </tr>
                     
-	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
-	                    	<tr>
-	                    	  <th><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
-		                      <td>${client.id}</td>
-		                      <td>${client.name}</td>
-		                      <td>${client.brand}</td>
-		                      <td>${client.name}</td>
-		                      <td>${client.linkman_name}</td>
-		                      <td>${client.linkman_tel}</td>
-		                      <td>${client.linkman_position}</td>
-		                      <td>${client.address }</td>
-		                      <td>${client.user_id }</td>
-		                    </tr>
-	                    </c:forEach>
+	                    <%
+	                    	Page<Client> pages = (Page<Client>)request.getAttribute("pages");
+	                    	for(Client client:pages.getContent()){
+	                    	  int size = client.getContacts().size()==0?1:client.getContacts().size();
+	                    	  request.setAttribute("client", client);
+	                    	  request.setAttribute("size", size);
+	                    	  List<ClientContact> contacts = client.getContacts();
+		                      for(int i = 0 ; i < size;i++){
+		                        ClientContact contact = client.getContacts().size()==0?new ClientContact():contacts.get(i);
+		                        request.setAttribute("contact", contact);
+		                        request.setAttribute("i", i);
+		                        %>
+		                        	<tr>
+		                        		<c:if test="${i eq 0 }">
+		                        		<th rowspan="${size}"><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
+		                     	  		<td rowspan="${size}">${client.id}</td>
+		                     	 		<td rowspan="${size}">${client.clientname}</td>
+			                     		<td rowspan="${size}">${client.client_brand}</td>
+			                     		<td rowspan="${size}">${client.channel_name}</td>
+			                     		</c:if>
+			                     		<td>${contact.contact_person}</td>
+			                     		<td>${contact.phone}</td>
+			                      		<td>${contact.position}</td>
+			                      		<td>${contact.address}</td>
+			                      		<c:if test="${i eq 0 }">
+			                      		<td rowspan="${size}">${client.saleNames }</td>
+			                      		</c:if>
+			                      	</tr>
+		                        <%
+		                      }
+	                    	}
+	                    %>
                     
                   </tbody></table>
 				</div><!-- /.box-body-->
@@ -162,9 +184,9 @@
         	});
           	
           	function resetForm(){
-          		$("#name").val('');
-          		$("#brand").val('');
-          		$("#user_id").val('');
+          		$("#clientname").val('');
+          		$("#client_brand").val('');
+          		$("#saleIds").val('');
           		$("#platform").val('');
           		$("#dateRange").val('');
           	};

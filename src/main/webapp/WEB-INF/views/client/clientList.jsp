@@ -63,7 +63,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="client" /></label>
-									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" 
+									<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" 
 									placeholder="<spring:message code="client.name.remark" />">
 								</div>
 							</div>
@@ -71,7 +71,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="client.brand" /></label>
-									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" 
+									<input type="text" class="form-control" name="client_brand" id="client_brand" value="<c:out value="${pages.searchMap['client_brand']}"/>" 
 									placeholder="<spring:message code="client.brand.remark" />">
 								</div>
 							</div>
@@ -86,24 +86,21 @@
 	                    <tbody>
 		                    <tr>
 		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th style="cursor: pointer;" <tags:sort column="brand" page="${pages}"/>><spring:message code="client.brand" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th><spring:message code="client.agency" /> </th>
-		                    	<th style="cursor: pointer;" <tags:sort column="industry_name" page="${pages}"/>><spring:message code="client.industry" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
 		                    	<th><spring:message code="public.status"/></th>
-		                    	<th><spring:message code="opportunity.operate"/></th>
+		                    	<th><spring:message code="client.brand" /></th>
+		                    	<th><spring:message code="client.agency" /> </th>
+		                    	<th ><spring:message code="client.industry" /></th>
 		                    </tr>
                     
 	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
 	                    	<tr>
 		                     	<td>
-		                     		<a href="javascript:void(0);" onclick="view(${client.id});" >${client.name}</a>
+		                     		<a href="javascript:void(0);" onclick="view(${client.id});" >${client.clientname}</a>
 		                     	</td>
-		                     	<td>${client.brand}</td>
+		                     	<td>${client.status}</td>
+		                     	<td>${client.client_brand}</td>
 		                     	<td>${client.channel_name}</td>
-		                     	<td>${client.industry_name}</td>
-		                     	<td>${client.client_status}</td>
-		                     	<td>
-		                      	</td>
+		                     	<td><tags:decodeList list="${industryTypes}" value="${client.industry_id}"></tags:decodeList></td>
 		                    </tr>
 	                    </c:forEach>
                     
