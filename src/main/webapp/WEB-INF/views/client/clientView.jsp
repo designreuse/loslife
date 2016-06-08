@@ -61,7 +61,7 @@
 						
 	                		<div class="form-group">
 	                			<label for="brand" class="col-md-3"><spring:message code="client.brand.name" /></label>
-		                      	<div class="col-sm-9">${client.client_brand}</div>
+		                      	<div class="col-sm-9">${client.brand}</div>
 	                		</div>
 		                	
 		                	 <div class="form-group">

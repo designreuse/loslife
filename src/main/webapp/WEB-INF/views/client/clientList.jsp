@@ -71,7 +71,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="client.brand" /></label>
-									<input type="text" class="form-control" name="client_brand" id="client_brand" value="<c:out value="${pages.searchMap['client_brand']}"/>" 
+									<input type="text" class="form-control" name="brand" id="client_brand" value="<c:out value="${pages.searchMap['brand']}"/>" 
 									placeholder="<spring:message code="client.brand.remark" />">
 								</div>
 							</div>
@@ -98,7 +98,7 @@
 		                     		<a href="javascript:void(0);" onclick="view(${client.id});" >${client.clientname}</a>
 		                     	</td>
 		                     	<td>${client.status}</td>
-		                     	<td>${client.client_brand}</td>
+		                     	<td>${client.brand}</td>
 		                     	<td>${client.channel_name}</td>
 		                     	<td><tags:decodeList list="${industryTypes}" value="${client.industry_id}"></tags:decodeList></td>
 		                    </tr>

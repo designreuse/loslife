@@ -5,14 +5,14 @@
 <mapper namespace="com.asgab.repository.ClientMapper">
 
     <sql id="client_columns">
-  		clientname,client_brand,industry_id,whether_channel,channel,currency_id,company_adress,whether_cross_district,
-  		qualification_name,website_name,website_address,organization_code,icp,business_licence,organization_code_scan_file,
+  		clientname,brand,industry_id,whether_channel,channel,currency_id,address,whether_cross_district,
+  		company_name,website_name,website_address,organization_code,icp,business_licence,organization_code_scan_file,
  		business_licence_scan_file,icp_scan_file,platform,status,created_at,user_id,updated_at
     </sql>
     
     <sql id="client_columns_for_join">
-        a.clientname,a.client_brand,a.industry_id,a.whether_channel,a.channel,a.currency_id,a.company_adress,a.whether_cross_district,
-  		a.qualification_name,a.website_name,a.website_address,a.organization_code,a.icp,a.business_licence,a.organization_code_scan_file,
+        a.clientname,a.brand,a.industry_id,a.whether_channel,a.channel,a.currency_id,a.address,a.whether_cross_district,
+  		a.company_name,a.website_name,a.website_address,a.organization_code,a.icp,a.business_licence,a.organization_code_scan_file,
  		a.business_licence_scan_file,a.icp_scan_file,a.platform,a.status,a.created_at,a.user_id,a.updated_at
     </sql>
     
@@ -36,8 +36,8 @@
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"
 		</if>
-		<if test="client_brand != null">
-			and a.client_brand like "%"#{client_brand}"%"
+		<if test="brand != null">
+			and a.brand like "%"#{brand}"%"
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
@@ -72,8 +72,8 @@
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"
 		</if>
-		<if test="client_brand != null">
-			and a.client_brand like "%"#{client_brand}"%"
+		<if test="brand != null">
+			and a.brand like "%"#{brand}"%"
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
@@ -96,17 +96,17 @@
 
 	<insert id="save" parameterType="Client" useGeneratedKeys="true" keyProperty="id">
 		insert into xmo.clients (<include refid="client_columns" />)
-		values ( #{clientname},#{client_brand},#{industry_id},#{whether_channel},#{channel},#{currency_id},
-		#{company_adress},#{whether_cross_district},#{qualification_name},#{website_name},#{website_address},
+		values ( #{clientname},#{brand},#{industry_id},#{whether_channel},#{channel},#{currency_id},
+		#{address},#{whether_cross_district},#{company_name},#{website_name},#{website_address},
 		#{organization_code},#{icp},#{business_licence},#{organization_code_scan_file},#{business_licence_scan_file},
 		#{icp_scan_file},#{platform},#{status},#{created_at},#{user_id},#{updated_at})
 	</insert>
 	
 	<update id="update" parameterType="Client">
 		update xmo.clients set 
-			clientname=#{clientname},client_brand=#{client_brand},industry_id=#{industry_id},whether_channel=#{whether_channel},
-			channel=#{channel},currency_id=#{currency_id},company_adress=#{company_adress},whether_cross_district=#{whether_cross_district},
-  			qualification_name=#{qualification_name},website_name=#{website_name},website_address={website_address},
+			clientname=#{clientname},brand=#{brand},industry_id=#{industry_id},whether_channel=#{whether_channel},
+			channel=#{channel},currency_id=#{currency_id},address=#{address},whether_cross_district=#{whether_cross_district},
+  			company_name=#{company_name},website_name=#{website_name},website_address=#{website_address},
   			organization_code=#{organization_code},icp=#{icp},business_licence=#{business_licence},organization_code_scan_file=#{organization_code_scan_file},
  			business_licence_scan_file=#{business_licence_scan_file},icp_scan_file=#{icp_scan_file},platform=#{platform},status=#{status},
  			updated_at=#{updated_at}

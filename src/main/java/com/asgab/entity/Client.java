@@ -17,7 +17,7 @@ public class Client {
   // 广告主名称/公司名称
   private String clientname;
   // 品牌
-  private String client_brand;
+  private String brand;
   // 行业
   private int industry_id;
   // 是否是代理
@@ -27,11 +27,11 @@ public class Client {
   // 货币
   private int currency_id;
   // 公司地址
-  private String company_adress;
+  private String address;
   // 是否跨区
   private int whether_cross_district;
-  // 资质名称
-  private String qualification_name;
+  // 资质名称/ 公司名字
+  private String company_name;
   // 网站名称
   private String website_name;
   // 网址
@@ -204,14 +204,6 @@ public class Client {
     this.saleNames = saleNames;
   }
 
-  public String getQualification_name() {
-    return qualification_name;
-  }
-
-  public void setQualification_name(String qualification_name) {
-    this.qualification_name = qualification_name;
-  }
-
   public String getWebsite_name() {
     return website_name;
   }
@@ -316,20 +308,28 @@ public class Client {
     this.clientname = clientname;
   }
 
-  public String getClient_brand() {
-    return client_brand;
+  public String getBrand() {
+    return brand;
   }
 
-  public void setClient_brand(String client_brand) {
-    this.client_brand = client_brand;
+  public void setBrand(String brand) {
+    this.brand = brand;
   }
 
-  public String getCompany_adress() {
-    return company_adress;
+  public String getAddress() {
+    return address;
   }
 
-  public void setCompany_adress(String company_adress) {
-    this.company_adress = company_adress;
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getCompany_name() {
+    return company_name;
+  }
+
+  public void setCompany_name(String company_name) {
+    this.company_name = company_name;
   }
 
 }

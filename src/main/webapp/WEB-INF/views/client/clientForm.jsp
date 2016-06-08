@@ -70,9 +70,9 @@
 							</div>
 						
 	                		<div class="form-group">
-	                			<label for="client_brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
+	                			<label for="brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
 		                      	<div class="col-md-9">
-		                      		<input id="client_brand" class="form-control" type="text" name="client_brand" value="${client.client_brand}"
+		                      		<input id="brand" class="form-control" type="text" name="client_brand" value="${client.brand}"
 		                      		placeholder="<spring:message code="client.brand.remark" />"/>
 		                      	</div>
 	                		</div>

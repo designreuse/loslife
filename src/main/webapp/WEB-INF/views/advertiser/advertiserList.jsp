@@ -83,7 +83,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="advertiser.brand"/></label>
-									<input type="text" class="form-control" name="client_brand" id="client_brand" value="<c:out value="${pages.searchMap['client_brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
+									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
 								</div>
 								<div class="form-group">
 									<label><spring:message code="advertiser.platform"/></label>
@@ -122,33 +122,36 @@
 	                    <%
 	                    	Page<Client> pages = (Page<Client>)request.getAttribute("pages");
 	                    	for(Client client:pages.getContent()){
-	                    	  int size = client.getContacts().size()==0?1:client.getContacts().size();
 	                    	  request.setAttribute("client", client);
-	                    	  request.setAttribute("size", size);
 	                    	  List<ClientContact> contacts = client.getContacts();
-		                      for(int i = 0 ; i < size;i++){
-		                        ClientContact contact = client.getContacts().size()==0?new ClientContact():contacts.get(i);
-		                        request.setAttribute("contact", contact);
-		                        request.setAttribute("i", i);
-		                        %>
-		                        	<tr>
-		                        		<c:if test="${i eq 0 }">
-		                        		<th rowspan="${size}"><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
-		                     	  		<td rowspan="${size}">${client.id}</td>
-		                     	 		<td rowspan="${size}">${client.clientname}</td>
-			                     		<td rowspan="${size}">${client.client_brand}</td>
-			                     		<td rowspan="${size}">${client.channel_name}</td>
-			                     		</c:if>
-			                     		<td>${contact.contact_person}</td>
-			                     		<td>${contact.phone}</td>
-			                      		<td>${contact.position}</td>
-			                      		<td>${contact.address}</td>
-			                      		<c:if test="${i eq 0 }">
-			                      		<td rowspan="${size}">${client.saleNames }</td>
-			                      		</c:if>
-			                      	</tr>
-		                        <%
-		                      }
+		                      %>
+		                      <tr>
+		                      	<th><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
+                     	  		<td>${client.id}</td>
+                     	 		<td>${client.clientname}</td>
+	                     		<td>${client.brand}</td>
+	                     		<td>${client.channel_name}</td>
+	                     		<%
+	                     			String contact_person = "";
+	                     			String phone = "";
+	                     			String position = "";
+	                     			String address = "";
+	                     			for(ClientContact contact:contacts){
+	                     			 contact_person+= "<span style='display:block;width=100%;'>"+contact.getContact_person()+"&nbsp;</span>";
+	                     			 phone+="<span style='display:block;width=100%;'>"+contact.getPhone()+"&nbsp;</span>";
+	                     			 position+="<span style='display:block;width=100%;'>"+contact.getPosition()+"&nbsp;</span>";
+	                     			 address+="<span style='display:block;width=100%;'>"+contact.getAddress()+"&nbsp;</span>";
+	                     			}
+	                     			%>
+	                     				<td><%=contact_person%></td>
+	                     				<td><%=phone%></td>
+	                     				<td><%=position%></td>
+	                     				<td><%=address%></td>
+	                     			<%
+	                     		%>
+	                      		<td rowspan="${size}">${client.saleNames }</td>
+		                      </tr>
+		                      <%
 	                    	}
 	                    %>
                     
@@ -185,7 +188,7 @@
           	
           	function resetForm(){
           		$("#clientname").val('');
-          		$("#client_brand").val('');
+          		$("#brand").val('');
           		$("#saleIds").val('');
           		$("#platform").val('');
           		$("#dateRange").val('');

@@ -47,8 +47,8 @@ public class ClientController {
     if (StringUtils.isNotBlank(request.getParameter("clientname"))) {
       params.put("clientname", request.getParameter("clientname"));
     }
-    if (StringUtils.isNotBlank(request.getParameter("client_brand"))) {
-      params.put("client_brand", request.getParameter("client_brand"));
+    if (StringUtils.isNotBlank(request.getParameter("brand"))) {
+      params.put("brand", request.getParameter("brand"));
     }
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);
