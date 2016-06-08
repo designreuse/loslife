@@ -56,7 +56,7 @@
 					 	<div class="col-md-6">
 							<div class="form-group">
 								<label for="name" class="col-md-3"><spring:message code="client.name" /></label>
-			                    <div class="col-sm-9">${client.name}</div>
+			                    <div class="col-sm-9">${client.clientname}</div>
 							</div>
 						
 	                		<div class="form-group">
@@ -170,9 +170,9 @@
 					                	<div class="form-group">
 											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
 						                    <div class="col-md-9">
-						                    	<c:if test="${client.userNames != null}">
-					                      				<c:forEach var="userName" items="${client.userNames}" varStatus="status">
-					                      					${userName}<c:if test="${status.last!= true}">,</c:if>
+						                    	<c:if test="${client.saleNames != null}">
+					                      				<c:forEach var="saleName" items="${client.saleNames}" varStatus="status">
+					                      					${saleName}<c:if test="${status.last!= true}">,</c:if>
 					                      				</c:forEach>
 					                      		</c:if>
 						                    </div>
@@ -182,10 +182,10 @@
 											<label for="name" class="col-md-3"><spring:message code="client.cross.regional" /><br/><spring:message code="client.cross.regional.remark" /></label>
 						                    <div class="col-md-9">
 						                    	<c:if test="${client.whether_cross_district == 1}" >
-						                    		<input type="checkbox" disabled="disabled" checked="checked"/>
+						                    		<spring:message code="client.channel.yes" />
 						                    	</c:if>
 						                    	<c:if test="${client.whether_cross_district != 1}" >
-						                    		<input type="checkbox" disabled="disabled" />
+						                    		<spring:message code="client.channel.no" />
 						                    	</c:if>	
 						                    </div>
 										</div>

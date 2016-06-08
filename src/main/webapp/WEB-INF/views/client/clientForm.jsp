@@ -62,9 +62,9 @@
       			 	<div class="row">
 					 	<div class="col-md-6">
 							<div class="form-group">
-								<label for="name" class="col-md-3"><spring:message code="client.name" /><em> *</em></label>
+								<label for="clientname" class="col-md-3"><spring:message code="client.name" /><em> *</em></label>
 			                    <div class="col-md-9">
-			                      	<input id="name" class="form-control" type="text" name="name" value="${client.name}" 
+			                      	<input id="clientname" class="form-control" type="text" name="clientname" value="${client.clientname}" 
 			                      	placeholder="<spring:message code="client.name.remark" />"/>
 			                    </div>
 							</div>
@@ -72,7 +72,7 @@
 	                		<div class="form-group">
 	                			<label for="brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
 		                      	<div class="col-md-9">
-		                      		<input id="brand" class="form-control" type="text" name="brand" value="${client.brand}"
+		                      		<input id="brand" class="form-control" type="text" name="client_brand" value="${client.brand}"
 		                      		placeholder="<spring:message code="client.brand.remark" />"/>
 		                      	</div>
 	                		</div>
@@ -172,11 +172,11 @@
 					                	<div class="form-group">
 											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
 						                    <div class="col-md-9">
-						                    	<select class="form-control select2 userIds" name="userIds" id="userIds" style="width: 100%;" multiple="multiple">
-						                    		<c:if test="${client.userIds != null}">
-						                    			<c:set value="${ fn:split(client.userNames, ',') }" var="str1" />
-					                      				<c:forEach var="userId" items="${client.userIds}" varStatus="status">
-					                      						<option value="${userId}" selected>${str1[status.index]}</option>
+						                    	<select class="form-control select2 userIds" name="saleIds" id="saleIds" style="width: 100%;" multiple="multiple">
+						                    		<c:if test="${client.saleIds != null}">
+						                    			<c:set value="${ fn:split(client.saleNames, ',') }" var="str1" />
+					                      				<c:forEach var="saleId" items="${client.saleIds}" varStatus="status">
+					                      						<option value="${saleId}" selected>${str1[status.index]}</option>
 					                      				</c:forEach>
 					                      			</c:if>
 						                      	</select>
@@ -201,7 +201,7 @@
 		 				
 		      		 	<div class="box-footer">
 				          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.submit"/></button>
-				          	 <button class="btn btn-primary btn-sm disabled" onclick="window.location.href='${ctx}/client'"><spring:message code="btn.cancel"/></button>
+				          	 <button type="button" class="btn btn-primary btn-sm disabled" onclick="window.location.href='${ctx}/client'"><spring:message code="btn.cancel"/></button>
 				    	</div>
 		 		</div><!-- /.box-noborder -->
 		 </section><!-- /part3 -->
@@ -258,7 +258,7 @@
 			$("#primaryForm").validate().element(this);
 		});
 		
-		$("#userIds").select2({
+		$("#saleIds").select2({
 			multiple: true,
 			ajax: {
 		        url: "${ctx}/ajax/getSales",
