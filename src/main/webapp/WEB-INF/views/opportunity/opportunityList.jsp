@@ -42,14 +42,7 @@
 
           <!-- Main content -->
           <section class="content">
-          	<div class="nav-tabs-custom">
-          		<!-- 
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">销售数据</a></li>
-                </ul>
-                 -->
-                <div class="tab-content">
-                  <div class="tab-pane active" id="activity">
+         
                   <div class="box box-info ">
 		            <div class="box-header with-border">
 		              <h3 class="box-title">
@@ -121,11 +114,8 @@
                 <div class="box-footer clearfix">
                   <tags:pagination page="${pages}" paginationSize="3" />
                 </div>
-              </div><!-- /.box -->
 
               
-            </div>
-            </div>
           </section>
           
           

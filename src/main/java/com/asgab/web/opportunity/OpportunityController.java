@@ -96,10 +96,4 @@ public class OpportunityController {
     }
   }
 
-
-  @RequestMapping(value = "report", method = RequestMethod.GET)
-  public String report(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-
-    return "report/report";
-  }
 }
