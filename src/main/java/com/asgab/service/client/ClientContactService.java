@@ -28,4 +28,8 @@ public class ClientContactService {
   public void delete(long id) {
     clientContactMapper.delete(id);
   }
+
+  public List<ClientContact> getClientContactsByClientIdList(List<Long> clientIds) {
+    return clientContactMapper.getClientContactsByClientIdList(clientIds);
+  }
 }

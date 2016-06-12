@@ -28,6 +28,16 @@ public class AdvertiserController {
   @Autowired
   private ClientService clientService;
 
+  @RequestMapping(value = "list", method = RequestMethod.GET)
+  public String init(Model model) {
+    Page<Client> pages = new Page<Client>(1, 10, "", new HashMap<String,Object>());
+    pages.setContent(new ArrayList<Client>());
+    pages.setTotal(-1);
+    model.addAttribute("search", Servlets.encodeParameterString(new HashMap<String,Object>()));
+    model.addAttribute("pages", pages);
+    return "advertiser/advertiserList";
+  }
+
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
       @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
@@ -41,6 +51,9 @@ public class AdvertiserController {
     }
     if (StringUtils.isNotBlank(request.getParameter("platform"))) {
       params.put("platform", request.getParameter("platform"));
+    }
+    if (StringUtils.isNotBlank(request.getParameter("saleIds"))) {
+      params.put("saleIds", request.getParameter("saleIds"));
     }
     if (StringUtils.isNotBlank(request.getParameter("dateRange"))) {
       params.put("dateRange", request.getParameter("dateRange"));
@@ -61,9 +74,7 @@ public class AdvertiserController {
     // 设置行业和货币
     clientService.setSelect(request);
     // 设置联系人
-    for (Client client : pages.getContent()) {
-      clientService.resetClientContact(client);
-    }
+    clientService.resetClientContacts(pages.getContent());
     return "advertiser/advertiserList";
   }
 
@@ -74,8 +85,8 @@ public class AdvertiserController {
     for (String id : checkIds.split(",")) {
       idList.add(Long.parseLong(id));
     }
-    List<Client> clients = clientService.getAdvertisersByIdList(idList);
-    for(Client client:clients){
+    List<Client> clients = clientService.getClientsByIdList(idList);
+    for (Client client : clients) {
       clientService.resetClientContact(client);
     }
     List<Object> ids = new ArrayList<Object>();
@@ -91,7 +102,7 @@ public class AdvertiserController {
     List<Object> business_licences = new ArrayList<Object>();
     List<Object> platforms = new ArrayList<Object>();
     List<Object> currencys = new ArrayList<Object>();
-    //联系人
+    // 联系人
     List<Object> contacts = new ArrayList<Object>();
 
     for (Client client : clients) {
@@ -106,7 +117,7 @@ public class AdvertiserController {
       organization_codes.add(client.getOrganization_code());
       icps.add(client.getIcp());
       business_licences.add(client.getBusiness_licence());
-      contacts.add(client.getContacts()); 
+      contacts.add(client.getContacts());
       platforms.add(client.getPlatform());
       currencys.add(client.getCurrency_id());
     }
@@ -133,7 +144,7 @@ public class AdvertiserController {
 
     return "advertiser/advertiserReview";
   }
-  
+
   @RequestMapping(value = "merge", method = RequestMethod.POST)
   public String merge(Client client, HttpServletRequest request) {
     String[] contactIds = request.getParameterValues("contact");

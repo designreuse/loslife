@@ -22,7 +22,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="menu.advertiser"/><span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="${ctx}/client"><spring:message code="menu.advertiser"/></a></li>
-                    <li><a href="${ctx}/advertiser"><spring:message code="menu.advertiser.review"/></a></li>
+                    <li><a href="${ctx}/advertiser/list"><spring:message code="menu.advertiser.review"/></a></li>
                   </ul>
                 </li>
                 <li id="menu_agency"><a href="#"><spring:message code="menu.agency"/></a></li>
