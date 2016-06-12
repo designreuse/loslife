@@ -19,10 +19,12 @@ public interface ClientContactMapper {
 
   void save(ClientContact clientContact);
 
-  void update(ClientContact clientContact);
+  void update(ClientContact clientContact);;
 
   void delete(Long id);
 
   int count(Map<String, Object> map);
+
+  List<ClientContact> getClientContactsByClientIdList(List<Long> clientIds);
 
 }
