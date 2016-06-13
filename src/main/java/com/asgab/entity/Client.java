@@ -71,7 +71,7 @@ public class Client {
   private String dateRange;
   private String createDateStart;
   private String createDateEnd;
-
+  
   public Client() {
     super();
   }
@@ -332,4 +332,13 @@ public class Client {
     this.company_name = company_name;
   }
 
+  public String getNumber() {
+    String ret = new String("AD");
+    for (int fill = 0; fill < 9 - String.valueOf(id).length(); fill++) {
+      ret += "0";
+    }
+    ret += id;
+    return ret;
+  }
+  
 }

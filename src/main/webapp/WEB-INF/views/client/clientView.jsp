@@ -54,6 +54,12 @@
       			 <div class="box-body">
       			 	<div class="row">
 					 	<div class="col-md-6">
+					 	
+					 		<div class="form-group">
+								<label for="number" class="col-md-3"><spring:message code="client.number" /></label>
+			                    <div class="col-sm-9">${client.number}</div>
+							</div>
+							
 							<div class="form-group">
 								<label for="name" class="col-md-3"><spring:message code="client.name" /></label>
 			                    <div class="col-sm-9">${client.clientname}</div>
