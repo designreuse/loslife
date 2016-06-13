@@ -19,10 +19,10 @@
 
 	<!-- Content Header -->
 	<section class="content-header">
-		<h1>报表</h1>
+		<h1><spring:message code="report.report" /></h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-			<li class="active">报表</li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> <spring:message code="report.home" /></a></li>
+			<li class="active"><spring:message code="report.report" /></li>
 		</ol>
 	</section>
 
@@ -31,9 +31,9 @@
 		<div class="nav-tabs-custom">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#activity" data-toggle="tab"
-					aria-expanded="true">销售数据</a></li>
+					aria-expanded="true"><spring:message code="report.sale.data"/></a></li>
 				<li class=""><a href="#timeline" data-toggle="tab"
-					aria-expanded="false">分析</a></li>
+					aria-expanded="false"><spring:message code="report.analysis"/></a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="activity">
@@ -41,8 +41,8 @@
 					<div class="box  box-solid">
 						<div class="box-header with-border">
 							<h3 class="box-title">
-								<button class=" btn btn-flat btn-primary btn-xs ">应用</button>
-								<button class=" btn btn-flat btn-warning btn-xs ">重置</button>
+								<button class=" btn btn-flat btn-primary btn-xs "><spring:message code="btn.apply" /></button>
+								<button class=" btn btn-flat btn-warning btn-xs "><spring:message code="btn.reset" /></button>
 							</h3>
 							<div class="box-tools pull-right">
 								<button class="btn btn-box-tool" data-widget="collapse">
@@ -56,12 +56,12 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>可见维度</label> <select class="form-control select2"
-											style="width: 100%;">
-											<option>产品</option>
-											<option selected="selected">销售团队</option>
-											<option>销售代表</option>
-											<option>代理公司</option>
+										<label><spring:message code="report.data.right" /></label> 
+										<select class="form-control select2" name="dataRight" style="width: 100%;">
+											<option value="1"><spring:message code="report.product" /></option>
+											<option value="2" selected="selected"><spring:message code="report.sale.team" /></option>
+											<option value="3"><spring:message code="report.sale.representative" /></option>
+											<option value="4"><spring:message code="report.channel.company" /></option>
 										</select>
 									</div>
 									<!-- /.form-group -->
@@ -81,22 +81,21 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>时间</label>
+										<label><spring:message code="report.date" /></label>
 
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input type="text" class="form-control pull-left"
-												id="reservation">
+											<input type="text" class="form-control pull-left" id="reportDate">
 										</div>
 									</div>
 									<!-- /.form-group -->
 
 									<div class="form-group">
-										<label>进度</label> <select class="form-control select2"
-											style="width: 100%;">
-											<option selected="selected">全部</option>
+										<label><spring:message code="report.progress"/></label> 
+										<select class="form-control select2" name="progress" style="width: 100%;">
+											<option selected="selected"><spring:message code="report.all"/></option>
 											<option>10%</option>
 											<option>30%</option>
 											<option>50%</option>
@@ -112,8 +111,8 @@
 
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>销售团队</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>销售团队</label> 
+										<select class="form-control select2" name="saleTeam" style="width: 100%;">
 											<option selected="selected">全部</option>
 											<option>华东</option>
 											<option>华北</option>
@@ -122,8 +121,8 @@
 									<!-- /.form-group -->
 
 									<div class="form-group">
-										<label>销售代表</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>销售代表</label> 
+										<select class="form-control select2" name="saleRepresentative" style="width: 100%;">
 											<option selected="selected">全部</option>
 										</select>
 									</div>
@@ -139,8 +138,8 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>预算</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>预算</label> 
+										<select class="form-control select2" name="budget" style="width: 100%;">
 											<option selected="selected">全部</option>
 											<option><100000</option>
 											<option><100000</option>
@@ -152,8 +151,8 @@
 
 
 									<div class="form-group">
-										<label>下单类型</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>下单类型</label> 
+										<select class="form-control select2" name="billType" style="width: 100%;">
 											<option selected="selected">全部</option>
 										</select>
 									</div>
@@ -162,15 +161,15 @@
 								<div class="col-md-6">
 
 									<div class="form-group">
-										<label>预估GP%</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>预估GP%</label>
+										<select class="form-control select2" name="gp" style="width: 100%;">
 											<option selected="selected">全部</option>
 										</select>
 									</div>
 
 									<div class="form-group">
-										<label>销售收入类型</label> <select class="form-control select2"
-											style="width: 100%;">
+										<label>销售收入类型</label> 
+										<select class="form-control select2" name="incomeType" style="width: 100%;">
 											<option selected="selected">全部</option>
 										</select>
 									</div>
@@ -183,23 +182,10 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>货币</label> <select class="form-control select2"
-											style="width: 100%;">
-											<option selected="selected">全部</option>
-											<option value="RMB">RMB</option>
-											<option value="USD">USD</option>
-											<option value="SGD">SGD</option>
-											<option value="TWD">TWD</option>
-											<option value="KRW">KRW</option>
-											<option value="JPY">JPY</option>
-											<option value="MYR">MYR</option>
-											<option value="GBP">GBP</option>
-											<option value="EUR">EUR</option>
-											<option value="AUD">AUD</option>
-											<option value="THB">THB</option>
-											<option value="RUB">RUB</option>
-											<option value="IDR">IDR</option>
-										</select>
+										<label>货币</label>
+										
+										<tags:selectbox name="currency" list="${currencys }" clazz="select2" style="width: 100%;"></tags:selectbox>
+										
 									</div>
 
 								</div>
@@ -284,7 +270,7 @@
 		$(function() {
 			$(".select2").select2();
 
-			$('#reservation').daterangepicker(
+			$('#reportDate').daterangepicker(
 					{
 						ranges : {
 							'Today' : [ moment(), moment() ],
@@ -314,7 +300,7 @@
 						endDate : moment()
 					},
 					function(start, end) {
-						$('#reservation').val(
+						$('#reportDate').val(
 								start.format('YYYY/MM/DD') + ' - '+ end.format('YYYY/MM/DD'));
 					});
 		})

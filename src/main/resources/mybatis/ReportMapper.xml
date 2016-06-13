@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.ReportMapper">
+	
+	<select id="getReportByProduct" parameterType="map" resultType="Report">
+		
+	</select>
+	
+	<select id="getReportBySaleTeam" parameterType="map" resultType="Report">
+		
+	</select>
+	
+	<select id="getReportBySaleRepresentative" parameterType="map" resultType="Report">
+		
+	</select>
+	
+	<select id="getReportByChannel" parameterType="map" resultType="Report">
+		
+	</select>
+	
+</mapper> 
