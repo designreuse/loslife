@@ -85,7 +85,8 @@
 	                  <table class="table table-striped table-condensed table-hover">
 	                    <tbody>
 		                    <tr>
-		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th style="cursor: pointer;" <tags:sort column="id" page="${pages}"/>><spring:message code="client.number" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
 		                    	<th><spring:message code="public.status"/></th>
 		                    	<th><spring:message code="client.brand" /></th>
 		                    	<th><spring:message code="client.agency" /> </th>
@@ -94,9 +95,8 @@
                     
 	                    <c:forEach items="${pages.content}" var="client" varStatus="status">
 	                    	<tr>
-		                     	<td>
-		                     		<a href="javascript:void(0);" onclick="view(${client.id});" >${client.clientname}</a>
-		                     	</td>
+	                    		<td><a href="javascript:void(0);" onclick="view(${client.id});" >${client.number}</a></td>
+		                     	<td>${client.clientname}</td>
 		                     	<td>${client.status}</td>
 		                     	<td>${client.brand}</td>
 		                     	<td>${client.channel_name}</td>

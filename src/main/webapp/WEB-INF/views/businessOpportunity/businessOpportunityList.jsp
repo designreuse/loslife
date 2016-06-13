@@ -98,7 +98,7 @@
                     
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
-		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.id}</a></td>
+		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.number}</a></td>
 		                      <td>${opportunity.name}</td>
 		                      <td>${opportunity.advertiser}</td>
 		                      <td>

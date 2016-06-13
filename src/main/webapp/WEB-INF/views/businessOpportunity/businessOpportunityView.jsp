@@ -65,6 +65,12 @@
                 <div class="box-body">
                    <div class="row">
            			<div class="col-md-6">
+           				<div class="form-group">
+	                      <label for="number" class="col-md-3"><spring:message code="opportunity.id" /></label>
+	                      <div class="col-md-9">
+	                      	<label>${businessOpportunity.number}</label>
+	                      </div>
+	                    </div>
 	                    <div class="form-group">
 	                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
 	                      <div class="col-md-9">
