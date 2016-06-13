@@ -82,14 +82,14 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>时间</label>
+										
+										<div id="reservationdiv" class="pull-left" style="background: #fff; cursor: pointer; padding: 7px 8px; border: 1px solid #ccc; width: 100%">
+                                       			<i class="pull-left glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                        		<span id="reservation" ></span> <b style="margin-top: 6px;" class="caret pull-right"></b>
+                                        		<input type="hidden" name="daterange" id="daterange">
+                                   		 </div>
 
-										<div class="input-group">
-											<div class="input-group-addon">
-												<i class="fa fa-calendar"></i>
-											</div>
-											<input type="text" class="form-control pull-left"
-												id="reservation">
-										</div>
+										
 									</div>
 									<!-- /.form-group -->
 
@@ -283,8 +283,14 @@
 	<script type="text/javascript">
 		$(function() {
 			$(".select2").select2();
+			
+			//default value
+			$('#reservation').html(
+					moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
+			$('#daterange').val(
+					moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
 
-			$('#reservation').daterangepicker(
+			$('#reservationdiv').daterangepicker(
 					{
 						ranges : {
 							'Today' : [ moment(), moment() ],
@@ -295,10 +301,13 @@
 							'Last Month' : [
 									moment().subtract(1, 'month').startOf('month'),
 									moment().subtract(1, 'month').endOf('month') ],
-							'Last Three Month' : [
-									moment().subtract(2, 'month').startOf('month'),
-									moment().subtract(0, 'month').endOf('month') ]
+							'This Quarter' : [moment().subtract(0, 'quarter').startOf('quarter'),
+											  moment().subtract(0, 'quarter').endOf('quarter') ],
+							'Last Quarter' : [moment().subtract(1, 'quarter').startOf('quarter'),
+											  moment().subtract(1, 'quarter').endOf('quarter') ]
+									
 						},
+						format : 'YYYY/MM/DD',
 					    locale :{
 			                applyLabel: 'Apply',
 			                cancelLabel: 'Cancel',
@@ -310,12 +319,14 @@
 			                monthNames: moment.monthsShort(),
 			                firstDay: moment.localeData()._week.dow
 			            },
-						startDate : moment().subtract(29, 'days'),
-						endDate : moment()
+						startDate : moment().startOf('quarter'),
+						endDate : moment().endOf('quarter')
 					},
 					function(start, end) {
-						$('#reservation').val(
+						$('#reservation').html(
 								start.format('YYYY/MM/DD') + ' - '+ end.format('YYYY/MM/DD'));
+						
+						$('#daterange').val(start.format('YYYY/MM/DD') + ' - '+ end.format('YYYY/MM/DD'));
 					});
 		})
 	</script>
