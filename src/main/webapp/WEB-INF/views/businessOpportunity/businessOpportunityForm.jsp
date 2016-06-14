@@ -91,7 +91,7 @@
 	                    </div>
 	                    <div class="col-md-6" style="padding-left: 0;">
 	                    	<div class="form-group">
-	                      		<label  class="col-md-12"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
+	                      		<label  class="col-md-12"><a href="javascript:void(0);" onclick="addAdvertiser();"><spring:message code="business.opportunity.add.advertiser" /></a></label>
 	                     	</div>
 	                    </div>
 	                </div>
@@ -359,8 +359,12 @@
 				});
 			});
 			
+			function addAdvertiser(){
+				window.location.href='${ctx}/client/create';
+			};
+			
 			function cancel(){
-				window.location.href='${ctx}/opportunity';
+				window.location.href='${ctx}/businessOpportunity';
 			};
 			
 			function changeRadio(val,id,name){
