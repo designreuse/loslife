@@ -34,7 +34,7 @@
 		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
 		<if test="fmt_clientNumber != null">
-			and a.id = #{fmt_clientNumber}
+			and CAST(a.id AS CHAR) = #{fmt_clientNumber}
 		</if>
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"
@@ -82,7 +82,7 @@
 		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
 		<if test="fmt_clientNumber != null">
-			and a.id = #{fmt_clientNumber}
+			and CAST(a.id AS CHAR) = #{fmt_clientNumber}
 		</if>
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"

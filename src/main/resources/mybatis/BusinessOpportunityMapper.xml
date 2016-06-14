@@ -21,7 +21,7 @@
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
 		<if test="fmt_number != null">
-			and o.id = #{fmt_number}
+		    and CAST(o.id AS CHAR) = #{fmt_number}
 		</if>
 		<if test="name != null">
 			and o.name like "%"#{name}"%"
@@ -42,7 +42,7 @@
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
 		<if test="fmt_number != null">
-			and o.id = #{fmt_number}
+			and CAST(o.id AS CHAR) = #{fmt_number}
 		</if>
 		<if test="name != null">
 			and o.name like "%"#{name}"%"
