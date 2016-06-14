@@ -52,7 +52,7 @@ public class ClientController {
       params.put("brand", request.getParameter("brand"));
     }
     String clientNumber = request.getParameter("clientNumber");
-    if (StringUtils.isNotBlank(clientNumber) && clientNumber.contains("AD")) {
+    if (StringUtils.isNotBlank(clientNumber)) {
       params.put("clientNumber", clientNumber);
       params.put("fmt_clientNumber", clientNumber.replace("AD", "").replaceFirst("^0*", ""));
     }

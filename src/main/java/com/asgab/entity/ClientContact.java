@@ -16,7 +16,6 @@ public class ClientContact {
   private String phone;
   private String email;
   private String position;
-  private String address;
   private int is_delete;
   private Date created_at;
   private Date updated_at;
@@ -26,7 +25,6 @@ public class ClientContact {
     this.setPhone(cc.getPhone());
     this.setEmail(cc.getEmail());
     this.setPosition(cc.getPosition());
-    this.setAddress(cc.getAddress());
     this.setUpdated_at(new Date());
   }
 
@@ -88,14 +86,6 @@ public class ClientContact {
 
   public void setIs_delete(int is_delete) {
     this.is_delete = is_delete;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
   }
 
   public Date getCreated_at() {

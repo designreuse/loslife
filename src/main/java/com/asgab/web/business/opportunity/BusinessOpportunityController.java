@@ -53,7 +53,7 @@ public class BusinessOpportunityController {
       ServletRequest request, Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
     String number = request.getParameter("number");
-    if (StringUtils.isNotBlank(number)&& number.contains("SO")) {
+    if (StringUtils.isNotBlank(number)) {
       params.put("number", number);
       params.put("fmt_number", number.replace("SO", "").replaceFirst("^0*", ""));
     }
