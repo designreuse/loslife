@@ -57,15 +57,16 @@
               
                 <div class="box-body">
                    <div class="row">
-	                   <c:if test="${action eq 'update' }">
+	                   
 		                   	<div class="col-md-6">
+		                   	<c:if test="${action eq 'update' }">
 		           				<div class="form-group">
 			                      <label for="number" class="col-md-3"><spring:message code="opportunity.id" /></label>
 			                      <div class="col-md-9">
 			                      	<input type="text" disabled="disabled" class="form-control" value="${businessOpportunity.number }" />
 			                      </div>
 			                    </div>
-			                    
+			                </c:if>  
 			                    <div class="form-group">
 			                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
 			                      <div class="col-md-9">
@@ -73,7 +74,7 @@
 			                      </div>
 			                    </div>
 			                </div>
-		                </c:if>
+		             
            			
 	                <div class="col-md-12">
 	                	<div class="col-md-6" style="padding-left: 0;">
