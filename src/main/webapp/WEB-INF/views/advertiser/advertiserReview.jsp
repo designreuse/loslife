@@ -359,7 +359,7 @@
 	 });
 	 
 	 function cancel(){
-		 window.location.href="${ctx}/advertiser";
+		 window.location.href="${ctx}/advertiser/list";
 	 };
 	 
 	 function submitForm(){

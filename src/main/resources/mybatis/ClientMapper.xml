@@ -64,6 +64,9 @@
 			and a.created_at <=  #{createDateEnd}
 			]]>
 		</if>
+		<if test="saleIds != null">
+			and d.name like "%"#{saleIds}"%"
+		</if>
 		group by a.id
 		<if test="sort != null and sort!=''">
 			order by ${sort}
@@ -109,6 +112,9 @@
 			and a.created_at <=  #{createDateEnd}
 			]]>
 		</if>
+		<if test="saleIds != null">
+			and d.name like "%"#{saleIds}"%"
+		</if>
 		group by a.id) t 
 	</select>
 
@@ -131,12 +137,12 @@
 		where id = #{id}
 	</update>
 	
-	<select id="getAdvertisersByIdList" parameterType="list" resultType="Client">
-	select id,<include refid="client_columns" /> from xmo.clients
-	where id in
-	<foreach collection="list" item="id" separator="," open="(" close=")">
-		#{id}
-	</foreach>
+	<select id="getClientsByIdList" parameterType="list" resultType="Client">
+		select id,<include refid="client_columns" /> from xmo.clients
+		where id in
+		<foreach collection="list" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
 	</select>
 	
 </mapper> 

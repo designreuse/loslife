@@ -1,5 +1,6 @@
 package com.asgab.service.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -138,8 +139,8 @@ public class ClientService {
     clientMapper.delete(id);
   }
 
-  public List<Client> getAdvertisersByIdList(List<Long> idList) {
-    return clientMapper.getAdvertisersByIdList(idList);
+  public List<Client> getClientsByIdList(List<Long> idList) {
+    return clientMapper.getClientsByIdList(idList);
   }
 
   public void setSelect(HttpServletRequest request) {
@@ -156,4 +157,25 @@ public class ClientService {
     searchMap.put("client_id", client.getId());
     client.setContacts(clientContactMapper.search(searchMap));
   }
+
+  public void resetClientContacts(List<Client> clients) {
+    if(clients==null || (clients!=null&&clients.size()==0)){
+      return;
+    }
+    List<Long> clientIds = new ArrayList<Long>();
+    for (Client client : clients) {
+      clientIds.add(client.getId());
+    }
+    List<ClientContact> clientContacts = clientContactMapper.getClientContactsByClientIdList(clientIds);
+    if (clientContacts != null && clientContacts.size() > 0) {
+      for (Client client : clients) {
+        for (ClientContact contact : clientContacts) {
+          if (client.getId().equals(contact.getClient_id())) {
+            client.getContacts().add(contact);
+          }
+        }
+      }
+    }
+  }
+  
 }

@@ -35,7 +35,7 @@
           </h1>
           
           <ol class="breadcrumb">
-            <li><a href="${ctx}/advertiser"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
+            <li><a href="${ctx}/advertiser/list"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
             <li class="active"><spring:message code="advertiser.title"/></li>
           </ol>
 		
@@ -121,6 +121,7 @@
                     
 	                    <%
 	                    	Page<Client> pages = (Page<Client>)request.getAttribute("pages");
+	                    	if(pages!=null){
 	                    	for(Client client:pages.getContent()){
 	                    	  request.setAttribute("client", client);
 	                    	  List<ClientContact> contacts = client.getContacts();
@@ -152,13 +153,21 @@
 	                      		<td rowspan="${size}">${client.saleNames }</td>
 		                      </tr>
 		                      <%
+	                    		}
 	                    	}
 	                    %>
                     
                   </tbody></table>
 				</div><!-- /.box-body-->
                 <div class="box-footer clearfix">
-                  <tags:pagination page="${pages}" paginationSize="3" />
+                	<%
+                	// -1 表示第一次列表.  不显示条数
+                	if(pages!=null&&pages.getTotal()!=-1){
+                	  %>
+	                  <tags:pagination page="${pages}" paginationSize="3" />
+                	  <%
+                	}
+                	%>
                 </div>
 			</div></div></div>
           </section>

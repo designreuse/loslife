@@ -10,13 +10,13 @@
     
     <select id="get" parameterType="long" resultType="ClientContact">
         select id, <include refid="client_contact_columns" />
-		from client_contacts
+		from sales_booking_production.client_contacts
 		where is_delete = 1 and id = #{id}
     </select>
     
 	<select id="search" parameterType="map" resultType="ClientContact">
 		select id, <include refid="client_contact_columns" />
-		from client_contacts
+		from sales_booking_production.client_contacts
 		where is_delete = 1
 		<if test="client_id != null">
 			and client_id = #{client_id}		    
@@ -24,19 +24,27 @@
 	</select>
 	
 	<insert id="save" parameterType="ClientContact" useGeneratedKeys="true" keyProperty="id">
-		insert into client_contacts (<include refid="client_contact_columns" />)
+		insert into sales_booking_production.client_contacts (<include refid="client_contact_columns" />)
 		values ( #{client_id}, #{contact_person}, #{phone}, #{email}, #{position}, 1, #{created_at}, #{updated_at} )
 	</insert>
 	
 	<update id="update" parameterType="ClientContact">
-		update client_contacts set 
+		update sales_booking_production.client_contacts set 
 			contact_person = #{contact_person}, phone = #{phone}, email = #{email}, position = #{position}, 
 			is_delete = #{is_delete}, updated_at = #{updated_at}
 		where id = #{id}
 	</update>
 	
 	<delete id="delete" parameterType="long">
-	    update client_contacts set is_delete = 2 where id = #{id}
+	    update sales_booking_production.client_contacts set is_delete = 2 where id = #{id}
 	</delete>
+	
+	<select id="getClientContactsByClientIdList" parameterType="list" resultType="ClientContact">
+		select id,<include refid="client_contact_columns" /> from sales_booking_production.client_contacts
+		where client_id in
+		<foreach collection="list" item="client_id" separator="," open="(" close=")">
+			#{client_id}
+		</foreach>
+	</select>
 	
 </mapper> 

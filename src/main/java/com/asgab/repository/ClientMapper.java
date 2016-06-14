@@ -25,6 +25,6 @@ public interface ClientMapper {
 
   int count(Map<String, Object> map);
   
-  List<Client> getAdvertisersByIdList(List<Long> idList);
+  List<Client> getClientsByIdList(List<Long> idList);
 
 }

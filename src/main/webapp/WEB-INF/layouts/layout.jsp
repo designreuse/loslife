@@ -125,18 +125,18 @@
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- iCheck 1.0.1 -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/iCheck/icheck.min.js"></script>
+    <!-- ChartJS 2.1.4 -->
+    <script src="${ctx}/static/chartjs/Chart.js"></script>
     <!-- FastClick -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
-    
     <!-- Ion Slider -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/ionslider/ion.rangeSlider.js"></script>
-    
     <!-- bootbox -->
     <script src="${ctx}/static/bootbox/bootbox.js"></script>
-    
     <!-- daterangepicker -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker.js"></script>
     
+    <!-- jquery validate 1.14.0 -->
     <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
 	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>
 	
