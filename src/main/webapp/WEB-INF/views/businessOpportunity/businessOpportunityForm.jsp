@@ -360,7 +360,7 @@
 			});
 			
 			function cancel(){
-				window.location.href='${ctx}/opportunity';
+				window.location.href='${ctx}/businessOpportunity';
 			};
 			
 			function changeRadio(val,id,name){
