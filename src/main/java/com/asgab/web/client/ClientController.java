@@ -41,14 +41,27 @@ public class ClientController {
 
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
-      HttpServletRequest request, Model model) {
+      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(
+          value = "sort", defaultValue = "id desc") String sort, HttpServletRequest request,
+      Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
     if (StringUtils.isNotBlank(request.getParameter("clientname"))) {
       params.put("clientname", request.getParameter("clientname"));
     }
     if (StringUtils.isNotBlank(request.getParameter("brand"))) {
       params.put("brand", request.getParameter("brand"));
+    }
+    String clientNumber = request.getParameter("clientNumber");
+    if (StringUtils.isNotBlank(clientNumber) && clientNumber.contains("AD")) {
+      params.put("clientNumber", clientNumber);
+      params.put("fmt_clientNumber", clientNumber.replace("AD", "").replaceFirst("^0*", ""));
+    }
+    if (StringUtils.isNotBlank(request.getParameter("channel"))) {
+      params.put("channel", request.getParameter("channel"));
+      params.put("channel_name", request.getParameter("channel_name"));
+    }
+    if (StringUtils.isNoneBlank(request.getParameterValues("industry_id"))) {
+      params.put("industry_id", request.getParameter("industry_id"));
     }
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);
@@ -70,7 +83,8 @@ public class ClientController {
   }
 
   @RequestMapping(value = "create", method = RequestMethod.POST)
-  public String create(Client client, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+  public String create(Client client, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
 
     ShiroUser user = getCurrUser();
     if (user != null) {
@@ -80,7 +94,8 @@ public class ClientController {
     client.setCreated_at(new Date());
     client.setStatus("Active");
     clientService.save(client);
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.create.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.create.success"));
     return "redirect:/client";
   }
 
@@ -108,17 +123,21 @@ public class ClientController {
   }
 
   @RequestMapping(value = "update", method = RequestMethod.POST)
-  public String update(@ModelAttribute("client") Client client, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+  public String update(@ModelAttribute("client") Client client, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
     client.setUpdated_at(new Date());
     clientService.update(client);
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.update.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.update.success"));
     return "redirect:/client";
   }
 
   @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
     clientService.delete(id);
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.delete.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.delete.success"));
     return "redirect:/client";
   }
 

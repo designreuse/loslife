@@ -20,11 +20,17 @@
 		select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
+		<if test="fmt_number != null">
+			and o.id = #{fmt_number}
+		</if>
 		<if test="name != null">
 			and o.name like "%"#{name}"%"
 		</if>
 		<if test="advertiser != null">
 			and c.name like "%"#{advertiser}"%"
+		</if>
+		<if test="status != null">
+			and o.status = #{status}
 		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
@@ -35,11 +41,17 @@
 		select count(1) 
 		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
+		<if test="fmt_number != null">
+			and o.id = #{fmt_number}
+		</if>
 		<if test="name != null">
 			and o.name like "%"#{name}"%"
 		</if>
 		<if test="advertiser != null">
 			and c.name like "%"#{advertiser}"%"
+		</if>
+		<if test="status != null">
+			and o.status = #{status}
 		</if>
 	</select>
 

@@ -60,6 +60,15 @@
 		            <div class="box-body" style="display: block;">
 		            	<form action="${ctx}/client" method="get" id="searchForm">
 						<div class="row">
+						
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="client.number" /></label>
+									<input type="text" name="clientNumber" id="clientNumber" class="form-control" value="<c:out value="${pages.searchMap['clientNumber']}"/>" 
+									placeholder="<spring:message code="client.number.remark" />">
+								</div>
+							</div>
+							
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="client" /></label>
@@ -75,6 +84,26 @@
 									placeholder="<spring:message code="client.brand.remark" />">
 								</div>
 							</div>
+							
+							<div class="col-md-4">
+								<input type="hidden" name="channel_name" id="channel_name" value="<c:out value="${pages.searchMap['channel_name']}"/>" />
+								<div class="form-group">
+									<label><spring:message code="client.agency" /></label>
+									<select class="form-control select2 channel" name="channel" id="channel" style="width: 100%;">
+			                      		<c:if test="${pages.searchMap['channel_name'] != null}">
+			                      			<option value="<c:out value="${pages.searchMap['channel']}" />" selected><c:out value="${pages.searchMap['channel_name']}" /></option>
+			                      		</c:if>
+			                      	</select>
+								</div>
+							</div>
+							
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="client.industry" /></label>
+	                      			<tags:selectbox name="industry_id" list="${industryTypes}" value="${pages.searchMap['industry_id']}" addNull="true" />
+								</div>
+							</div>
+							
 						</div><!-- /.row -->
 						</form>
 					</div><!-- /.box-body -->
@@ -86,7 +115,7 @@
 	                    <tbody>
 		                    <tr>
 		                    	<th style="cursor: pointer;" <tags:sort column="id" page="${pages}"/>><spring:message code="client.number" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
-		                    	<th <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
+		                    	<th style="cursor: pointer;" <tags:sort column="name" page="${pages}"/>><spring:message code="client" />&nbsp;<i class="fa fa-w fa-sort"></i></th>
 		                    	<th><spring:message code="public.status"/></th>
 		                    	<th><spring:message code="client.brand" /></th>
 		                    	<th><spring:message code="client.agency" /> </th>
@@ -121,6 +150,27 @@
           	$(document).ready(function() {
         		$("#menu_client").addClass("active");  
         	});
+          	
+        	// 代理下单，代理
+    		$("#channel").select2({
+    			ajax: {
+    		        url: "${ctx}/ajax/getAgencys",
+    		        dataType: 'json',
+    		        delay: 250,
+    		        data: function (params) {
+    		            return {q: params.term};
+    		        },
+    		        processResults: function (data) {
+    		            return {results: data};
+    		        },
+    		        cache: true
+    		    },
+    		    minimumInputLength: 1,
+    		    placeholder: '<spring:message code="client.channel.remark" />',
+    		    allowClear: true
+    		}).on('change',function(evt){
+    			$('#channel_name').val(($(this).find('option:selected').text()));
+    		});
           
           	function view(id){
           		window.location.href="${ctx}/client/view/"+id;
@@ -151,6 +201,8 @@
           	
           	function resetForm(){
           		$("#searchForm input").val('');
+          		$("#searchForm select").val(null);
+          		$("#channel").val(null).trigger("change"); 
           	};
           </script>
 </body>
