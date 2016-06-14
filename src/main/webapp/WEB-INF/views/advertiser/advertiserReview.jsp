@@ -228,7 +228,6 @@
 												<spring:message code="advertiser.client.name" />${status.count}:${val.contact_person }<br/>
 												<spring:message code="advertiser.client.phone" />${status.count}:${val.phone }<br/>
 												<spring:message code="advertiser.client.position" />${status.count}:${val.position }<br/>
-												<spring:message code="advertiser.client.address" />${status.count}:${val.address }<br/>
 												<div class="divider-horizontal"></div>
 												<input type="hidden" value="${val.id}" name="contact" class="form-control input-sm ${status.count}" disabled>
 											</c:forEach>
