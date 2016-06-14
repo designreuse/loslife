@@ -33,11 +33,20 @@
 		left join xmo.users d on b.share_id = d.id
 		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
+		<if test="fmt_clientNumber != null">
+			and a.id = #{fmt_clientNumber}
+		</if>
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"
 		</if>
 		<if test="brand != null">
 			and a.brand like "%"#{brand}"%"
+		</if>
+		<if test="channel != null">
+			and a.channel = #{channel}
+		</if>
+		<if test="industry_id != null">
+			and a.industry_id = #{industry_id}
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
@@ -72,11 +81,20 @@
 		left join xmo.users d on b.share_id = d.id
 		left join sales_booking_production.channels c on a.channel = c.id 
 		where 1 = 1
+		<if test="fmt_clientNumber != null">
+			and a.id = #{fmt_clientNumber}
+		</if>
 		<if test="clientname != null">
 			and a.clientname like "%"#{clientname}"%"
 		</if>
 		<if test="brand != null">
 			and a.brand like "%"#{brand}"%"
+		</if>
+		<if test="channel != null">
+			and a.channel = #{channel}
+		</if>
+		<if test="industry_id != null">
+			and a.industry_id = #{industry_id}
 		</if>
 		<if test="platform != null">
 			and a.platform like "%"#{platform}"%"
