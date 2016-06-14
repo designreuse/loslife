@@ -91,7 +91,7 @@
 	                    </div>
 	                    <div class="col-md-6" style="padding-left: 0;">
 	                    	<div class="form-group">
-	                      		<label  class="col-md-12"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
+	                      		<label  class="col-md-12"><a href="javascript:void(0);" onclick="addAdvertiser();"><spring:message code="business.opportunity.add.advertiser" /></a></label>
 	                     	</div>
 	                    </div>
 	                </div>
@@ -358,6 +358,10 @@
 					<c:if test="${action eq 'update' }">,values:[0,10,30,50,70,90,100]</c:if>
 				});
 			});
+			
+			function addAdvertiser(){
+				window.location.href='${ctx}/client/create';
+			};
 			
 			function cancel(){
 				window.location.href='${ctx}/businessOpportunity';
