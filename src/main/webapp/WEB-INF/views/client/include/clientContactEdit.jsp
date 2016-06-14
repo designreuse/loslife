@@ -40,12 +40,6 @@
 		       			</div>
 		       		</div>
 		         		
-		      		<div class="form-group">
-		      			<label for="" class="col-md-3"><spring:message code="client.contact.address" /> ${status.index+1}</label>
-		      			<div class="col-md-9">
-		      				<input id="address" class="form-control" type="text" name="contacts[${status.index}].address" value="${contact.address}" />
-		      			</div>
-		      		</div>
 			</div>
 			
 			<div class="col-md-6">
