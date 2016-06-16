@@ -63,8 +63,8 @@
 									<div class="form-group">
 										<label><spring:message code="report.data.right" /></label> 
 										<select class="form-control select2" name="dataRight" id="dataRight" style="width: 100%;">
-											<option value="1"><spring:message code="report.product" /></option>
-											<option value="2" selected="selected"><spring:message code="report.sale.team" /></option>
+											<option value="1" selected="selected"><spring:message code="report.product" /></option>
+											<option value="2"><spring:message code="report.sale.team" /></option>
 											<option value="3"><spring:message code="report.sale.representative" /></option>
 											<option value="4"><spring:message code="report.channel.company" /></option>
 										</select>

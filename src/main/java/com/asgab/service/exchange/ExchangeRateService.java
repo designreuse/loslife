@@ -1,6 +1,7 @@
 package com.asgab.service.exchange;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -28,6 +29,10 @@ public class ExchangeRateService {
     page.setContent(list);
     page.setTotal(getAllAvailExchangeRates().size());
     return page;
+  }
+
+  public List<ExchangeRate> search(Map<String, Object> map) {
+    return exchangeRateMapper.search(map);
   }
 
   public ExchangeRate getExchangeRate(Long id) {

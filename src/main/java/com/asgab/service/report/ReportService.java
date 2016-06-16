@@ -50,10 +50,9 @@ public class ReportService {
     if (searchOrder) {
       orderReports = reportMapper.getOrdersByProduct(null);
     }
-    sumProductReport(opportunityReports, exchangeRates);
-    sumProductReport(orderReports, exchangeRates);
-    formatReport(opportunityReports, orderReports);
-    return formatReport(orderReports, opportunityReports);
+    sumReport(opportunityReports, exchangeRates, "product");
+    sumReport(orderReports, exchangeRates, "product");
+    return formatProductReport(orderReports, opportunityReports);
   }
 
   public List<Report> getReportBySaleTeam(Map<String, Object> parameters) {
@@ -64,12 +63,35 @@ public class ReportService {
     return reportMapper.getReportBySaleRepresentative(parameters);
   }
 
-  public List<Report> getReportByChannel(Map<String, Object> parameters) {
-    return reportMapper.getReportByChannel(parameters);
+  public Map<String, Object> getReportByChannel(Report report) {
+    List<ExchangeRate> exchangeRates = exchangeRateService.getAllAvailExchangeRates();
+    List<Report> opportunityReports = new ArrayList<Report>();
+    List<Report> orderReports = new ArrayList<Report>();
+    String val1 = report.getProgress().split(";")[0];
+    String val2 = report.getProgress().split(";")[1];
+    boolean searchOpportunity = false;
+    boolean searchOrder = false;
+    if (val1.equalsIgnoreCase("0") && val2.equalsIgnoreCase("100")) {
+      searchOpportunity = true;
+      searchOrder = true;
+    } else if (val1.equalsIgnoreCase("100") && val2.equalsIgnoreCase("100")) {
+      searchOrder = true;
+    } else if (!val2.equalsIgnoreCase("100")) {
+      searchOpportunity = true;
+    }
+    if (searchOpportunity) {
+      opportunityReports = reportMapper.getOpportunitysByChannel(null);
+    }
+    if (searchOrder) {
+      orderReports = reportMapper.getOpportunitysByChannel(null);
+    }
+    sumReport(opportunityReports, exchangeRates, "channel");
+    sumReport(orderReports, exchangeRates, "channel");
+    return formatChannelReport(orderReports, opportunityReports);
+
   }
 
-  // 汇率转换 & 产品合并
-  private void sumProductReport(List<Report> reports, List<ExchangeRate> exchangeRates) {
+  private void exchangeRates(List<Report> reports, List<ExchangeRate> exchangeRates) {
     for (Report o : reports) {
       for (ExchangeRate e : exchangeRates) {
         // 如果找到汇率就转换
@@ -79,23 +101,37 @@ public class ReportService {
         }
       }
     }
+  }
 
-    // 同时合并产品
+  // 汇率转换 & 产品合并
+  private void sumReport(List<Report> reports, List<ExchangeRate> exchangeRates, String type) {
+    // 汇率转换
+    exchangeRates(reports, exchangeRates);
+    // 合并产品
     for (int i = reports.size() - 1; i >= 0; i--) {
       Report ri = reports.get(i);
       for (int j = i - 1; j >= 0; j--) {
         Report rj = reports.get(j);
-        if (ri.getProduct_id().equals(rj.getProduct_id())) {
-          rj.setBudgetSum(rj.getBudgetSum().add(ri.getBudgetSum()));
-          // 删掉ri
-          reports.remove(ri);
-          break;
+        if ("product".equalsIgnoreCase(type)) {
+          if (ri.getProduct_id().equals(rj.getProduct_id())) {
+            rj.setBudgetSum(rj.getBudgetSum().add(ri.getBudgetSum()));
+            // 删掉ri
+            reports.remove(ri);
+            break;
+          }
+        } else if ("channel".equalsIgnoreCase(type)) {
+          if (ri.getChannel().equals(rj.getChannel())) {
+            rj.setBudgetSum(rj.getBudgetSum().add(ri.getBudgetSum()));
+            // 删掉ri
+            reports.remove(ri);
+            break;
+          }
         }
       }
     }
   }
 
-  private Map<String, Object> formatReport(List<Report> listA, List<Report> listB) {
+  private Map<String, Object> formatProductReport(List<Report> listA, List<Report> listB) {
     Map<String, Object> map = new TreeMap<String, Object>();
     // 获取
     List<String> productList = new ArrayList<String>();
@@ -138,7 +174,58 @@ public class ReportService {
         targetReportOrder.add(null);
       }
     }
-    map.put("product_names", productList);
+    map.put("names", productList);
+    map.put("opportunityReports", targetReportOpportunity);
+    map.put("orderReports", targetReportOrder);
+
+    return map;
+  }
+
+
+  private Map<String, Object> formatChannelReport(List<Report> listA, List<Report> listB) {
+    Map<String, Object> map = new TreeMap<String, Object>();
+    // 获取
+    List<String> channelList = new ArrayList<String>();
+    for (Report tmp : listA) {
+      if (StringUtils.isNoneBlank(tmp.getChannel_name())) {
+        channelList.add(tmp.getChannel_name());
+      }
+    }
+    for (Report tmp : listB) {
+      if (StringUtils.isNoneBlank(tmp.getChannel_name())) {
+        channelList.add(tmp.getChannel_name());
+      }
+    }
+    // 去重复
+    CommonUtil.distinctList(channelList);
+    List<Report> targetReportOpportunity = new ArrayList<Report>();
+    List<Report> targetReportOrder = new ArrayList<Report>();
+    for (String channel_name : channelList) {
+      boolean findA = false;
+      boolean findB = false;
+      for (Report tmp : listA) {
+        if (channel_name.equalsIgnoreCase(tmp.getChannel_name())) {
+          targetReportOpportunity.add(tmp);
+          findA = true;
+          break;
+        }
+      }
+      if (!findA) {
+        targetReportOpportunity.add(null);
+      }
+
+      for (Report tmp : listB) {
+        if (channel_name.equalsIgnoreCase(tmp.getChannel_name())) {
+          targetReportOrder.add(tmp);
+          findB = true;
+          break;
+        }
+      }
+      if (!findB) {
+        targetReportOrder.add(null);
+      }
+    }
+    map.put("names", channelList);
     map.put("opportunityReports", targetReportOpportunity);
     map.put("orderReports", targetReportOrder);
 

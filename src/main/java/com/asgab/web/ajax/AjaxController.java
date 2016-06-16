@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -27,8 +29,10 @@ import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.agency.AgencyService;
 import com.asgab.service.client.ClientService;
+import com.asgab.service.exchange.ExchangeRateService;
 import com.asgab.service.product.ProductService;
 import com.asgab.service.report.ReportService;
+import com.asgab.util.CommonUtil;
 import com.asgab.util.SelectMapper;
 
 @Controller
@@ -49,6 +53,9 @@ public class AjaxController {
 
   @Autowired
   private ReportService reportService;
+
+  @Autowired
+  private ExchangeRateService exchangeRateService;
 
   @RequestMapping(value = "addProduct", method = RequestMethod.POST)
   public String addProduct(HttpServletRequest request, Model model) {
@@ -153,11 +160,24 @@ public class AjaxController {
   }
 
   @RequestMapping(value = "report/list", method = RequestMethod.POST)
-  public String list(Report report, Model model) {
-    Map<String, Object> map = reportService.getReportByProduct(report);
-    model.addAttribute("product_names", map.get("product_names"));
+  public String list(Report report, Model model, HttpServletRequest request) {
+    LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+    String lang = localeResolver.resolveLocale(request).getLanguage();
+    String[] dataRightColumns = {"report.product", "report.sale.team", "report.sale.representative", "report.channel.company"};
+    Map<String, Object> map = null;
+    if ("1".equalsIgnoreCase(report.getDataRight())) {
+      map = reportService.getReportByProduct(report);
+    } else if ("4".equalsIgnoreCase(report.getDataRight())) {
+      map = reportService.getReportByChannel(report);
+    }
+    model.addAttribute("names", map.get("names"));
     model.addAttribute("opportunityReports", map.get("opportunityReports"));
     model.addAttribute("orderReports", map.get("orderReports"));
+    Map<String, Object> exchangeRateMap = new HashMap<String, Object>();
+    exchangeRateMap.put("base_currency", "RMB");
+    model.addAttribute("exchangeRates", exchangeRateService.search(exchangeRateMap));
+
+    model.addAttribute("dataRightColumn", CommonUtil.getProperty(lang, dataRightColumns[Integer.parseInt(report.getDataRight()) - 1]));
     return "report/reportResultList";
   }
 

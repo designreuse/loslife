@@ -20,6 +20,9 @@ public class Report {
   private BigDecimal budgetSum;
   private Long product_id;
   private String product_name;
+  
+  private String channel;
+  private String channel_name;
 
   public String getDataRight() {
     return dataRight;
@@ -127,6 +130,22 @@ public class Report {
 
   public void setProduct_name(String product_name) {
     this.product_name = product_name;
+  }
+
+  public String getChannel() {
+    return channel;
+  }
+
+  public void setChannel(String channel) {
+    this.channel = channel;
+  }
+
+  public String getChannel_name() {
+    return channel_name;
+  }
+
+  public void setChannel_name(String channel_name) {
+    this.channel_name = channel_name;
   }
 
 }
