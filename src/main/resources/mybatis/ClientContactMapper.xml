@@ -5,7 +5,7 @@
 <mapper namespace="com.asgab.repository.ClientContactMapper">
 
     <sql id="client_contact_columns">
-        client_id, contact_person, phone, email, position, address, is_delete, created_at, updated_at
+        client_id, contact_person, phone, email, position, is_delete, created_at, updated_at
     </sql>
     
     <select id="get" parameterType="long" resultType="ClientContact">
@@ -25,13 +25,13 @@
 	
 	<insert id="save" parameterType="ClientContact" useGeneratedKeys="true" keyProperty="id">
 		insert into sales_booking_production.client_contacts (<include refid="client_contact_columns" />)
-		values ( #{client_id}, #{contact_person}, #{phone}, #{email}, #{position}, #{address}, 1, #{created_at}, #{updated_at} )
+		values ( #{client_id}, #{contact_person}, #{phone}, #{email}, #{position}, 1, #{created_at}, #{updated_at} )
 	</insert>
 	
 	<update id="update" parameterType="ClientContact">
 		update sales_booking_production.client_contacts set 
 			contact_person = #{contact_person}, phone = #{phone}, email = #{email}, position = #{position}, 
-			address = #{address}, is_delete = #{is_delete}, updated_at = #{updated_at}
+			is_delete = #{is_delete}, updated_at = #{updated_at}
 		where id = #{id}
 	</update>
 	

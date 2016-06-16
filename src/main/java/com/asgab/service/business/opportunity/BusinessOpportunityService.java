@@ -8,9 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,9 +39,9 @@ public class BusinessOpportunityService {
   @Autowired
   private ProductService productService;
 
-  public static Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
-  public static Map<Integer, String> statusZH = new HashMap<Integer, String>();
-  public static Map<Integer, String> statusEN = new HashMap<Integer, String>();
+  public static Map<Integer, Integer> statusMap = new TreeMap<Integer, Integer>();
+  public static Map<Integer, String> statusZH = new TreeMap<Integer, String>();
+  public static Map<Integer, String> statusEN = new TreeMap<Integer, String>();
 
   static {
     statusMap.put(0, 1);
@@ -66,7 +66,7 @@ public class BusinessOpportunityService {
     statusEN.put(4, "Won");
     statusEN.put(5, "Won");
     statusEN.put(6, "Won");
-    statusEN.put(6, "Signed");
+    statusEN.put(7, "Signed");
   }
 
   public Page<BusinessOpportunity> search(Page<BusinessOpportunity> page) {

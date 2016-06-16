@@ -61,6 +61,16 @@
       			 <div class="box-body">
       			 	<div class="row">
 					 	<div class="col-md-6">
+					 	
+					 	<c:if test="${action eq 'update' }">
+					 		<div class="form-group">
+								<label for="number" class="col-md-3"><spring:message code="client.number" /></label>
+			                    <div class="col-md-9">
+			                      	<input class="form-control" disabled="disabled" type="text" value="${client.number}" />
+			                    </div>
+							</div>
+						</c:if>	
+						
 							<div class="form-group">
 								<label for="clientname" class="col-md-3"><spring:message code="client.name" /><em> *</em></label>
 			                    <div class="col-md-9">
@@ -70,9 +80,9 @@
 							</div>
 						
 	                		<div class="form-group">
-	                			<label for="brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
+	                			<label for="client_brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
 		                      	<div class="col-md-9">
-		                      		<input id="brand" class="form-control" type="text" name="client_brand" value="${client.brand}"
+		                      		<input id="client_brand" class="form-control" type="text" name="client_brand" value="${client.brand}"
 		                      		placeholder="<spring:message code="client.brand.remark" />"/>
 		                      	</div>
 	                		</div>
@@ -168,6 +178,12 @@
 		 						<div class="row">
 		 						
 		 							<div class="col-md-6">
+		 								<div class="form-group">
+											<label for="address" class="col-md-3"><spring:message code="client.contact.address" /></label>
+											<div class="col-md-9">
+					                      		<input id="address" class="form-control" type="text" name="address" value="${client.address}" />
+					                      	</div>
+										</div>
 		                
 					                	<div class="form-group">
 											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
@@ -222,8 +238,8 @@
 		$("#primaryForm").validate({
 			ignore: "",
 			rules:{
-				name: "required",
-				brand: "required",
+				clientname: "required",
+				client_brand: "required",
 				industry_id: "required",
 				currency_id: "required",
 				channel: "validate_channel"
@@ -347,7 +363,6 @@
 			$(this).find("input[name='contacts["+i+"].position']").rules('add',{required:true});
 			$(this).find("input[name='contacts["+i+"].phone']").rules('add',{required:true,isMobileOrPhone:true});
 			$(this).find("input[name='contacts["+i+"].email']").rules('add',{required:true,email:true});
-			$(this).find("input[name='contacts["+i+"].address']").rules('add',{required:true});
 		});
 	};
 	

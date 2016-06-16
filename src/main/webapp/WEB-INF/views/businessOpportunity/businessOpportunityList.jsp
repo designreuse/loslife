@@ -68,6 +68,12 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
+									<label><spring:message code="opportunity.id"/></label>
+									<input type="text" class="form-control" name="number" id="number" value="<c:out value="${pages.searchMap['number']}"/>" placeholder="<spring:message code='opportunity.id.placeholder'/>">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
 									<label><spring:message code="business.opportunity.name"/></label>
 									<input type="text" class="form-control" name="name" id="name" value="<c:out value="${pages.searchMap['name']}"/>" placeholder="<spring:message code='business.opportunity.input.name'/>">
 								</div>
@@ -76,6 +82,36 @@
 								<div class="form-group">
 									<label><spring:message code="business.opportunity.advertiser"/></label>
 									<input type="text" class="form-control" name="advertiser" id="advertiser" value="<c:out value="${pages.searchMap['advertiser']}"/>" placeholder="<spring:message code='business.opportunity.input.advertiser'/>">
+								</div>
+							</div>
+							
+							<div class="col-md-4">
+								<div class="form-group">
+									<label><spring:message code="business.opportunity.progress"/></label>
+									<select name="status" class="form-control status" id="status">
+										<c:if test="${lang eq 'zh' }">
+											<option value>请选择</option>
+											<c:forEach var="p" items="${statusesMap}">
+												<c:if test="${pages.searchMap['status'] == p.value}">
+													<option value="${p.value}" selected="selected">${statusesZH[p.value]}&nbsp;${p.key}%</option>
+												</c:if>
+												<c:if test="${pages.searchMap['status'] != p.value}">
+													<option value="${p.value}">${statusesZH[p.value]}&nbsp;${p.key}%</option>
+												</c:if>
+											</c:forEach>
+										</c:if>
+										<c:if test="${lang ne 'zh' }">
+											<option value>Please select</option>
+											<c:forEach var="p" items="${statusesMap}">
+												<c:if test="${pages.searchMap['status'] == p.value}">
+													<option value="${p.value}" selected="selected">${statusesEN[p.value]}&nbsp;${p.key}%</option>
+												</c:if>
+												<c:if test="${pages.searchMap['status'] != p.value}">
+													<option value="${p.value}">${statusesEN[p.value]}&nbsp;${p.key}%</option>
+												</c:if>
+											</c:forEach>
+										</c:if>
+									</select>
 								</div>
 							</div>
 						</div><!-- /.row -->
@@ -98,7 +134,7 @@
                     
 	                    <c:forEach items="${pages.content}" var="opportunity" varStatus="status">
 	                    	<tr>
-		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.id}</a></td>
+		                      <td><a href="javascript:void(0);" onclick="view(${opportunity.id});">${opportunity.number}</a></td>
 		                      <td>${opportunity.name}</td>
 		                      <td>${opportunity.advertiser}</td>
 		                      <td>
@@ -163,8 +199,8 @@
           	};
           	
           	function resetForm(){
-          		$("#name").val('');
-          		$("#advertiser").val('');
+          		$("#searchForm input").val('');
+          		$("#searchForm select").val(null);
           	};
           </script>
 </body>

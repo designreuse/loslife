@@ -43,7 +43,6 @@ CREATE TABLE `client_contacts` (
   `phone` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `position` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
   `is_delete` smallint(1) DEFAULT 1,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,

@@ -52,11 +52,19 @@ public class BusinessOpportunityController {
       @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
       ServletRequest request, Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
+    String number = request.getParameter("number");
+    if (StringUtils.isNotBlank(number)) {
+      params.put("number", number);
+      params.put("fmt_number", number.replace("SO", "").replaceFirst("^0*", ""));
+    }
     if (StringUtils.isNotBlank(request.getParameter("advertiser"))) {
       params.put("advertiser", request.getParameter("advertiser"));
     }
     if (StringUtils.isNotBlank(request.getParameter("name"))) {
       params.put("name", request.getParameter("name"));
+    }
+    if (StringUtils.isNotBlank(request.getParameter("status"))) {
+      params.put("status", request.getParameter("status"));
     }
 
     model.addAttribute("search", Servlets.encodeParameterString(params));
@@ -64,6 +72,9 @@ public class BusinessOpportunityController {
     Page<BusinessOpportunity> page = new Page<BusinessOpportunity>(pageNumber, pageSize, sort, params);
     Page<BusinessOpportunity> pages = businessOpportunityService.search(page);
     model.addAttribute("pages", pages);
+    model.addAttribute("statusesMap", BusinessOpportunityService.statusMap);
+    model.addAttribute("statusesZH", BusinessOpportunityService.statusZH);
+    model.addAttribute("statusesEN", BusinessOpportunityService.statusEN);
     return "businessOpportunity/businessOpportunityList";
   }
 

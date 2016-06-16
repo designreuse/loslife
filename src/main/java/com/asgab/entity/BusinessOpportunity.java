@@ -286,5 +286,14 @@ public class BusinessOpportunity {
     this.name = name;
   }
 
+  public String getNumber() {
+    String ret = new String("SO");
+    for (int fill = 0; fill < 9 - String.valueOf(id).length(); fill++) {
+      ret += "0";
+    }
+    ret += id;
+    return ret;
+  }
+  
 }
 

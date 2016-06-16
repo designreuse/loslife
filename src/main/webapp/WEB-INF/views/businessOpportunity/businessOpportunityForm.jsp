@@ -57,14 +57,25 @@
               
                 <div class="box-body">
                    <div class="row">
-           			<div class="col-md-6">
-           				<div class="form-group">
-	                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
-	                      <div class="col-md-9">
-	                      	<input type="text" name="name" id="name" class="form-control" value="${businessOpportunity.name }" placeholder="<spring:message code='business.opportunity.input.name'/>">
-	                      </div>
-	                    </div>
-	                </div>
+	                   
+		                   	<div class="col-md-6">
+		                   	<c:if test="${action eq 'update' }">
+		           				<div class="form-group">
+			                      <label for="number" class="col-md-3"><spring:message code="opportunity.id" /></label>
+			                      <div class="col-md-9">
+			                      	<input type="text" disabled="disabled" class="form-control" value="${businessOpportunity.number }" />
+			                      </div>
+			                    </div>
+			                </c:if>  
+			                    <div class="form-group">
+			                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
+			                      <div class="col-md-9">
+			                      	<input type="text" name="name" id="name" class="form-control" value="${businessOpportunity.name }" placeholder="<spring:message code='business.opportunity.input.name'/>">
+			                      </div>
+			                    </div>
+			                </div>
+		             
+           			
 	                <div class="col-md-12">
 	                	<div class="col-md-6" style="padding-left: 0;">
 		                    <div class="form-group">
@@ -72,7 +83,7 @@
 		                      <div class="col-md-9" >
 		                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;">
 		                      		<c:if test="${advertiser !=null}">
-		                      			<option value="${advertiser.id}" selected>${advertiser.name}</option>
+		                      			<option value="${advertiser.id}" selected>${advertiser.clientname}</option>
 		                      		</c:if>
 		                      	</select>
 		                      </div>
@@ -80,7 +91,7 @@
 	                    </div>
 	                    <div class="col-md-6" style="padding-left: 0;">
 	                    	<div class="form-group">
-	                      		<label  class="col-md-12"><a href="#"><spring:message code="business.opportunity.add.advertiser" /></a></label>
+	                      		<label  class="col-md-12"><a href="javascript:void(0);" onclick="addAdvertiser();"><spring:message code="business.opportunity.add.advertiser" /></a></label>
 	                     	</div>
 	                    </div>
 	                </div>
@@ -348,8 +359,12 @@
 				});
 			});
 			
+			function addAdvertiser(){
+				window.location.href='${ctx}/client/create';
+			};
+			
 			function cancel(){
-				window.location.href='${ctx}/opportunity';
+				window.location.href='${ctx}/businessOpportunity';
 			};
 			
 			function changeRadio(val,id,name){

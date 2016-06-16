@@ -136,18 +136,16 @@
 	                     			String contact_person = "";
 	                     			String phone = "";
 	                     			String position = "";
-	                     			String address = "";
 	                     			for(ClientContact contact:contacts){
 	                     			 contact_person+= "<span style='display:block;width=100%;'>"+contact.getContact_person()+"&nbsp;</span>";
 	                     			 phone+="<span style='display:block;width=100%;'>"+contact.getPhone()+"&nbsp;</span>";
 	                     			 position+="<span style='display:block;width=100%;'>"+contact.getPosition()+"&nbsp;</span>";
-	                     			 address+="<span style='display:block;width=100%;'>"+contact.getAddress()+"&nbsp;</span>";
 	                     			}
 	                     			%>
 	                     				<td><%=contact_person%></td>
 	                     				<td><%=phone%></td>
 	                     				<td><%=position%></td>
-	                     				<td><%=address%></td>
+	                     				<td>${client.address}</td>
 	                     			<%
 	                     		%>
 	                      		<td rowspan="${size}">${client.saleNames }</td>
