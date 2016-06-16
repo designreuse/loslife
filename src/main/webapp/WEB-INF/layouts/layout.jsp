@@ -42,6 +42,9 @@
     <!-- daterangepicker -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
     
+    <!-- datatable -->
+    <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.css">
+    
     <!-- custom style -->
     <link rel="stylesheet" href="${ctx}/static/styles/custom.css">
     
@@ -140,10 +143,20 @@
     <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
 	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>
 	
+    <!-- DataTables -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+    
+    
     <!-- AdminLTE App -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/demo.js"></script>
+    
     
     <%
     LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.ReportMapper">
+	
+	<select id="getOpportunitysByProduct" parameterType="map" resultType="Report">
+		select t.product_id,t.product_name,t.currency,sum(t.budget) as budgetSum from (
+			<!-- 有订单,订单不为完成. 取订单 -->
+			select adv.product_id as product_id,products.name as product_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budget from orders ord 
+				right join advertisements adv on ord.id=adv.order_id 
+				left join products as products on adv.product_id = products.id
+			where adv.order_id in (
+				select distinct(c.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is not null and  (c.state != 'examine_completed' or c.state is null)
+			)
+			group by adv.product_id,ord.budget_currency
+			union
+			<!-- 没有订单, 取本身 -->
+			select pro.product_id as product_id,products.name as product_name,cur.name as currency,sum(pro.budget) as budget from business_opportunities opp right join business_opportunity_products pro on opp.id=pro.business_opportunity_id
+				left join xmo.currencies cur on cur.id = opp.currency_id
+				left join products as products on pro.product_id = products.id
+			where opp.id in (
+				select distinct(a.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is null
+			)
+			group by pro.product_id,cur.name
+		) t 
+		group by t.product_id,t.currency
+		
+	</select>
+	
+	<select id="getOrdersByProduct" parameterType="map" resultType="Report">
+		<!--有订单,取订单 -->
+		select adv.product_id as product_id,products.name as product_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budgetSum 
+			from orders ord right join advertisements adv on ord.id=adv.order_id 
+			left join products as products on adv.product_id = products.id
+			where adv.order_id in (
+				select distinct(c.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is not null and  (c.state = 'examine_completed')
+			)
+			group by adv.product_id,ord.budget_currency
+	</select>
+	
+	<select id="getReportBySaleTeam" parameterType="map" resultType="Report">
+		
+	</select>
+	
+	<select id="getReportBySaleRepresentative" parameterType="map" resultType="Report">
+		
+	</select>
+	
+	<select id="getReportByChannel" parameterType="map" resultType="Report">
+		
+	</select>
+	
+</mapper> 

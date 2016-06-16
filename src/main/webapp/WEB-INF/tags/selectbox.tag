@@ -12,6 +12,7 @@
 <%@ attribute name="add0" type="java.lang.Boolean" %>
 <%@ attribute name="addNull" type="java.lang.Boolean" %>
 <%@ attribute name="style" type="java.lang.String" %>
+<%@ attribute name="clazz" type="java.lang.String" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
@@ -20,7 +21,7 @@
 	}
 %>
 
-<select name="<%=name%>" class="form-control <%=name%>" id="<%=id%>" style="<%=style%>">
+<select name="<%=name%>" class="form-control <%=clazz%>" id="<%=id%>" style="<%=style%>">
 	<%
 	  	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver (request);
 		String lang =localeResolver.resolveLocale(request).getLanguage();
