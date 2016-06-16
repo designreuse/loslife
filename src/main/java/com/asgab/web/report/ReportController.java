@@ -33,4 +33,5 @@ public class ReportController {
     model.addAttribute("currencys", currencys);
     return "report/report";
   }
+
 }

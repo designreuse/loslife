@@ -1,19 +1,25 @@
 package com.asgab.entity;
 
-import java.util.Date;
+import java.math.BigDecimal;
+
+import com.asgab.util.CommonUtil;
 
 public class Report {
   // 数据维度
   private String dataRight;
-  private Date reportDate;
-  private Integer progress;
+  private String reportDate;
+  private String progress;
   private String saleTeam;
   private String saleRepresentative;
   private String budget;
-  private String billType;
+  private String orderType;
   private String gp;
   private String incomeType;
   private String currency;
+  
+  private BigDecimal budgetSum;
+  private Long product_id;
+  private String product_name;
 
   public String getDataRight() {
     return dataRight;
@@ -23,19 +29,19 @@ public class Report {
     this.dataRight = dataRight;
   }
 
-  public Date getReportDate() {
+  public String getReportDate() {
     return reportDate;
   }
 
-  public void setReportDate(Date reportDate) {
+  public void setReportDate(String reportDate) {
     this.reportDate = reportDate;
   }
 
-  public Integer getProgress() {
+  public String getProgress() {
     return progress;
   }
 
-  public void setProgress(Integer progress) {
+  public void setProgress(String progress) {
     this.progress = progress;
   }
 
@@ -63,12 +69,12 @@ public class Report {
     this.budget = budget;
   }
 
-  public String getBillType() {
-    return billType;
+  public String getOrderType() {
+    return orderType;
   }
 
-  public void setBillType(String billType) {
-    this.billType = billType;
+  public void setOrderType(String orderType) {
+    this.orderType = orderType;
   }
 
   public String getGp() {
@@ -93,6 +99,34 @@ public class Report {
 
   public void setCurrency(String currency) {
     this.currency = currency;
+  }
+
+  public BigDecimal getBudgetSum() {
+    return budgetSum;
+  }
+  
+  public String getFmtBudgetSum(){
+    return CommonUtil.digSeg(getBudgetSum().doubleValue());
+  }
+
+  public void setBudgetSum(BigDecimal budgetSum) {
+    this.budgetSum = budgetSum;
+  }
+
+  public Long getProduct_id() {
+    return product_id;
+  }
+
+  public void setProduct_id(Long product_id) {
+    this.product_id = product_id;
+  }
+
+  public String getProduct_name() {
+    return product_name;
+  }
+
+  public void setProduct_name(String product_name) {
+    this.product_name = product_name;
   }
 
 }

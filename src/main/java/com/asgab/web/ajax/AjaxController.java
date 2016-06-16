@@ -22,11 +22,13 @@ import com.asgab.core.pagination.Page;
 import com.asgab.entity.Agency;
 import com.asgab.entity.Client;
 import com.asgab.entity.Product;
+import com.asgab.entity.Report;
 import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.agency.AgencyService;
 import com.asgab.service.client.ClientService;
 import com.asgab.service.product.ProductService;
+import com.asgab.service.report.ReportService;
 import com.asgab.util.SelectMapper;
 
 @Controller
@@ -45,6 +47,9 @@ public class AjaxController {
   @Autowired
   private AgencyService agencyService;
 
+  @Autowired
+  private ReportService reportService;
+
   @RequestMapping(value = "addProduct", method = RequestMethod.POST)
   public String addProduct(HttpServletRequest request, Model model) {
     List<SelectMapper> mappers = new ArrayList<SelectMapper>();
@@ -60,7 +65,7 @@ public class AjaxController {
   public String getAdvertisers(@RequestParam("q") String name) {
     Map<String, Object> params = new HashMap<String, Object>();
     if (StringUtils.isNotBlank(name)) {
-      params.put("name", name);
+      params.put("clientname", name);
     }
     Page<Client> page = new Page<Client>(1, 10, null, params);
     Page<Client> pages = clientService.search(page);
@@ -145,6 +150,15 @@ public class AjaxController {
     }
 
     return array.toJSONString();
+  }
+
+  @RequestMapping(value = "report/list", method = RequestMethod.POST)
+  public String list(Report report, Model model) {
+    Map<String, Object> map = reportService.getReportByProduct(report);
+    model.addAttribute("product_names", map.get("product_names"));
+    model.addAttribute("opportunityReports", map.get("opportunityReports"));
+    model.addAttribute("orderReports", map.get("orderReports"));
+    return "report/reportResultList";
   }
 
 }

@@ -1,5 +1,6 @@
 package com.asgab.util;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.alibaba.fastjson.JSONArray;
+import com.asgab.entity.ExchangeRate;
 
 public class CommonUtil {
 
@@ -145,5 +147,18 @@ public class CommonUtil {
       return strArr;
     }
     return new String[0];
+  }
+
+  public static BigDecimal transferMoneyToRMB(List<ExchangeRate> exchangeRates, String currency_name, Double money) {
+    if ("RMB".equalsIgnoreCase(currency_name)) {
+      return new BigDecimal(money);
+    }
+    for (int i = 0; i < exchangeRates.size(); i++) {
+      // currency-CNY 乘法
+      if (currency_name.equalsIgnoreCase(exchangeRates.get(i).getBase_currency()) && "RMB".equalsIgnoreCase(exchangeRates.get(i).getCurrency())) {
+        return new BigDecimal(money).multiply(new BigDecimal(exchangeRates.get(i).getRate()));
+      }
+    }
+    return BigDecimal.ZERO;
   }
 }
