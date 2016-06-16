@@ -1,3 +1,5 @@
+<%@page import="com.asgab.util.JsonMapper"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.asgab.util.CommonUtil"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="java.util.Iterator"%>
@@ -24,51 +26,64 @@
 
 <div class="box-header with-border">
 	<h3 class="box-title ">
-		总销售报数 <b class="text-green">￥<span id="totalSum"></span></b>
+		<spring:message code="report.total.sale" /> <b class="text-green">￥<span id="totalSum"></span></b>
 	</h3>
-	<a class="pull-right"><i class="fa fa-fw fa-download"></i>下载</a>
+	<a class="pull-right"><i class="fa fa-fw fa-download"></i><spring:message code="report.download" /></a>
+	<select id="changeRate" class="pull-right select" style="margin-right: 10px;">
+		<option value="1">RMB</option>
+		<c:forEach items="${exchangeRates}" var="exchangeRate">
+			<option value="${exchangeRate.rate}">${exchangeRate.currency}</option>
+		</c:forEach>
+	</select>
 </div>
 
 <div class="box-body  table-responsive no-padding">
 	<table class="table table-bordered table-striped" id="dataTableReport">
 		<thead>
-			<tr>
-				<th>产品</th>
-				<th>签约订单</th>
-				<th>商机</th>
-				<th>小计</th>
-			</tr>
 		</thead>
 		<tbody>
 			<%
-				List<String> product_names = (List<String>)request.getAttribute("product_names");
+				List<List<String>> datas = new ArrayList<>();
+			
+				List<String> names = (List<String>)request.getAttribute("names");
 				List<Report> opportunityReports = (List<Report>)request.getAttribute("opportunityReports");
 				List<Report> orderReports = (List<Report>)request.getAttribute("orderReports");
 				BigDecimal totalSum = BigDecimal.ZERO;
-				for(int i = 0 ;i <product_names.size();i++){
+				BigDecimal orderSum = BigDecimal.ZERO;
+				BigDecimal opportunitySum = BigDecimal.ZERO;
+				for(int i = 0 ;i <names.size();i++){
+				  List<String> data = new ArrayList<String>();
 				  BigDecimal sum = BigDecimal.ZERO;
 				  Report orderReport = orderReports.get(i);
 				  if(orderReport!=null){
 				    sum = sum.add(orderReport.getBudgetSum());
+				    orderSum = orderSum.add(orderReport.getBudgetSum());
 				  }
 				  Report opportunityReport = opportunityReports.get(i);
 				  if(opportunityReport!=null){
 				    sum = sum.add(opportunityReport.getBudgetSum());
+				    opportunitySum = opportunitySum.add(opportunityReport.getBudgetSum());
 				  }
 				  totalSum = totalSum.add(sum);
-				  %>
-				  	<tr>
-					<td><%=product_names.get(i) %></td>
-					<td style="text-align: right;"><%=orderReport!=null?orderReport.getFmtBudgetSum():"0.00" %></td>
-					<td style="text-align: right;"><%=opportunityReport!=null?opportunityReport.getFmtBudgetSum():"0.00" %></td>
-					<td style="text-align: right;"><%=CommonUtil.digSeg(sum.doubleValue()) %></td>
-					</tr>
-				  <%
+				  
+				  data.add(names.get(i));
+				  data.add(orderReport!=null?orderReport.getFmtBudgetSum():"0.00");
+				  data.add(opportunityReport!=null?opportunityReport.getFmtBudgetSum():"0.00");
+				  data.add(CommonUtil.digSeg(sum.doubleValue()));
+				  datas.add(data);
 				}
 				request.setAttribute("totalSum", CommonUtil.digSeg(totalSum.doubleValue()));
+				request.setAttribute("dataSet", JsonMapper.nonEmptyMapper().toJson(datas));
 			%>
-
 		</tbody>
+		<tfoot>
+			<tr>
+				<th><spring:message code="report.total" /></th>
+				<th style="text-align: right;"><%=CommonUtil.digSeg(orderSum.doubleValue()) %></th>
+				<th style="text-align: right;"><%=CommonUtil.digSeg(opportunitySum.doubleValue()) %></th>
+				<th style="text-align: right;"><%=CommonUtil.digSeg(totalSum.doubleValue()) %></th>
+			</tr>
+		</tfoot>
 	</table>
 	
 </div>
@@ -76,10 +91,81 @@
 <script type="text/javascript">
 		$(function() {
 			$("#totalSum").text('${totalSum}');
-			$("#dataTableReport").DataTable({
-				searching: false,
-				paging: false
+			var dataSet = ${dataSet};
+			var dataRightColumn = "${dataRightColumn}";
+			var col1 = "<spring:message code='report.clo1'/>";
+			var col2 = "<spring:message code='report.clo2'/>";
+			var col3 = "<spring:message code='report.clo3'/>";
+			var sInfo = "<spring:message code='report.sinfo'/>";
+			var sFirst= "<spring:message code='report.sfirst'/>";
+			var sPrevious= "<spring:message code='report.sprevious'/>";
+			var sNext= "<spring:message code='report.snext'/>";
+			var sLast= "<spring:message code='report.slast'/>";
+			var sLengthMenu= "<spring:message code='report.slengthmenu'/>";
+			var table = $("#dataTableReport").DataTable({
+				searching: true,
+				paging: true,
+				data: dataSet,
+				columns: [
+				            { title: dataRightColumn },
+				            { title: col1 },
+				            { title: col2 },
+				            { title: col3 }
+				        ],
+				language: {
+					"sInfo":sInfo,
+					"oPaginate": {
+			            "sFirst": sFirst,
+			            "sPrevious": sPrevious,
+			            "sNext": sPrevious,
+			            "sLast": sLast,
+			        },
+			        "sLengthMenu": sLengthMenu
+				},
+				"createdRow": function( row, data, dataIndex ) {
+                    $(row).children('td').eq(1).attr('style', 'text-align: right;');
+                    $(row).children('td').eq(2).attr('style', 'text-align: right;');
+                    $(row).children('td').eq(3).attr('style', 'text-align: right;');
+                },
 			});
 			
-		})
+			$("#changeRate").change(function(){
+				var rate = +$(this).val();
+				console.log(rate);
+		        table.clear();
+		        var tmpDatas = [];
+		        for(var i = 0 ; i<dataSet.length;i++){
+		        	var tmpData = [];
+		        	tmpData[0] = dataSet[i][0];
+		        	for(var j = 1 ; j<dataSet[i].length;j++){
+		        		var value = formatMoney(rate * rmoney(dataSet[i][j]));
+		        		tmpData[j] = formatMoney(value,2);
+		        	}
+		        	tmpDatas[i] = tmpData;
+		        }
+		        table.rows.add(tmpDatas);
+		        table.draw();
+			});
+			
+		});
+		
+		
+		function rmoney(s)   
+		{   
+		   return parseFloat(s.replace(/[^\d\.-]/g, ""));   
+		}
+		
+		function formatMoney(s, n)   
+		{   
+		   n = n > 0 && n <= 20 ? n : 2;   
+		   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";   
+		   var l = s.split(".")[0].split("").reverse(),   
+		   r = s.split(".")[1];   
+		   t = "";   
+		   for(i = 0; i < l.length; i ++ )   
+		   {   
+		      t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");   
+		   }   
+		   return t.split("").reverse().join("") + "." + r;   
+		};
 </script>

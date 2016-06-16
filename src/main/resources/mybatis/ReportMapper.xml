@@ -56,8 +56,56 @@
 		
 	</select>
 	
-	<select id="getReportByChannel" parameterType="map" resultType="Report">
+	<select id="getOpportunitysByChannel" parameterType="map" resultType="Report">
+		select t.channel,t.channel_name,t.currency,sum(t.budget) as budgetSum from (
+			<!--  有订单,订单不为完成. 取订单 -->
+			select clients.channel as channel ,channels.channel_name as channel_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budget from orders ord 
+				right join advertisements adv on ord.id=adv.order_id 
+				left join products as products on adv.product_id = products.id
+				left join clients as clients on clients.id = ord.client_id
+				left join channels as channels on clients.channel = channels.id
+			where adv.order_id in (
+				select distinct(c.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is not null and  (c.state != 'examine_completed' or c.state is null)
+			)
+			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
+			group by clients.channel,ord.budget_currency
+			union
+			<!--  没有订单, 取本身 -->
+			select clients.channel as channel ,channels.channel_name as channel_name,cur.name as currency,sum(pro.budget) as budget  from business_opportunities opp right join business_opportunity_products pro on opp.id=pro.business_opportunity_id
+				left join xmo.currencies cur on cur.id = opp.currency_id
+				left join products as products on pro.product_id = products.id
+				left join clients as clients on clients.id = opp.advertiser_id
+				left join channels as channels on clients.channel = channels.id
+			where opp.id in (
+				select distinct(a.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is null 
+			)
+			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
+			group by clients.channel,cur.name
+		) t 
+		group by t.channel,t.currency
 		
+	</select>
+	
+	<select id="getOrdersByChannel" parameterType="map" resultType="Report">
+		select clients.channel as channel ,channels.channel_name as channel_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budgetSum 
+			from orders ord right join advertisements adv on ord.id=adv.order_id 
+			left join products as products on adv.product_id = products.id
+			left join clients as clients on clients.id = ord.client_id
+			left join channels as channels on clients.channel = channels.id
+			where adv.order_id in (
+				select distinct(c.id) from business_opportunities a 
+					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
+					left join orders c on c.id = b.order_id
+				where c.id is not null and  (c.state = 'examine_completed')
+			)
+			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
+			group by clients.channel,ord.budget_currency
 	</select>
 	
 </mapper> 
