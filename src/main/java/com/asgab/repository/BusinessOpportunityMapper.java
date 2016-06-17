@@ -28,4 +28,6 @@ public interface BusinessOpportunityMapper {
 
   List<Currency> getCurrencys();
 
+  List<BusinessOpportunity> getListByCondition(Map<String, Object> parameters);
+
 }

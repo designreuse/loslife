@@ -89,4 +89,16 @@
 		select id , name from sales_booking_production.currencies
 	</select>
 	
+	<select id="getListByCondition" parameterType="map" resultType="BusinessOpportunity">
+	    select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
+		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id
+		where o.deleted_at is null
+		<if test="advertiserIds != null">
+		    and o.advertiser_id in (${advertiserIds})
+		</if>
+		<if test="mergedData != null">
+		    and o.deliver_start_date =&gt; #{mergedData}   
+		</if>
+	</select>
+	
 </mapper> 
