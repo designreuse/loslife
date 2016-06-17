@@ -57,187 +57,255 @@
 						<tr>
 							<th style="width: 80px;"></th>
 							<c:forEach items="${map['id']}" var="val" varStatus="status">
-								<th style="vertical-align: bottom;">
-									<input id="${status.count}" type="radio" name="id" class="flat-red allcheck" value="${val}"> 
-									<label for="${status.count}" style="vertical-align: bottom; margin-bottom: 1px;"><spring:message code="btn.selectall" /></label>
+								<th class="merge-head-${status.count}" style="vertical-align: bottom;">
+									<label for="${status.count}" style="vertical-align: bottom; margin-bottom: 1px;">
+										<c:if test="${status.count == 1}">
+											<input type="radio" name="id" class="flat-red allcheck first-checked" value="${val}"> 
+										</c:if>
+										<c:if test="${status.count != 1}">
+											<input type="radio" name="id" class="flat-red allcheck" value="${val}">
+										</c:if>
+										<spring:message code="btn.selectall" />
+									</label>
 								</th>
 							</c:forEach>
 						</tr>
 					</thead>
+					
 					<tbody>
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.clientname" /></th>
 							<c:forEach items="${map['clientname']}" var="val" varStatus="status">
-								<th>
+								<td class="merge-body-${status.count}">
 									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="clientname_radio"></span> 
-											<input type="text" name="clientname" class="form-control input-sm ${status.count}" value="${val}" disabled>
+										<div class="input-group-addon"><input type="radio" name="clientname_radio" /></div>
+										<div class="clientname_disabled">
+											<input type="text" name="clientname" class="form-control input-sm" value="${val}" disabled />
+										</div> 
 									</div>
-								</th>
+								</td>
 							</c:forEach>
 						</tr>
+						
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.brand" /></th>
 							<c:forEach items="${map['brand']}" var="val" varStatus="status">
-								<th>
+								<td class="merge-body-${status.count}">
 									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="brand_radio"></span> 
-											<input type="text" name="brand" class="form-control input-sm ${status.count}" value="${val}" disabled>
+										<div class="input-group-addon"><input type="radio" name="brand_radio" /></div> 
+										<div class="brand_disabled">
+											<input type="text" name="brand" class="form-control input-sm" value="${val}" disabled />
+										</div>
 									</div>
-								</th>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.channle" /> </th>
+							<c:forEach items="${map['channels']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="channel_name_radio" /></div>
+										<div class="channel_name_disabled">
+											<input type="text" readonly="readonly" class="form-control input-sm" disabled value="${val['channel_name']}" />
+											<input type="hidden" name="whether_channel" value="${val['whether_channel']}" disabled />
+											<input type="hidden" name="channel"  value="${val['channel']}" disabled />
+										</div>
+									</div>
+								</td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
 							<th style="vertical-align: middle;"><spring:message code="advertiser.industry" /></th>
 							<c:forEach items="${map['industry_id']}" var="val" varStatus="status">
-								<th>
+								<td class="merge-body-${status.count}">
 									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="industry_id_radio"></span> 
-											<input type="hidden" name="industry_id" class="form-control input-sm ${status.count}" value="${val}" disabled>
-											<span class="input-group-addon input-text ${status.count} industry_id_span"><tags:decodeList list="${industryTypes }" value="${val}" ></tags:decodeList></span>
+										<div class="input-group-addon"><input type="radio" name="industry_id_radio" /></div>
+										<div class="industry_id_disabled">
+											<input type="text" readonly="readonly" class="form-control input-sm" disabled value="<tags:decodeList list="${industryTypes}" value="${val}" />" />
+											<input type="hidden" name="industry_id" value="${val}" disabled />
+										</div>
 									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="client.currency" /></th>
-							<c:forEach items="${map['currency_id']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="currency_id_radio"></span> 
-											<input type="hidden" name="currency_id" class="form-control input-sm ${status.count}" value="${val}" disabled>
-											<span class="input-group-addon input-text ${status.count} currency_id_span"><tags:decodeList list="${currencyTypes }" value="${val}" ></tags:decodeList></span>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.company.address" /></th>
-							<c:forEach items="${map['address']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="address_radio"></span> 
-											<input type="text" name="address" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.qualification.name" /></th>
-							<c:forEach items="${map['company_name']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="company_name_radio"></span> 
-											<input type="text" name="company_name" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.website.name"/></th>
-							<c:forEach items="${map['website_name']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="website_name_radio"></span> 
-											<input type="text" name="website_name" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.website.address"/></th>
-							<c:forEach items="${map['website_address']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="website_address_radio"></span> 
-											<input type="text" name="website_address" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.organization.code"/></th>
-							<c:forEach items="${map['organization_code']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="organization_code_radio"></span> 
-											<input type="text" name="organization_code" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.icp" /></th>
-							<c:forEach items="${map['icp']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="icp_radio"></span> 
-											<input type="text" name="icp" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.business.licence" /></th>
-							<c:forEach items="${map['business_licence']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="business_licence_radio"></span> 
-											<input type="text" name="business_licence" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.platform" /></th>
-							<c:forEach items="${map['platform']}" var="val" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="platform_radio"></span> 
-											<input type="text" name="platform" class="form-control input-sm ${status.count}" value="${val}" disabled>
-									</div>
-								</th>
-							</c:forEach>
-						</tr>
-						<tr>
-							<th style="vertical-align: middle;"><spring:message code="advertiser.clientcontact" /></th>
-							<c:forEach items="${map['contacts']}" var="contacts" varStatus="status">
-								<th>
-									<div class="input-group col-xs-10">
-										<span class="input-group-addon"> 
-											<input type="radio" class="${status.count}" name="contact_radio"></span>
-											<c:if test="${fn:length(contacts) == 0 }">
-												<input type="text" value="" name="contact" class="form-control input-sm ${status.count}" disabled>
-											</c:if> 
-											<c:if test="${fn:length(contacts) > 0 }">
-											<div class="input-div ${status.count} contact_div">
-											<c:forEach items="${contacts}" var="val">
-												<spring:message code="advertiser.client.name" />${status.count}:${val.contact_person }<br/>
-												<spring:message code="advertiser.client.phone" />${status.count}:${val.phone }<br/>
-												<spring:message code="advertiser.client.position" />${status.count}:${val.position }<br/>
-												<div class="divider-horizontal"></div>
-												<input type="hidden" value="${val.id}" name="contact" class="form-control input-sm ${status.count}" disabled>
-											</c:forEach>
-											</div>
-											</c:if>
-									</div>
-								</th>
+								</td>
 							</c:forEach>
 						</tr>
 						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="client.currency" /></th>
+							<c:forEach items="${map['currency_id']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="currency_id_radio" /></div>
+										<div class="currency_id_disabled">
+											<input type="text" readonly="readonly" class="form-control input-sm" disabled value="<tags:decodeList list="${currencyTypes}" value="${val}" />" />
+											<input type="hidden" name="currency_id" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.company.address" /></th>
+							<c:forEach items="${map['address']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="address_radio" /></div>
+										<div class="address_disabled">
+											<input type="text" name="address" class="form-control input-sm" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.whether_cross_district" /></th>
+							<c:forEach items="${map['whether_cross_districts']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="whether_cross_districts_radio" /></div>
+										<div class="whether_cross_districts_disabled">
+											<c:if test="${val == 1}">
+												<input type="text" readonly="readonly" class="form-control input-sm" disabled value="<spring:message code="client.channel.yes" />" />
+											</c:if>
+											<c:if test="${val != 1}">
+												<input type="text" readonly="readonly" class="form-control input-sm" disabled value="<spring:message code="client.channel.no" />" />
+											</c:if>
+											<input type="hidden" name="whether_cross_districts" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.qualification.name" /></th>
+							<c:forEach items="${map['company_name']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="company_name_radio" /></div>
+										<div class="company_name_disabled">
+											<input type="text" name="company_name" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.website.name"/></th>
+							<c:forEach items="${map['website_name']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="website_name_radio" /></div>
+										<div class="website_name_disabled">
+											<input type="text" name="website_name" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.website.address"/></th>
+							<c:forEach items="${map['website_address']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="website_address_radio" /></div>
+										<div class="website_address_disabled">
+											<input type="text" name="website_address" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.organization.code"/></th>
+							<c:forEach items="${map['organization_code']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="organization_code_radio" /></div>
+										<div class="organization_code_disabled">
+											<input type="text" name="organization_code" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.icp" /></th>
+							<c:forEach items="${map['icp']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="icp_radio" /></div>
+										<div class="icp_disabled">
+											<input type="text" name="icp" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.business.licence" /></th>
+							<c:forEach items="${map['business_licence']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="business_licence_radio" /></div>
+										<div class="business_licence_disabled">
+											<input type="text" name="business_licence" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.platform" /></th>
+							<c:forEach items="${map['platform']}" var="val" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="platform_radio" /></div>
+										<div class="platform_disabled">
+											<input type="text" name="platform" class="form-control input-sm ${status.count}" value="${val}" disabled />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<th style="vertical-align: middle;"><spring:message code="advertiser.clientcontact" /></th>
+							<c:forEach items="${map['contacts']}" var="contacts" varStatus="status">
+								<td class="merge-body-${status.count}">
+									<div class="input-group col-xs-10">
+										<div class="input-group-addon"><input type="radio" name="contact_radio" /></div>
+										<div class="contact_disabled">
+											<c:if test="${fn:length(contacts) == 0 }">
+												<input type="text" name="contact" class="form-control input-sm ${status.count}" disabled readonly="readonly"  />
+											</c:if>
+											<c:if test="${fn:length(contacts) > 0 }">
+												<div class="input-div contact_div">
+													<c:forEach items="${contacts}" var="val" varStatus="contactIndex">
+														<spring:message code="advertiser.client.name" />${contactIndex.count}: ${val.contact_person }<br/>
+														<spring:message code="advertiser.client.phone" />${contactIndex.count}: ${val.phone }<br/>
+														<spring:message code="advertiser.client.position" />${contactIndex.count}: ${val.position }<br/>
+														<div class="divider-horizontal"></div>
+													</c:forEach>
+												</div>	
+											</c:if>	
+											
+											<input type="hidden" name="copy_contact_client_id" value="${map['id'][status.count-1]}" disabled="disabled" />
+										</div>
+									</div>
+								</td>
+							</c:forEach>
+						</tr>
 					</tbody>
 				</table>
 				
@@ -253,15 +321,29 @@
 					      <div class="row">
 					      	<div class="col-md-12 form-horizontal">
 			                    <div class="form-group">
-			                      <label for="remark" class="col-md-3"><spring:message code="advertiser.refresh.data.range" />*</label>
-			                      <div class="col-md-9">
-			                      	<select id="refreshDataRange" name="refreshDataRange" class="form-control select2 input-ignore" style="width: 100%;"></select>
-			                      </div>
+				                      <label for="remark" class="col-md-3"><spring:message code="advertiser.refresh.data.range" />*</label>
+				                      <div class="col-md-9">
+				                      	 	<label>
+						                    	<input type="radio" class="minimal refreshDataRange" name="refreshDataRange" checked value="1">
+						                    	&nbsp;<spring:message code="advertiser.refresh.data.range.option1"/>&nbsp;&nbsp; 
+						                    </label>
+						                    <label>
+						                      	<input type="radio" class="minimal refreshDataRange" name="refreshDataRange" value="2">
+						                      	&nbsp;<spring:message code="advertiser.refresh.data.range.option2"/>&nbsp;&nbsp;
+						                    </label>
+						                    <label>
+						                      	<input type="radio" class="minimal refreshDataRange" name="refreshDataRange" value="3">
+						                      	&nbsp;<spring:message code="advertiser.refresh.data.range.option3"/>&nbsp;&nbsp;
+						                    </label>
+				                      </div>
 			                    </div>
-			                    <div class="form-group" id="mergedDataDIV" style="display: none;">
-			                      <div class="col-md-9 col-md-offset-3">
-			                      	<input type="text" class="form-control input-ignore" id="mergedData" name="mergedData" placeholder="<spring:message code='advertiser.merge.data' />"/>
-			                      </div>
+			                    
+			                    <div class="form-group" id="mergedDataDIV"">
+			                    	<label for="remark" class="col-md-3"><spring:message code="advertiser.merged.data"/><em> *</em></label>
+			                      	<div class="col-md-9">
+			                      		<input type="text" class="form-control" id="mergedData" name="mergedData" 
+			                      		placeholder="<spring:message code='advertiser.merge.data' />" disabled="disabled" />
+			                      	</div>
 			                    </div>
 			                </div>
 					      </div>
@@ -292,68 +374,56 @@
 	<script type="text/javascript">
 	
 	 $(function () {
+		$("#primaryForm").validate({
+	        	
+	    });
         //Flat red color scheme for iCheck
         $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-          checkboxClass: 'icheckbox_flat-green',
-          radioClass: 'iradio_flat-green'
-        });
-        //全选
-        $("input[type='radio'].allcheck").on('ifChecked', function(event){
-        	 $('input[type="radio"].'+this.id).iCheck('check');
-        	 $('input[type="text"]').attr("disabled","disabled");
-        	 $('input[type="text"].'+this.id).removeAttr("disabled");
-        	 
-        	 // hidden的也要
-        	 $('input[type="hidden"]').attr("disabled","disabled");
-        	 $('input[type="hidden"].'+this.id).removeAttr("disabled");
-        	 $("span[class*='_span']").removeClass("input-text-check").addClass("input-text");
-        	 $('span.'+this.id).removeClass("input-text").addClass("input-text-check");
-        	 
-        	 $("div[class*='contact_div']").removeClass("input-div-check").addClass("input-div");
-        	 $('div.'+this.id).removeClass("input-div").addClass("input-div-check");
-        	 
-        	 $("input[class*='input-ignore']").removeAttr("disabled");
-        });
-        //单选
-        $("input[type='radio'][class!='allcheck']").click(function(){
-        	var textname = this.name.replace("_radio","");
-        	$("input[type='text'][name='"+textname+"']").attr("disabled","disabled");
-        	$(this).parent().parent().children("input[type='text']").removeAttr("disabled");
-
-        	
-        	$("input[type='hidden'][name='"+textname+"']").attr("disabled","disabled");
-        	$(this).parent().parent().children("input[type='hidden']").removeAttr("disabled");
-        	// contact单独处理
-        	$(this).parent().parent().find("input[type='hidden'][name='contact']").removeAttr("disabled");
-        	
-        	$("span[class*='"+textname+"_span']").removeClass("input-text-check").addClass("input-text");
-        	$(this).parent().parent().children("span[class*='"+textname+"_span']").removeClass("input-text").addClass("input-text-check");
-        	$("div[class*='"+textname+"_div']").removeClass("input-div-check").addClass("input-div");
-        	$(this).parent().parent().children("div[class*='"+textname+"_div']").removeClass("input-div").addClass("input-div-check");
-        	
-        	$("input[class*='input-ignore']").removeAttr("disabled");
+          	checkboxClass: 'icheckbox_flat-green',
+          	radioClass: 'iradio_flat-green'
         });
         
-        $("#primaryForm").validate();
+      	//iCheck for checkbox and radio inputs
+        $('input[type="radio"].minimal').iCheck({
+          	checkboxClass: 'icheckbox_minimal-blue',
+          	radioClass: 'iradio_minimal-blue'
+        });
+        
+        // 全选，保留广告主
+        $("#primaryForm table thead th input[type='radio'].allcheck").on('ifChecked', function(event){
+        	var col_idx = $(this).parents('th').attr('class').replace('merge-head-','');
+        	$("#primaryForm table tbody td[class^='merge-body-'] input[type='radio']").iCheck('uncheck');
+        	$("#primaryForm table tbody td[class^='merge-body-'] input[type='text']").attr("disabled","disabled");
+        	$("#primaryForm table tbody td[class^='merge-body-'] input[type='hidden']").attr("disabled","disabled");
+        	$("#primaryForm table tbody td.merge-body-" + col_idx + " input[type='radio']").iCheck('check');
+        	$("#primaryForm table tbody td.merge-body-" + col_idx + " input[type='text']").removeAttr("disabled");
+        	$("#primaryForm table tbody td.merge-body-" + col_idx + " input[type='hidden']").removeAttr("disabled");
+        });
+        
+        // 单选，保留部分广告主
+        $("#primaryForm table tbody td input[type='radio'][name$='_radio']").click( function(){
+        	var textname = $(this).attr('name').replace("_radio","");
+        	$("div." + textname + "_disabled input").attr("disabled","disabled");
+        	$(this).parent().next().find('input').removeAttr('disabled');
+        });
+        
+        // 默认保留第一个
+        $(".first-checked").iCheck("check");
         
         // 刷新数据范围
-        $("#refreshDataRange").select2({
-        	data:[{id:1,text:"全部"},
-        	      {id:2,text:"指定日期之后"},
-        	      {id:3,text:"新建单"}
-        	     ]
-        }).on('change', function (evt) {
-        	  if($(this).val()==2){
-        		  $("#mergedDataDIV").show();
-        		  // 添加验证规则
-        		  $("#mergedData").rules('add', {required:true});
-        	  }else{
-        		  $("#mergedDataDIV").hide();
-        		  $("#mergedData").rules('remove', {required:true});
-        	  }
+        $(".refreshDataRange").on("ifChecked", function(){
+        	if($(this).val() == 2){
+        		$("#mergedData").removeAttr("disabled");
+        		$("#mergedData").rules('add', {required:true});
+        	}else{
+        		$("#mergedData").attr("disabled",true);
+        		$("#mergedData").rules('remove', "required");
+        		$("#mergedData-error").remove();
+        		$("#mergedDataDIV").removeClass("has-error");
+        	}
         });
-
         
+        // 日期插件
         $("#mergedData").daterangepicker({singleDatePicker:true,opens:"right",cancelClass:"btn-info",format:'YYYY-MM-DD'});
 	 });
 	 
@@ -367,7 +437,7 @@
 			 $('#shield').show();
 			 $('#primaryForm').submit();
 		 }
-	 }
+	 };
 	</script>
 </body>
 </html>

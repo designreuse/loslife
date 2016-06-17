@@ -16,9 +16,11 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.asgab.core.pagination.Page;
+import com.asgab.entity.BusinessOpportunity;
 import com.asgab.entity.Client;
 import com.asgab.entity.ClientContact;
 import com.asgab.entity.ClientShare;
+import com.asgab.repository.BusinessOpportunityMapper;
 import com.asgab.repository.ClientContactMapper;
 import com.asgab.repository.ClientMapper;
 import com.asgab.repository.ClientShareMapper;
@@ -39,6 +41,8 @@ public class ClientService {
   private CurrencyTypeService currencyTypeService;
   @Autowired
   private IndustryTypeService industryTypeService;
+  @Autowired
+  private BusinessOpportunityMapper businessOpportunityMapper;
 
   public Page<Client> search(Page<Client> page) {
     List<Client> clients = clientMapper.search(page.getSearchMap(), page.getRowBounds());
@@ -159,14 +163,15 @@ public class ClientService {
   }
 
   public void resetClientContacts(List<Client> clients) {
-    if(clients==null || (clients!=null&&clients.size()==0)){
+    if (clients == null || (clients != null && clients.size() == 0)) {
       return;
     }
     List<Long> clientIds = new ArrayList<Long>();
     for (Client client : clients) {
       clientIds.add(client.getId());
     }
-    List<ClientContact> clientContacts = clientContactMapper.getClientContactsByClientIdList(clientIds);
+    List<ClientContact> clientContacts =
+        clientContactMapper.getClientContactsByClientIdList(clientIds);
     if (clientContacts != null && clientContacts.size() > 0) {
       for (Client client : clients) {
         for (ClientContact contact : clientContacts) {
@@ -177,5 +182,76 @@ public class ClientService {
       }
     }
   }
-  
+
+  /***
+   * 合并广告主
+   */
+  public void merge(Map<String, Object> parameters) {
+    Client keepClient = (Client) parameters.get("keepClient");
+    String copy_contact_client_id = (String) parameters.get("copy_contact_client_id");
+    String keepId = (String) parameters.get("keepId");
+    String refreshDataRange = (String) parameters.get("refreshDataRange");
+    Date now = new Date();
+
+    // 更新保留下来广告主
+    clientMapper.update(keepClient);
+
+    // 废弃合并后的广告主
+    for (String clientId : parameters.get("mergeIds").toString().split(",")) {
+      if (!keepId.equals(clientId)) {
+        Client abandonClient = clientMapper.get(Long.parseLong(clientId));
+        if (abandonClient != null) {
+          abandonClient.setStatus("Stop");
+          abandonClient.setUpdated_at(now);
+          clientMapper.update(abandonClient);
+        }
+      }
+    }
+
+    // 如果联系人需要合并
+    if (!keepId.equals(copy_contact_client_id)) {
+      List<Long> seach = new ArrayList<Long>();
+      seach.add(Long.parseLong(keepId));
+      seach.add(Long.parseLong(copy_contact_client_id));
+      List<ClientContact> contactList = clientContactMapper.getClientContactsByClientIdList(seach);
+      if (contactList != null) {
+        for (ClientContact cc : contactList) {
+          if (keepId.equals(cc.getClient_id().toString())) {
+            cc.setIs_delete(0);
+            cc.setUpdated_at(now);
+            clientContactMapper.update(cc);
+          } else if (copy_contact_client_id.equals(cc.getClient_id().toString())) {
+            ClientContact copy_cc = new ClientContact();
+            copy_cc.setClient_id(Long.parseLong(keepId));
+            copy_cc.setContact_person(cc.getContact_person());
+            copy_cc.setPhone(cc.getPhone());
+            copy_cc.setEmail(cc.getEmail());
+            copy_cc.setPosition(cc.getPosition());
+            copy_cc.setIs_delete(1);
+            copy_cc.setCreated_at(now);
+            clientContactMapper.save(copy_cc);
+          }
+        }
+      }
+    }
+
+    Map<String, Object> searchMap = new HashMap<String, Object>();
+    searchMap.put("advertiserIds", parameters.get("mergeIds"));
+
+    if (!"3".equals(refreshDataRange)) {
+      // 按日期刷新
+      if ("2".equals(refreshDataRange)) {
+        searchMap.put("mergedData", parameters.get("mergedData"));
+      }
+
+      List<BusinessOpportunity> listBO = businessOpportunityMapper.getListByCondition(searchMap);
+      for (BusinessOpportunity bo : listBO) {
+        if (!keepId.equals(bo.getAdvertiser_id().toString())) {
+          bo.setAdvertiser_id(Long.parseLong(keepId));
+          bo.setUpdated_at(now);
+          businessOpportunityMapper.update(bo);
+        }
+      }
+    }
+  }
 }
