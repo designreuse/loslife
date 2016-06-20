@@ -41,7 +41,7 @@
 	
 	<select id="getClientContactsByClientIdList" parameterType="list" resultType="ClientContact">
 		select id,<include refid="client_contact_columns" /> from sales_booking_production.client_contacts
-		where client_id in
+		where is_delete = 1 and client_id in
 		<foreach collection="list" item="client_id" separator="," open="(" close=")">
 			#{client_id}
 		</foreach>

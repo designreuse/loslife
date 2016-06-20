@@ -70,33 +70,43 @@
 		            <div class="box-body" style="display: block;">
 		            	<form action="${ctx}/advertiser" method="get" id="searchForm">
 						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label><spring:message code="advertiser.clientname"/></label>
-									<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
-								</div>
-								<div class="form-group">
-									<label><spring:message code="advertiser.sales"/></label>
-									<input type="text" class="form-control" name="saleIds" id="saleIds" value="<c:out value="${pages.searchMap['saleIds']}"/>" placeholder="<spring:message code='advertiser.input.sales'/>">
-								</div>
+							<div class="form-group col-md-4">
+								<label><spring:message code="advertiser.clientname" /></label>
+								<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
 							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label><spring:message code="advertiser.brand"/></label>
-									<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
-								</div>
-								<div class="form-group">
-									<label><spring:message code="advertiser.platform"/></label>
-									<input type="text" class="form-control" name="platform" id="platform" value="<c:out value="${pages.searchMap['platform']}"/>" placeholder="<spring:message code='advertiser.input.platform'/>">
-								</div>
+							
+							<div class="form-group col-md-4">
+								<label><spring:message code="advertiser.brand" /></label>
+								<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
 							</div>
-							<div class="col-md-4">
+							
+							<div class="form-group col-md-4">
+								<label><spring:message code="advertiser.companyname" /></label>
+								<select class="form-control select2 channel" name="channel" id="channel" style="width: 100%;">
+									<option value></option>
+									<c:forEach var="agency" items="${agencys}">
+										<option value="${agency.id}">${agency.channel_name}</option>
+									</c:forEach>
+		                      	</select>
+							</div>
+							
+							<div class="form-group col-md-4">
+								<label><spring:message code="advertiser.sales"/></label>
+								<select class="form-control select2 saleIds" name="saleIds" id="saleIds" style="width: 100%;">
+									<c:forEach var="user" items="${users}">
+	                      				<option value="${user.id}">${user.name}</option>
+	                      			</c:forEach>
+		                      	</select>
+							</div>
+							
+							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.dateDuring"/></label>
 								<div class="input-group">
 	                      			<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 	                      			<input type="text" value="<c:out value="${pages.searchMap['dateRange']}"/>" class="form-control pull-right" name="dateRange" id="dateRange" placeholder="<spring:message code='advertiser.input.dateDuring' />">
 	                      		</div>
 							</div>
+							
 						</div><!-- /.row -->
 						</form>
 					</div><!-- /.box-body -->
@@ -105,67 +115,55 @@
                 	<div class="box-body  table-responsive no-padding">
           
 	                  <table class="table table-striped table-condensed table-hover">
+	                    <thead>
+		                    <tr>
+		                      <th><input type="checkbox" class="allcheck" id="allcheck" style="width: 10px"> </th>
+		                      <th <tags:sort column="id" page="${pages}"/> style="width: 100px"><spring:message code="advertiser.id" /><i class="fa fa-w fa-sort"></i></th>
+		                      <th <tags:sort column="clientname" page="${pages}"/>><spring:message code="advertiser.clientname" /><i class="fa fa-w fa-sort"></i></th>
+		                      <th><spring:message code="advertiser.brand" /></th>
+							  <th><spring:message code="advertiser.companyname" /></th>
+		                      <th><spring:message code="advertiser.clientcontact" /></th>
+		                      <th><spring:message code="advertiser.clientphone" /></th>
+		                      <th><spring:message code="advertiser.clientposition" /></th>
+		                      <th><spring:message code="advertiser.client.address" /></th>
+		                      <th><spring:message code="advertiser.sales" /></th>
+		                    </tr>
+	                    </thead>
 	                    <tbody>
-	                    <tr>
-	                      <th><input type="checkbox" class="allcheck" id="allcheck" style="width: 10px"> </th>
-	                      <th <tags:sort column="id" page="${pages}"/> style="width: 100px"><spring:message code="advertiser.id" /><i class="fa fa-w fa-sort"></i></th>
-	                      <th <tags:sort column="clientname" page="${pages}"/>><spring:message code="advertiser.clientname" /><i class="fa fa-w fa-sort"></i></th>
-	                      <th ><spring:message code="advertiser.brand" /></th>
-						  <th ><spring:message code="advertiser.companyname" /></th>
-	                      <th ><spring:message code="advertiser.clientcontact" /></th>
-	                      <th ><spring:message code="advertiser.clientphone" /></th>
-	                      <th ><spring:message code="advertiser.clientposition" /></th>
-	                      <th ><spring:message code="advertiser.clientaddress" /></th>
-	                      <th ><spring:message code="advertiser.sales" /></th>
-	                    </tr>
-                    
-	                    <%
-	                    	Page<Client> pages = (Page<Client>)request.getAttribute("pages");
-	                    	if(pages!=null){
-	                    	for(Client client:pages.getContent()){
-	                    	  request.setAttribute("client", client);
-	                    	  List<ClientContact> contacts = client.getContacts();
-		                      %>
-		                      <tr>
-		                      	<th><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"> </th>
-                     	  		<td>${client.id}</td>
+	                   		<c:forEach var="client" items="${pages.content}" varStatus="status">
+	                    	<tr>
+	                    		<th><input type="checkbox" class="idBox" name="checkIds" value="${client.id}"></th>
+	                    		<td>${client.number}</td>
                      	 		<td>${client.clientname}</td>
 	                     		<td>${client.brand}</td>
 	                     		<td>${client.channel_name}</td>
-	                     		<%
-	                     			String contact_person = "";
-	                     			String phone = "";
-	                     			String position = "";
-	                     			for(ClientContact contact:contacts){
-	                     			 contact_person+= "<span style='display:block;width=100%;'>"+contact.getContact_person()+"&nbsp;</span>";
-	                     			 phone+="<span style='display:block;width=100%;'>"+contact.getPhone()+"&nbsp;</span>";
-	                     			 position+="<span style='display:block;width=100%;'>"+contact.getPosition()+"&nbsp;</span>";
-	                     			}
-	                     			%>
-	                     				<td><%=contact_person%></td>
-	                     				<td><%=phone%></td>
-	                     				<td><%=position%></td>
-	                     				<td>${client.address}</td>
-	                     			<%
-	                     		%>
-	                      		<td rowspan="${size}">${client.saleNames }</td>
-		                      </tr>
-		                      <%
-	                    		}
-	                    	}
-	                    %>
-                    
-                  </tbody></table>
+	                     		<td>
+	                     			<c:forEach var="cantact" items="${client.contacts}">
+	                     				<span style='display:block;width=100%;'>${cantact.contact_person}&nbsp;</span>
+	                     			</c:forEach>
+	                     		</td>
+	                     		<td>
+	                     			<c:forEach var="cantact" items="${client.contacts}">
+	                     				<span style='display:block;width=100%;'>${cantact.phone}&nbsp;</span>
+	                     			</c:forEach>
+	                     		</td>
+	                     		<td>
+	                     			<c:forEach var="cantact" items="${client.contacts}">
+	                     				<span style='display:block;width=100%;'>${cantact.position}&nbsp;</span>
+	                     			</c:forEach>
+	                     		</td>
+	                     		<td>${client.address}</td>
+	                     		<td>${client.saleNames }</td>
+	                    	</tr>
+	                    	</c:forEach>
+                   	 	</tbody>
+                  	</table>
+                  
 				</div><!-- /.box-body-->
                 <div class="box-footer clearfix">
-                	<%
-                	// -1 表示第一次列表.  不显示条数
-                	if(pages!=null&&pages.getTotal()!=-1){
-                	  %>
-	                  <tags:pagination page="${pages}" paginationSize="3" />
-                	  <%
-                	}
-                	%>
+                	<c:if test="${pages.total != -1}">
+                		<tags:pagination page="${pages}" paginationSize="5" />
+                	</c:if>
                 </div>
 			</div></div></div>
           </section>
@@ -175,30 +173,51 @@
           	$(document).ready(function() {
         		$("menu_advertisor").addClass("active");
         		
-        		$("#dateRange").daterangepicker({opens:"left",cancelClass:"btn-info",format:'YYYY-MM-DD'});
+        		$("#dateRange").daterangepicker({
+        				opens:"left",
+        				cancelClass:"btn-info",
+        				format:'YYYY-MM-DD'
+        		});
         		
         		//Flat red color scheme for iCheck
                 $('input[type="checkbox"]').iCheck({
-                  checkboxClass: 'icheckbox_minimal-blue'
+                  	checkboxClass: 'icheckbox_minimal-blue'
                 });
         		
+
         		//全选
                 $("input[type='checkbox'].allcheck").on('ifChecked', function(event){
                 	 $('input[type="checkbox"].idBox').iCheck('check');
                 });
+        		
                 //单选
                 $("input[type='checkbox'][class!='allcheck']").on("ifUnchecked",function(event){
                 	$("input[type='checkbox'].allcheck").iCheck("uncheck");
                 });
-        		
+                
+            	// 代理下单，代理
+        		$("#channel").select2({
+        		    placeholder: '<spring:message code="client.channel.remark" />',
+        		    allowClear: true
+        		});
+            	
+        		$("#channel").val("${pages.searchMap['channel']}").trigger("change");
+                
+             	// 销售人员select2
+                $("#saleIds").select2({
+                	placeholder: "<spring:message code='business.opportunity.input.coopsale' />",
+				    allowClear: true
+				});
+             	
+                $("#saleIds").val("${pages.searchMap['saleIds']}").trigger("change");
         	});
           	
+          	// 重置
           	function resetForm(){
-          		$("#clientname").val('');
-          		$("#brand").val('');
-          		$("#saleIds").val('');
-          		$("#platform").val('');
-          		$("#dateRange").val('');
+          		$("#searchForm input").val('');
+          		$("#searchForm select").val(null);
+          		$("#channel").val(null).trigger("change"); 
+          		$("#saleIds").val(null).trigger("change"); 
           	};
           	
           	function compare(){
@@ -206,7 +225,11 @@
           		var count = 0;
           		$("input[name='checkIds']").each(function(index,element){
           			if($(this).is(':checked')){
-	          			checkIdStr += $(this).val()+",";
+          				if(checkIdStr==''){
+          					checkIdStr += $(this).val();
+          				}else{
+          					checkIdStr += ","+$(this).val();
+          				}
 	          			count++;
           			}
           		});

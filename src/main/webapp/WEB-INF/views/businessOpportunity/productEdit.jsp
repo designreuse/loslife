@@ -25,7 +25,15 @@
 			<label class="col-md-3" for="product_id"><spring:message code="business.opportunity.product"/>${index+1}*</label>
 			<div class="col-md-9">
 				<select class="form-control select2" name="businessOpportunityProducts[${index}].product_id" style="width: 100%;">
-					<option value="${product.product.id}" selected>${product.product.name}</option>
+					<option value></option>
+					<c:forEach var="p" items="${products_data}">
+						<c:if test="${p.id eq product.product_id}">
+							<option value="${p.id}" selected="selected">${p.name}</option>
+						</c:if>
+						<c:if test="${p.id ne product.product_id}">
+							<option value="${p.id}">${p.name}</option>
+						</c:if>
+					</c:forEach>
 				</select>
 			</div>
 		</div>
@@ -47,7 +55,7 @@
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-md-3"><a href="javascript:void(0);" onclick="$('#row_product_${index}').remove();" style="color: red;"><i class="fa fa-w fa-minus-square"></i>&nbsp;删除产品</a></label>
+			<label class="col-md-3"><a href="javascript:void(0);" onclick="removeProduct('${index}');" style="color: red;"><i class="fa fa-w fa-minus-square"></i>&nbsp;删除产品</a></label>
 		</div>
 	</div>
 </div>
@@ -55,21 +63,10 @@
 <script>    
 	$(document).ready(function() {
 		$("select[name='businessOpportunityProducts[${index}].product_id']").select2({
-			ajax: {
-		        url: "${ctx}/ajax/getProducts",
-		        dataType: 'json',
-		        delay: 250,
-		        data: function (params) {
-		            return {q: params.term};
-		        },
-		        processResults: function (data) {
-		            return {results: data};
-		        },
-		        cache: true
-		    },
-		    minimumInputLength: 1,
 		    placeholder: "<spring:message code='business.opportunity.input.product'/>",
 		    allowClear: true
+		}).on('change',function(evt){
+			validateSelect2(this);
 		});
 	});
 </script>

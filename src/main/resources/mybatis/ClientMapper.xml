@@ -65,7 +65,10 @@
 			]]>
 		</if>
 		<if test="saleIds != null">
-			and d.name like "%"#{saleIds}"%"
+			and EXISTS
+		    (
+		    	select 1 from sales_booking_production.share_clients where client_id = a.id and share_id = #{saleIds}
+		    )
 		</if>
 		group by a.id
 		<if test="sort != null and sort!=''">
@@ -113,7 +116,10 @@
 			]]>
 		</if>
 		<if test="saleIds != null">
-			and d.name like "%"#{saleIds}"%"
+		    and EXISTS
+		    (
+		    	select 1 from sales_booking_production.share_clients where client_id = a.id and share_id = #{saleIds}
+		    )
 		</if>
 		group by a.id) t 
 	</select>
@@ -138,8 +144,9 @@
 	</update>
 	
 	<select id="getClientsByIdList" parameterType="list" resultType="Client">
-		select id,<include refid="client_columns" /> from xmo.clients
-		where id in
+		select a.id,<include refid="client_columns_for_join" />, c.channel_name as channel_name from xmo.clients a
+		left join sales_booking_production.channels c on a.channel = c.id
+		where a.id in
 		<foreach collection="list" item="id" separator="," open="(" close=")">
 			#{id}
 		</foreach>

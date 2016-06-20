@@ -64,6 +64,9 @@ public class AjaxController {
     mappers.add(new SelectMapper("CPM", "CPM"));
     model.addAttribute("index", request.getParameter("index"));
     model.addAttribute("saleModes", mappers);
+    List<Product> products_data = new ArrayList<Product>();
+    products_data.addAll(productService.getAllProduct());
+    model.addAttribute("products_data", products_data);
     return "businessOpportunity/product";
   }
 

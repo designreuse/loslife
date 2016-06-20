@@ -58,7 +58,6 @@ public class ClientController {
     }
     if (StringUtils.isNotBlank(request.getParameter("channel"))) {
       params.put("channel", request.getParameter("channel"));
-      params.put("channel_name", request.getParameter("channel_name"));
     }
     if (StringUtils.isNoneBlank(request.getParameterValues("industry_id"))) {
       params.put("industry_id", request.getParameter("industry_id"));
@@ -76,6 +75,10 @@ public class ClientController {
   public String toCreate(Model model, HttpServletRequest request) {
     Client client = new Client();
     client.setCurrency_id(2);// 默认RMB
+    ShiroUser user = getCurrUser();
+    if (user != null) {
+      client.setSaleIds(String.valueOf(user.id));
+    }
     model.addAttribute("client", client);
     model.addAttribute("action", "create");
     clientService.setSelect(request);
