@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.DataSharingMapper">
+    
+    <select id="get" parameterType="long" resultType="DataSharing">
+        select id, user_id, parent_id, type, created_at, created_by
+        from data_sharing
+        where id = #{value}
+    </select>
+    
+    <select id="getByUserId" parameterType="long" resultType="DataSharing">
+        select id, user_id, parent_id, type, created_at, created_by
+        from data_sharing
+        where user_id = #{value}
+    </select>
+    
+    <insert id="save" parameterType="DataSharing" useGeneratedKeys="true">
+        insert into data_sharing (user_id, parent_id, type, created_at, created_by)
+        values(#{user_id}, #{parent_id}, #{type}, #{created_at}, #{created_by})
+    </insert>
+    
+    <update id="update" parameterType="DataSharing">
+        update data_sharing set 
+        	user_id = #{user_id}, parent_id = #{parent_id}, type = #{type}, 
+       		created_at = #{created_at}, created_by = #{created_by}
+       	where id = #{id}	
+    </update>
+</mapper>  
