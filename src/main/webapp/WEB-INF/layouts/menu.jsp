@@ -44,14 +44,9 @@
 	               <li class="dropdown">
 	                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><shiro:principal/><span class="caret"></span></a>
 	                  <ul class="dropdown-menu" role="menu">
-	                    
-	                    <li><a href="#"><span class="glyphicon glyphicon-cog"></span>
-	                    		<spring:message code="menu.profile"/>
-	                    	</a></li>
+	                    <li><a href="${ctx}/setting"><span class="glyphicon glyphicon-cog"></span><spring:message code="menu.profile"/></a></li>
 	                    <li class="divider"></li>
-	                    <li> <a href="${ctx}/logout"><span class="glyphicon glyphicon-log-out"></span>
-	                    		<spring:message code="menu.logout"/>
-	                        </a></li>
+	                    <li><a href="${ctx}/logout"><span class="glyphicon glyphicon-log-out"></span><spring:message code="menu.logout"/></a></li>
 	                  </ul>
 	                </li>
                
