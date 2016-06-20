@@ -86,13 +86,13 @@
 							</div>
 							
 							<div class="col-md-4">
-								<input type="hidden" name="channel_name" id="channel_name" value="<c:out value="${pages.searchMap['channel_name']}"/>" />
 								<div class="form-group">
 									<label><spring:message code="client.agency" /></label>
 									<select class="form-control select2 channel" name="channel" id="channel" style="width: 100%;">
-			                      		<c:if test="${pages.searchMap['channel_name'] != null}">
-			                      			<option value="<c:out value="${pages.searchMap['channel']}" />" selected><c:out value="${pages.searchMap['channel_name']}" /></option>
-			                      		</c:if>
+										<option value></option>
+										<c:forEach var="agency" items="${agencys}">
+											<option value="${agency.id}">${agency.channel_name}</option>
+										</c:forEach>
 			                      	</select>
 								</div>
 							</div>
@@ -100,7 +100,13 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label><spring:message code="client.industry" /></label>
-	                      			<tags:selectbox name="industry_id" list="${industryTypes}" value="${pages.searchMap['industry_id']}" addNull="true" />
+									<select name="industry_id" class="form-control industry_id" id="industry_id">
+										<option value></option>
+										<c:forEach var="it" items="${industryTypes}">
+											<option value="${it.id}">${it.value}</option>
+										</c:forEach>
+									</select>
+	                      			<%-- <tags:selectbox name="industry_id" id="industry_id" list="${industryTypes}" value="${pages.searchMap['industry_id']}" addNull="true" /> --%>
 								</div>
 							</div>
 							
@@ -151,26 +157,20 @@
         		$("#menu_client").addClass("active");  
         	});
           	
+          	$("#industry_id").select2({
+          		placeholder: '<spring:message code="client.industry.remark" />',
+          		allowClear: true
+          	});
+          	
+          	$("#industry_id").val("${pages.searchMap['industry_id']}").trigger("change");
+          	
         	// 代理下单，代理
     		$("#channel").select2({
-    			ajax: {
-    		        url: "${ctx}/ajax/getAgencys",
-    		        dataType: 'json',
-    		        delay: 250,
-    		        data: function (params) {
-    		            return {q: params.term};
-    		        },
-    		        processResults: function (data) {
-    		            return {results: data};
-    		        },
-    		        cache: true
-    		    },
-    		    minimumInputLength: 1,
     		    placeholder: '<spring:message code="client.channel.remark" />',
     		    allowClear: true
-    		}).on('change',function(evt){
-    			$('#channel_name').val(($(this).find('option:selected').text()));
     		});
+        	
+        	$("#channel").val("${pages.searchMap['channel']}").trigger("change");
           
           	function view(id){
           		window.location.href="${ctx}/client/view/"+id;
@@ -201,8 +201,7 @@
           	
           	function resetForm(){
           		$("#searchForm input").val('');
-          		$("#searchForm select").val(null);
-          		$("#channel").val(null).trigger("change"); 
+          		$("#searchForm select").val(null).trigger("change");
           	};
           </script>
 </body>

@@ -167,9 +167,14 @@
 	                      <label for="owner_sale" class="col-md-3"><spring:message code="business.opportunity.sale" />*</label>
 	                      <div class="col-md-9">
 	                      	<select class="form-control select2" name="owner_sale" id="owner_sale" style="width: 100%;">
-	                      		<c:if test="${ownerSale !=null}">
-	                      			<option value="${ownerSale.id}" selected>${ownerSale.name}</option>
-	                      		</c:if>
+	                      		<c:forEach items="${sales_data}" var="user">
+	                      			<c:if test="${user.id eq businessOpportunity.owner_sale}">
+	                      				<option value="${user.id}" selected="selected">${user.name}</option>
+	                      			</c:if>
+	                      			<c:if test="${user.id ne businessOpportunity.owner_sale}">
+	                      				<option value="${user.id}">${user.name}</option>
+	                      			</c:if>
+	                      		</c:forEach>
 	                      	</select>
 	                      </div>
 	                    </div>
@@ -178,11 +183,9 @@
 	                      <label for="cooperate_sales" class="col-md-3"><spring:message code="business.opportunity.cooperate" /></label>
 	                      <div class="col-md-9">
 	                      	<select class="form-control select2" name="cooperate_sales" id="cooperate_sales" style="width: 100%;" multiple="multiple">
-	                      		<c:if test="${businessOpportunity.cooperate_sale_list !=null}">
-	                      			<c:forEach items="${businessOpportunity.cooperate_sale_list}" var="sale">
-	                      				<option value="${sale.id}" selected>${sale.name}</option>
-	                      			</c:forEach>
-	                      		</c:if>
+	                      		<c:forEach items="${sales_data}" var="user">
+	                      			<option value="${user.id}">${user.name}</option>
+	                      		</c:forEach>
 	                      	</select>
 	                      </div>
 	                    </div>
@@ -282,41 +285,16 @@
 				
 				// 销售
 				$("#owner_sale").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getSales",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='business.opportunity.input.sale' />",
-				    allowClear: true
+					placeholder: "<spring:message code='business.opportunity.input.sale' />",
+					allowClear: true
 				}).on('change',function(evt){
 					validateSelect2(this);
 				});
 				
 				// 合作销售
 				$("#cooperate_sales").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getSales",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='business.opportunity.input.coopsale' />"
+					 placeholder: "<spring:message code='business.opportunity.input.coopsale' />",
+					 allowClear: true
 				}).on('change',function(evt){
 					validateSelect2(this);
 				});
@@ -357,6 +335,19 @@
 					<c:if test="${action eq 'create' }">,values:[10]</c:if>
 					<c:if test="${action eq 'update' }">,values:[0,10,30,50,70,90,100]</c:if>
 				});
+				
+				var selected_cooperate_sales = '${businessOpportunity.cooperate_sales}';
+				if( selected_cooperate_sales != null && selected_cooperate_sales != ''){
+					var array = selected_cooperate_sales.split(',');
+					for( var i in array ){
+						 $("#cooperate_sales").find("option[value='" + array[i] + "']").attr('selected',true);
+					}
+					$("#cooperate_sales").change();
+				};
+				
+				<c:if test="${action eq 'create' }">
+					addProduct();
+				</c:if>
 			});
 			
 			function addAdvertiser(){
@@ -373,6 +364,17 @@
 					$(this).removeClass("btn-primary").addClass("btn-default");
 				});
 				$(name).removeClass("btn-default").addClass("btn-primary");
+			};
+			
+			function removeProduct(index){
+				var product_size = $("select[name$='.product_id']").size();
+				if( product_size == 1){
+					$("select[name='businessOpportunityProducts["+index+"].product_id']").val(null).change();
+					$("select[name='businessOpportunityProducts["+index+"].sale_mode']").val(null);
+					$("input[name='businessOpportunityProducts["+index+"].budget']").val('');
+				}else{
+					$('#row_product_' + index).remove()
+				}
 			};
 			
 			function addProduct(){

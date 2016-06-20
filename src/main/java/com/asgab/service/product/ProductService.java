@@ -23,6 +23,10 @@ public class ProductService {
     return page;
   }
 
+  public List<Product> getAllProduct() {
+    return productXMOMapper.search(null);
+  }
+
   public Product get(Long id) {
     return productXMOMapper.get(id);
   }

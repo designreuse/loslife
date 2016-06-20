@@ -90,7 +90,7 @@
 									<label><spring:message code="business.opportunity.progress"/></label>
 									<select name="status" class="form-control status" id="status">
 										<c:if test="${lang eq 'zh' }">
-											<option value>请选择</option>
+											<option value>全部</option>
 											<c:forEach var="p" items="${statusesMap}">
 												<c:if test="${pages.searchMap['status'] == p.value}">
 													<option value="${p.value}" selected="selected">${statusesZH[p.value]}&nbsp;${p.key}%</option>
@@ -101,7 +101,7 @@
 											</c:forEach>
 										</c:if>
 										<c:if test="${lang ne 'zh' }">
-											<option value>Please select</option>
+											<option value>All</option>
 											<c:forEach var="p" items="${statusesMap}">
 												<c:if test="${pages.searchMap['status'] == p.value}">
 													<option value="${p.value}" selected="selected">${statusesEN[p.value]}&nbsp;${p.key}%</option>

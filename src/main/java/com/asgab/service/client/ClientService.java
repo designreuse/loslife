@@ -20,10 +20,12 @@ import com.asgab.entity.BusinessOpportunity;
 import com.asgab.entity.Client;
 import com.asgab.entity.ClientContact;
 import com.asgab.entity.ClientShare;
+import com.asgab.repository.AgencyMapper;
 import com.asgab.repository.BusinessOpportunityMapper;
 import com.asgab.repository.ClientContactMapper;
 import com.asgab.repository.ClientMapper;
 import com.asgab.repository.ClientShareMapper;
+import com.asgab.service.account.AccountService;
 import com.asgab.service.management.CurrencyTypeService;
 import com.asgab.service.management.IndustryTypeService;
 
@@ -43,6 +45,10 @@ public class ClientService {
   private IndustryTypeService industryTypeService;
   @Autowired
   private BusinessOpportunityMapper businessOpportunityMapper;
+  @Autowired
+  private AgencyMapper agencyService;
+  @Autowired
+  private AccountService accountService;
 
   public Page<Client> search(Page<Client> page) {
     List<Client> clients = clientMapper.search(page.getSearchMap(), page.getRowBounds());
@@ -154,6 +160,8 @@ public class ClientService {
     searchMap.put("lang", lang);
     request.setAttribute("currencyTypes", currencyTypeService.getOptions(null));
     request.setAttribute("industryTypes", industryTypeService.getOptions(searchMap));
+    request.setAttribute("agencys", agencyService.search(null));
+    request.setAttribute("users", accountService.getAllXMOUser());
   }
 
   public void resetClientContact(Client client) {

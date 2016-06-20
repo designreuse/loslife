@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +22,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.BusinessOpportunity;
+import com.asgab.entity.Product;
+import com.asgab.entity.User;
 import com.asgab.repository.xmo.UserXMOMapper;
 import com.asgab.service.account.AccountService;
+import com.asgab.service.account.ShiroDbRealm.ShiroUser;
 import com.asgab.service.business.opportunity.BusinessOpportunityService;
 import com.asgab.service.client.ClientService;
+import com.asgab.service.product.ProductService;
 import com.asgab.util.CommonUtil;
 import com.asgab.util.SelectMapper;
 import com.asgab.util.Servlets;
@@ -47,10 +55,13 @@ public class BusinessOpportunityController {
   @Autowired
   private AccountService accountService;
 
+  @Autowired
+  private ProductService productService;
+
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(value = "sort", defaultValue = "id desc") String sort,
-      ServletRequest request, Model model) {
+      @RequestParam(value = "pageSize", defaultValue = PAGE_SIZE) int pageSize, @RequestParam(
+          value = "sort", defaultValue = "id desc") String sort, ServletRequest request, Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
     String number = request.getParameter("number");
     if (StringUtils.isNotBlank(number)) {
@@ -69,7 +80,8 @@ public class BusinessOpportunityController {
 
     model.addAttribute("search", Servlets.encodeParameterString(params));
     params.put("sort", sort);
-    Page<BusinessOpportunity> page = new Page<BusinessOpportunity>(pageNumber, pageSize, sort, params);
+    Page<BusinessOpportunity> page =
+        new Page<BusinessOpportunity>(pageNumber, pageSize, sort, params);
     Page<BusinessOpportunity> pages = businessOpportunityService.search(page);
     model.addAttribute("pages", pages);
     model.addAttribute("statusesMap", BusinessOpportunityService.statusMap);
@@ -84,18 +96,27 @@ public class BusinessOpportunityController {
     businessOpportunity.setProgress(10);
     businessOpportunity.setExist_msa(1);
     businessOpportunity.setExist_service(1);
+    ShiroUser user = getCurrUser();
+    if (user != null) {
+      businessOpportunity.setOwner_sale(user.id);
+    }
     model.addAttribute("businessOpportunity", businessOpportunity);
     model.addAttribute("currencys", businessOpportunityService.getCurrencyMappers());
     model.addAttribute("action", "create");
+    setSelect(request);
     return "businessOpportunity/businessOpportunityForm";
   }
 
   @RequestMapping(value = "create", method = RequestMethod.POST)
-  public String create(BusinessOpportunity businessOpportunity, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    businessOpportunity.setDeliver_start_date(businessOpportunity.getDeliver_date().substring(0, 10));
-    businessOpportunity.setDeliver_end_date(businessOpportunity.getDeliver_date().substring(13, 23));
+  public String create(BusinessOpportunity businessOpportunity, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
+    businessOpportunity.setDeliver_start_date(businessOpportunity.getDeliver_date()
+        .substring(0, 10));
+    businessOpportunity
+        .setDeliver_end_date(businessOpportunity.getDeliver_date().substring(13, 23));
     businessOpportunityService.save(businessOpportunity);
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.create.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.create.success"));
     return "redirect:/businessOpportunity";
   }
 
@@ -104,19 +125,21 @@ public class BusinessOpportunityController {
     BusinessOpportunity businessOpportunity = businessOpportunityService.get(id);
     businessOpportunity.setCurrencys(businessOpportunityService.getCurrencys());
     // 设置own_sale
-    businessOpportunity.setOwner_sale_name(userXMOMapper.get(businessOpportunity.getOwner_sale()).getName());
+    businessOpportunity.setOwner_sale_name(userXMOMapper.get(businessOpportunity.getOwner_sale())
+        .getName());
     // 设置coop_sale
     String coopSales = businessOpportunity.getCooperate_sales();
     String[] userIds = StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];
     for (int i = 0; i < userIds.length; i++) {
-      businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(userIds[i])));
+      businessOpportunity.getCooperate_sale_list().add(
+          userXMOMapper.get(Long.parseLong(userIds[i])));
     }
     model.addAttribute("businessOpportunity", businessOpportunity);
     return "businessOpportunity/businessOpportunityView";
   }
 
   @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-  public String toUpdate(@PathVariable("id") Long id, Model model) {
+  public String toUpdate(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
     BusinessOpportunity businessOpportunity = businessOpportunityService.get(id);
     model.addAttribute("businessOpportunity", businessOpportunity);
     model.addAttribute("action", "update");
@@ -128,17 +151,21 @@ public class BusinessOpportunityController {
     model.addAttribute("advertiser", clientService.get(businessOpportunity.getAdvertiser_id()));
     model.addAttribute("ownerSale", accountService.get(businessOpportunity.getOwner_sale()));
     String coopSales = businessOpportunity.getCooperate_sales();
-    String[] cooperateSales = StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];
+    String[] cooperateSales =
+        StringUtils.isNotBlank(coopSales) ? coopSales.split(",") : new String[0];
     for (int i = 0; i < cooperateSales.length; i++) {
-      businessOpportunity.getCooperate_sale_list().add(userXMOMapper.get(Long.parseLong(cooperateSales[i])));
+      businessOpportunity.getCooperate_sale_list().add(
+          userXMOMapper.get(Long.parseLong(cooperateSales[i])));
     }
     model.addAttribute("cooperateSales", businessOpportunity.getCooperate_sale_list());
+    setSelect(request);
     return "businessOpportunity/businessOpportunityForm";
   }
 
   @RequestMapping(value = "update", method = RequestMethod.POST)
-  public String update(@ModelAttribute("businessOpportunity") BusinessOpportunity businessOpportunity, HttpServletRequest request,
-      RedirectAttributes redirectAttributes) {
+  public String update(
+      @ModelAttribute("businessOpportunity") BusinessOpportunity businessOpportunity,
+      HttpServletRequest request, RedirectAttributes redirectAttributes) {
     String result = businessOpportunityService.update(businessOpportunity);
     if (result != null) {
       String orderMessage = "";
@@ -146,7 +173,9 @@ public class BusinessOpportunityController {
       if (jsonObject.containsKey("success")) {
         if (jsonObject.getBoolean("success")) {
           orderMessage = CommonUtil.getProperty(request, "message.create.order.success") + ", ";
-          orderMessage += CommonUtil.getProperty(request, "message.create.order.id") + ": " + jsonObject.getInteger("order_id");
+          orderMessage +=
+              CommonUtil.getProperty(request, "message.create.order.id") + ": "
+                  + jsonObject.getInteger("order_id");
         } else {
           orderMessage = CommonUtil.getProperty(request, "message.create.order.error");
         }
@@ -156,14 +185,17 @@ public class BusinessOpportunityController {
       }
       redirectAttributes.addFlashAttribute("orderMessage", orderMessage);
     }
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.update.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.update.success"));
     return "redirect:/businessOpportunity";
   }
 
   @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+  public String delete(@PathVariable("id") Long id, Model model, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
     businessOpportunityService.delete(id);
-    redirectAttributes.addFlashAttribute("message", CommonUtil.getProperty(request, "message.delete.success"));
+    redirectAttributes.addFlashAttribute("message",
+        CommonUtil.getProperty(request, "message.delete.success"));
     return "redirect:/businessOpportunity";
   }
 
@@ -178,6 +210,21 @@ public class BusinessOpportunityController {
     if (id != -1) {
       model.addAttribute("businessOpportunity", businessOpportunityService.get(id));
     }
+  }
+
+
+  private void setSelect(HttpServletRequest request) {
+    List<User> sales = accountService.getAllXMOUser();
+    request.setAttribute("sales_data", sales);
+    List<Product> products = productService.getAllProduct();
+    request.setAttribute("products_data", products);
+  }
+
+  private ShiroUser getCurrUser() {
+    Subject currentUser = SecurityUtils.getSubject();
+    if (null == currentUser)
+      return null;
+    return (ShiroUser) currentUser.getPrincipal();
   }
 
 }
