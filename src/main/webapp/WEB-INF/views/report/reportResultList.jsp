@@ -23,10 +23,9 @@
 	LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 	String lang = localeResolver.resolveLocale(request).getLanguage();
 %>
-
 <div class="box-header with-border">
 	<h3 class="box-title ">
-		<spring:message code="report.total.sale" /> <b class="text-green">￥<span id="totalSum"></span></b>
+		<spring:message code="report.total.sale" /> <b class="text-green"><span id="totalSum"></span></b>
 	</h3>
 	<a class="pull-right"><i class="fa fa-fw fa-download"></i><spring:message code="report.download" /></a>
 	<select id="changeRate" class="pull-right select" style="margin-right: 10px;">
@@ -37,8 +36,7 @@
 	</select>
 </div>
 
-<div class="box-body  table-responsive no-padding">
-	<table class="table table-bordered table-striped" id="dataTableReport">
+	<table class="table table-bordered table-responsive" id="dataTableReport">
 		<thead>
 		</thead>
 		<tbody>
@@ -74,6 +72,10 @@
 				}
 				request.setAttribute("totalSum", CommonUtil.digSeg(totalSum.doubleValue()));
 				request.setAttribute("dataSet", JsonMapper.nonEmptyMapper().toJson(datas));
+				
+				request.setAttribute("orderSumData", CommonUtil.digSeg(orderSum.doubleValue()));
+				request.setAttribute("opportunitySumData", CommonUtil.digSeg(opportunitySum.doubleValue()));
+				request.setAttribute("totalSumData", CommonUtil.digSeg(totalSum.doubleValue()));
 			%>
 		</tbody>
 		<tfoot>
@@ -85,13 +87,34 @@
 			</tr>
 		</tfoot>
 	</table>
-	
-</div>
+
 
 <script type="text/javascript">
+	// 货币图标
+	var currencySymbol={symbols:[{name:"RMB",symbol:"fa-cny"},
+	                               {name:"AUD",symbol:"fa-dollar",addition:"A"},
+	                               {name:"EUR",symbol:"fa-eur"},
+	                               {name:"GBP",symbol:"fa-gbp"},
+	                               {name:"HKD",symbol:"fa-dollar",addition:"HK"},
+	                               {name:"IDR",symbol:"fa-inr"},
+	                               {name:"JPY",symbol:"fa-jpy"},
+	                               {name:"KRW",symbol:"fa-krw"},
+	                               {name:"MYR",symbol:"",addition:"RM"},
+	                               {name:"RUB",symbol:"fa-rub"},
+	                               {name:"SGD",symbol:"fa-dollar",addition:"S"},
+	                               {name:"THB",symbol:"",addition:"฿"},
+	                               {name:"TWD",symbol:"fa-dollar",addition:"NT"},
+	                               {name:"USD",symbol:"fa-dollar"}
+	                               ]};
 		$(function() {
-			$("#totalSum").text('${totalSum}');
+			$("#totalSum").html('<i class="fa fa-w fa-cny"></i>${totalSum}');
+			// 数据
 			var dataSet = ${dataSet};
+			// 统计
+			var orderSumData = "${orderSumData}";
+			var opportunitySumData = "${opportunitySumData}";
+			var totalSumData = "${totalSumData}";
+			// 国际化
 			var dataRightColumn = "${dataRightColumn}";
 			var col1 = "<spring:message code='report.clo1'/>";
 			var col2 = "<spring:message code='report.clo2'/>";
@@ -103,8 +126,7 @@
 			var sLast= "<spring:message code='report.slast'/>";
 			var sLengthMenu= "<spring:message code='report.slengthmenu'/>";
 			var table = $("#dataTableReport").DataTable({
-				searching: true,
-				paging: true,
+				
 				data: dataSet,
 				columns: [
 				            { title: dataRightColumn },
@@ -117,7 +139,7 @@
 					"oPaginate": {
 			            "sFirst": sFirst,
 			            "sPrevious": sPrevious,
-			            "sNext": sPrevious,
+			            "sNext": sNext,
 			            "sLast": sLast,
 			        },
 			        "sLengthMenu": sLengthMenu
@@ -126,35 +148,44 @@
                     $(row).children('td').eq(1).attr('style', 'text-align: right;');
                     $(row).children('td').eq(2).attr('style', 'text-align: right;');
                     $(row).children('td').eq(3).attr('style', 'text-align: right;');
-                },
+                }
 			});
 			
 			$("#changeRate").change(function(){
 				var rate = +$(this).val();
-				console.log(rate);
+				var symbol = $(this).find("option:selected").text();
 		        table.clear();
 		        var tmpDatas = [];
 		        for(var i = 0 ; i<dataSet.length;i++){
 		        	var tmpData = [];
 		        	tmpData[0] = dataSet[i][0];
 		        	for(var j = 1 ; j<dataSet[i].length;j++){
-		        		var value = formatMoney(rate * rmoney(dataSet[i][j]));
-		        		tmpData[j] = formatMoney(value,2);
+		        		tmpData[j] = formatMoney(rate * rmoney(dataSet[i][j]),2);
 		        	}
 		        	tmpDatas[i] = tmpData;
 		        }
 		        table.rows.add(tmpDatas);
 		        table.draw();
+		        
+		        $("tfoot th:nth-child(2)").html(formatMoney(rate * rmoney(orderSumData,2)));
+		        $("tfoot th:nth-child(3)").html(formatMoney(rate * rmoney(opportunitySumData,2)));
+		        $("tfoot th:nth-child(4)").html(formatMoney(rate * rmoney(totalSumData,2)));
+		        $("#totalSum").text(formatMoney(rate * rmoney(totalSumData,2)));
+		        addSymbol(symbol);
 			});
+			
+			// 加载触发
+			$("#changeRate").change();
 			
 		});
 		
-		
+		// 源数据是格式化好的. 这里需要反格式化
 		function rmoney(s)   
 		{   
 		   return parseFloat(s.replace(/[^\d\.-]/g, ""));   
 		}
 		
+		// 格式化金钱
 		function formatMoney(s, n)   
 		{   
 		   n = n > 0 && n <= 20 ? n : 2;   
@@ -168,4 +199,29 @@
 		   }   
 		   return t.split("").reverse().join("") + "." + r;   
 		};
+		
+		// 添加货币符号
+		function addSymbol(currency){
+			var symbolData = getSymbol(currency);
+			console.log(symbolData);
+			var symbol = symbolData.symbol;
+			var addition = (symbolData.addition===undefined?"":symbolData.addition);
+			$("#dataTableReport tr").each(function(index){
+				if(index>=1){
+					var tds = $(this).children();
+					for(var i=1;i<tds.length;i++){
+				       tds.eq(i).html(addition + "<i class='fa fa-w "+symbol+"'></i>" +tds.eq(i).html());
+				    }
+				}
+			});
+			$("#totalSum").html(addition + "<i class='fa fa-w "+symbol+"'></i>" + $("#totalSum").html());
+		};
+		
+		function getSymbol(currency){
+			for(var i = 0 ; i < currencySymbol.symbols.length;i++){
+				if(currency == currencySymbol.symbols[i].name){
+					return currencySymbol.symbols[i];
+				}
+			}
+		}
 </script>

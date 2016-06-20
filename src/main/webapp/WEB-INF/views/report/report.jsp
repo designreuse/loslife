@@ -74,7 +74,15 @@
 								</div>
 								<!-- /.col -->
 
-								<div class="col-md-6"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><spring:message code="report.metric" /></label> 
+										<select class="form-control select2" name="dataRight" id="dataRight" style="width: 100%;">
+											<option value="1" selected="selected"><spring:message code="report.income" /></option>
+											<option value="2"><spring:message code="report.estimate.gp" /></option>
+										</select>
+									</div>
+								</div>
 								<!-- /.col -->
 
 							</div>
@@ -109,7 +117,7 @@
 									<div class="form-group">
 										<label><spring:message code="report.sale.team" /></label> 
 										<select class="form-control select2" name="saleTeam" id="saleTeam" style="width: 100%;">
-											<option selected="selected"><spring:message code="report.all"/></option>
+											<option selected="selected" value="0"><spring:message code="report.all"/></option>
 										</select>
 									</div>
 									<!-- /.form-group -->
@@ -117,7 +125,7 @@
 									<div class="form-group">
 										<label><spring:message code="report.sale.representative" /></label> 
 										<select class="form-control select2" name="saleRepresentative" id="saleRepresentative" style="width: 100%;">
-											<option selected="selected"><spring:message code="report.all"/></option>
+											<option selected="selected" value="0"><spring:message code="report.all"/></option>
 										</select>
 									</div>
 
@@ -133,7 +141,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label><spring:message code="report.budget" /></label> 
-										<select class="form-control select2" name="budget" style="width: 100%;">
+										<select class="form-control select2" name="budget" id="budget" style="width: 100%;">
 											<option selected="selected" value="0"><spring:message code="report.all" /></option>
 											<option value="1"><spring:message code="report.budget1" /></option>
 											<option value="2"><spring:message code="report.budget2" /></option>
@@ -170,11 +178,6 @@
 										</select>
 									</div>
 									
-									<div class="form-group">
-										<label><spring:message code="report.currency" /></label>
-										<tags:selectbox name="currency" list="${currencys }" clazz="select2" style="width: 100%;"></tags:selectbox>
-									</div>
-
 								</div>
 
 							</div>
@@ -214,9 +217,9 @@
 			});
 			
 			//default value
-			$('#reportDate').html(
+			$('#reportDateSpan').html(
 					moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
-			$('#daterange').val(
+			$('#reportDate').val(
 					moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
 
 			$('#reportDateDiv').daterangepicker(
@@ -285,7 +288,17 @@
 		};
 		
 		function resetForm(){
-			
+			$("#dataRight").val("1").trigger('change');
+			$('#reportDateSpan').html(moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
+			$('#reportDate').val(moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
+			$('#reportDateDiv').data('daterangepicker').setStartDate(moment().startOf('quarter'));
+			$('#reportDateDiv').data('daterangepicker').setEndDate(moment().endOf('quarter'));
+			$("#progress").data("ionRangeSlider").reset();
+			$('#budget').val('0').trigger('change');
+			$('#orderType').val('0').trigger('change');
+			$('#saleTeam').val('0').trigger('change');
+			$('#saleRepresentative').val('0').trigger('change');
+			$('#gp').val('0').trigger('change');
 		};
 	</script>
 </body>
