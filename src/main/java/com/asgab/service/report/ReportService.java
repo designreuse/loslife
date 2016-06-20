@@ -28,27 +28,35 @@ public class ReportService {
   @Autowired
   ExchangeRateService exchangeRateService;
 
-  public Map<String, Object> getReportByProduct(Report report) {
+  public Map<String, Object> getReport(Report report) {
     List<ExchangeRate> exchangeRates = exchangeRateService.getAllAvailExchangeRates();
-    List<Report> opportunityReports = new ArrayList<Report>();
-    List<Report> orderReports = new ArrayList<Report>();
     String val1 = report.getProgress().split(";")[0];
     String val2 = report.getProgress().split(";")[1];
     boolean searchOpportunity = false;
     boolean searchOrder = false;
-    if (val1.equalsIgnoreCase("0") && val2.equalsIgnoreCase("100")) {
-      searchOpportunity = true;
+    if (val2.equalsIgnoreCase("100")) {
       searchOrder = true;
-    } else if (val1.equalsIgnoreCase("100") && val2.equalsIgnoreCase("100")) {
-      searchOrder = true;
-    } else if (!val2.equalsIgnoreCase("100")) {
+    }
+    if (!val1.equalsIgnoreCase("100")) {
       searchOpportunity = true;
     }
+    Map<String, Object> map = null;
+    if ("1".equalsIgnoreCase(report.getDataRight())) {
+      map = getReportByProduct(report, exchangeRates, searchOpportunity, searchOrder);
+    } else if ("4".equalsIgnoreCase(report.getDataRight())) {
+      map = getReportByChannel(report, exchangeRates, searchOpportunity, searchOrder);
+    }
+    return map;
+  }
+
+  public Map<String, Object> getReportByProduct(Report report, List<ExchangeRate> exchangeRates, boolean searchOpportunity, boolean searchOrder) {
+    List<Report> opportunityReports = new ArrayList<Report>();
+    List<Report> orderReports = new ArrayList<Report>();
     if (searchOpportunity) {
-      opportunityReports = reportMapper.getOpportunitysByProduct(null);
+      opportunityReports = reportMapper.getOpportunitysByProduct(report);
     }
     if (searchOrder) {
-      orderReports = reportMapper.getOrdersByProduct(null);
+      orderReports = reportMapper.getOrdersByProduct(report);
     }
     sumReport(opportunityReports, exchangeRates, "product");
     sumReport(orderReports, exchangeRates, "product");
@@ -63,32 +71,18 @@ public class ReportService {
     return reportMapper.getReportBySaleRepresentative(parameters);
   }
 
-  public Map<String, Object> getReportByChannel(Report report) {
-    List<ExchangeRate> exchangeRates = exchangeRateService.getAllAvailExchangeRates();
+  public Map<String, Object> getReportByChannel(Report report, List<ExchangeRate> exchangeRates, boolean searchOpportunity, boolean searchOrder) {
     List<Report> opportunityReports = new ArrayList<Report>();
     List<Report> orderReports = new ArrayList<Report>();
-    String val1 = report.getProgress().split(";")[0];
-    String val2 = report.getProgress().split(";")[1];
-    boolean searchOpportunity = false;
-    boolean searchOrder = false;
-    if (val1.equalsIgnoreCase("0") && val2.equalsIgnoreCase("100")) {
-      searchOpportunity = true;
-      searchOrder = true;
-    } else if (val1.equalsIgnoreCase("100") && val2.equalsIgnoreCase("100")) {
-      searchOrder = true;
-    } else if (!val2.equalsIgnoreCase("100")) {
-      searchOpportunity = true;
-    }
     if (searchOpportunity) {
-      opportunityReports = reportMapper.getOpportunitysByChannel(null);
+      opportunityReports = reportMapper.getOpportunitysByChannel(report);
     }
     if (searchOrder) {
-      orderReports = reportMapper.getOpportunitysByChannel(null);
+      orderReports = reportMapper.getOpportunitysByChannel(report);
     }
     sumReport(opportunityReports, exchangeRates, "channel");
     sumReport(orderReports, exchangeRates, "channel");
     return formatChannelReport(orderReports, opportunityReports);
-
   }
 
   private void exchangeRates(List<Report> reports, List<ExchangeRate> exchangeRates) {

@@ -146,11 +146,6 @@
     <!-- DataTables -->
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="${ctx}/static/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.min.js"></script>
-    <!-- SlimScroll -->
-    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="${ctx}/static/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
-    
     
     <!-- AdminLTE App -->
     <script src="${ctx}/static/AdminLTE-2.3.0/dist/js/app.min.js"></script>

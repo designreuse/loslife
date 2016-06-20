@@ -9,16 +9,16 @@ import com.asgab.repository.mybatis.MyBatisRepository;
 @MyBatisRepository
 public interface ReportMapper {
   // product
-  List<Report> getOpportunitysByProduct(Map<String, Object> parameters);
+  List<Report> getOpportunitysByProduct(Report report);
   
-  List<Report> getOrdersByProduct(Map<String, Object> parameters);
+  List<Report> getOrdersByProduct(Report report);
 
   List<Report> getReportBySaleTeam(Map<String, Object> parameters);
 
   List<Report> getReportBySaleRepresentative(Map<String, Object> parameters);
   
   // channel
-  List<Report> getOpportunitysByChannel(Map<String, Object> parameters);
-  List<Report> getOrdersByChannel(Map<String, Object> parameters);
+  List<Report> getOpportunitysByChannel(Report report);
+  List<Report> getOrdersByChannel(Report report);
 
 }

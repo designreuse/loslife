@@ -164,12 +164,7 @@ public class AjaxController {
     LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
     String lang = localeResolver.resolveLocale(request).getLanguage();
     String[] dataRightColumns = {"report.product", "report.sale.team", "report.sale.representative", "report.channel.company"};
-    Map<String, Object> map = null;
-    if ("1".equalsIgnoreCase(report.getDataRight())) {
-      map = reportService.getReportByProduct(report);
-    } else if ("4".equalsIgnoreCase(report.getDataRight())) {
-      map = reportService.getReportByChannel(report);
-    }
+    Map<String, Object> map = reportService.getReport(report);
     model.addAttribute("names", map.get("names"));
     model.addAttribute("opportunityReports", map.get("opportunityReports"));
     model.addAttribute("orderReports", map.get("orderReports"));
