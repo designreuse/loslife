@@ -40,13 +40,21 @@
 	
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-md-3" id="rm-contact-${index}"><a href="javascript:void(0);" style="color: red;">
-				<i class="fa fa-w fa-minus-square"></i>&nbsp;<spring:message code="client.contact.delete" /> ${index+1}</a>
-			</label>
+			<c:if test="${index != 0}">
+				<label class="col-md-3" id="rm-contact-${index}"><a href="javascript:void(0);" style="color: red;">
+					<i class="fa fa-w fa-minus-square"></i>&nbsp;<spring:message code="client.contact.delete" /> ${index+1}</a>
+				</label>
+			</c:if>	
 		</div>
 	</div>
 	
 </div><!-- /.row -->
 
-
-
+<script>    
+	$(document).ready(function() {
+		$("#client_contact_${index}").find("input[name='contacts[${index}].contact_person']").rules('add',{required:true});
+		$("#client_contact_${index}").find("input[name='contacts[${index}].position']").rules('add',{required:true});
+		$("#client_contact_${index}").find("input[name='contacts[${index}].phone']").rules('add',{required:true,isMobileOrPhone:true});
+		$("#client_contact_${index}").find("input[name='contacts[${index}].email']").rules('add',{required:true,email:true});
+	});
+</script>

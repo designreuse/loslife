@@ -102,9 +102,10 @@
 		                	 			</label>
 		                	 			<div class="channel-parent-has-error">
 			                	 			<select class="form-control select2 channel" name="channel" disabled="disabled" id="channel" style="width: 100%; display: none;">
-					                      		<c:if test="${client.channel_name != null}">
-					                      			<option value="${client.channel}" selected>${client.channel_name}</option>
-					                      		</c:if>
+					                      		<option value></option>
+												<c:forEach var="agency" items="${agencys}">
+													<option value="${agency.id}">${agency.channel_name}</option>
+												</c:forEach>
 					                      	</select>
 				                      	</div>
 		                	 			
@@ -124,7 +125,12 @@
 		                	<div class="form-group">
 	                			<label for="industry_id" class="col-md-3"><spring:message code="client.industry" /><em> *</em></label>
 		                      	<div class="col-md-9">
-		                      		<tags:selectbox name="industry_id" list="${industryTypes}" value="${client.industry_id}" addNull="true" />
+		                      		<select name="industry_id" class="form-control industry_id" id="industry_id">
+		                      			<option value></option>
+		                      			<c:forEach var="it" items="${industryTypes}">
+		                      				<option value="${it.id}">${it.value}</option>
+		                      			</c:forEach>
+		                      		</select>
 		                      	</div>
 	                		</div>
 	                		
@@ -188,13 +194,10 @@
 					                	<div class="form-group">
 											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
 						                    <div class="col-md-9">
-						                    	<select class="form-control select2 userIds" name="saleIds" id="saleIds" style="width: 100%;" multiple="multiple">
-						                    		<c:if test="${client.saleIds != null}">
-						                    			<c:set value="${ fn:split(client.saleNames, ',') }" var="str1" />
-					                      				<c:forEach var="saleId" items="${client.saleIds}" varStatus="status">
-					                      						<option value="${saleId}" selected>${str1[status.index]}</option>
-					                      				</c:forEach>
-					                      			</c:if>
+						                    	<select class="form-control select2 saleIds" name="saleIds" id="saleIds" multiple="multiple">
+					                      			<c:forEach var="user" items="${users}">
+					                      				<option value="${user.id}">${user.name}</option>
+					                      			</c:forEach>
 						                      	</select>
 						                    </div>
 										</div>
@@ -234,7 +237,6 @@
 			$('#channel').attr('disabled',false);
 		}
 		
-		
 		$("#primaryForm").validate({
 			ignore: "",
 			rules:{
@@ -255,19 +257,6 @@
 		
 		// 代理下单，代理
 		$("#channel").select2({
-			ajax: {
-		        url: "${ctx}/ajax/getAgencys",
-		        dataType: 'json',
-		        delay: 250,
-		        data: function (params) {
-		            return {q: params.term};
-		        },
-		        processResults: function (data) {
-		            return {results: data};
-		        },
-		        cache: true
-		    },
-		    minimumInputLength: 1,
 		    placeholder: '<spring:message code="client.channel.remark" />',
 		    allowClear: true
 		}).on('change',function(evt){
@@ -275,23 +264,15 @@
 		});
 		
 		$("#saleIds").select2({
-			multiple: true,
-			ajax: {
-		        url: "${ctx}/ajax/getSales",
-		        dataType: 'json',
-		        delay: 250,
-		        data: function (params) {
-		            return {q: params.term};
-		        },
-		        processResults: function (data) {
-		            return {results: data};
-		        },
-		        cache: true
-		    },
-		    minimumInputLength: 1,
-		    placeholder: "<spring:message code='business.opportunity.input.coopsale' />"
+		    placeholder: "<spring:message code='business.opportunity.input.coopsale' />",
+		    allowClear: true
 		});
 		
+      	$("#industry_id").select2({
+      		placeholder: '<spring:message code="client.industry.remark" />',
+      		allowClear: true
+      	});
+      	
 		$('#whether_cross_district_cbk').click( function(){
 			if($(this).is(':checked')){
 				$('#whether_cross_district').val(1);
@@ -311,7 +292,6 @@
 			$("#channel").select2("val", "");
 			$("#primaryForm").validate().element($('#channel'));
 		});
-		
 		
 		// 验证代理下单
 		jQuery.validator.addMethod("validate_channel", function(value, element){
@@ -334,7 +314,28 @@
 		}, "<spring:message code='client.contact.phone.error' />");
 		
 		<c:if test="${action eq 'create' }">add_client_contacts();</c:if>
-		<c:if test="${action eq 'update' }">bind_hover();bind_remove();</c:if>
+		<c:if test="${action eq 'update' }">
+			bind_hover();
+			bind_remove();
+		</c:if>
+		$("#industry_id").val("${client.industry_id}").trigger("change");
+		$("#channel").val("${client.channel}").trigger("change");
+		var selected_saleIds = '${client.saleIds}';
+		if( selected_saleIds != null && selected_saleIds != ''){
+			var array = selected_saleIds.split(',');
+			for( var i in array ){
+				 $("#saleIds").find("option[value='" + array[i] + "']").attr('selected',true);
+			}
+			$("#saleIds").change();
+		};
+		
+		// 动态验证广告主联系人
+		$("div[id^='client_contact_']").each(function(i){
+			$(this).find("input[name='contacts["+i+"].contact_person']").rules('add',{required:true});
+			$(this).find("input[name='contacts["+i+"].position']").rules('add',{required:true});
+			$(this).find("input[name='contacts["+i+"].phone']").rules('add',{required:true,isMobileOrPhone:true});
+			$(this).find("input[name='contacts["+i+"].email']").rules('add',{required:true,email:true});
+		});
 	});
 	
 	function changeRadio(val,id,name){
@@ -347,23 +348,12 @@
 	
 	// 再添加一个联系人
 	function add_client_contacts(){
-		var index = $("#client_contacts div.contacts").size();
-		$.post("${ctx}/ajax/addContact",{index:index},function(html){
+		var index = $("#client_contacts div.contacts").last().attr("id").replace("client_contact_","");
+		$.post("${ctx}/ajax/addContact",{index:Number(index)+1},function(html){
 			$("#client_contacts").append(html);
 			bind_hover();
 			bind_remove();
-			bind_client_contact_validate();
 		},"html");
-	};
-	
-	// 联系人验证
-	function bind_client_contact_validate(){
-		$("div[id^='client_contact_']").each(function(i){
-			$(this).find("input[name='contacts["+i+"].contact_person']").rules('add',{required:true});
-			$(this).find("input[name='contacts["+i+"].position']").rules('add',{required:true});
-			$(this).find("input[name='contacts["+i+"].phone']").rules('add',{required:true,isMobileOrPhone:true});
-			$(this).find("input[name='contacts["+i+"].email']").rules('add',{required:true,email:true});
-		});
 	};
 	
 	// 删除联系人
@@ -372,10 +362,17 @@
 				var index = $(this).attr('id').split('-')[2];
 				var rm_id = $('#client_contact_' + index + ' .contact_id').val();
 				if(rm_id != null && rm_id != undefined){
-					$("#primaryForm").append('<input type="hidden" name="deleteContactIds" value="' + rm_id + '" >');
+					$("#primaryForm").append('<input type="hidden" name="deleteContactIds" value="' + rm_id + '" />');
 				}
-				$('#client_contact_' + index).remove();
-				bind_client_contact_validate();
+				var contact_size = $("input[name$='.contact_person']").size();
+				if( contact_size == 1){
+					$("input[name='contacts["+index+"].contact_person']").val(null);
+					$("input[name='contacts["+index+"].position']").val(null);
+					$("input[name='contacts["+index+"].phone']").val(null);
+					$("input[name='contacts["+index+"].email']").val(null);
+				}else{
+					$('#client_contact_' + index).remove();
+				}
 		});
 	};
 	

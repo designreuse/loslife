@@ -82,21 +82,20 @@
 							
 							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.companyname" /></label>
-								<input type="hidden" id="tempChannel_name" name="tempChannel_name" value="${pages.searchMap['tempChannel_name']}" />
 								<select class="form-control select2 channel" name="channel" id="channel" style="width: 100%;">
-									<c:if test="${pages.searchMap['channel'] != null}">
-										<option value="${pages.searchMap['channel']}" selected="selected">${pages.searchMap['tempChannel_name']}</option>
-									</c:if>
+									<option value></option>
+									<c:forEach var="agency" items="${agencys}">
+										<option value="${agency.id}">${agency.channel_name}</option>
+									</c:forEach>
 		                      	</select>
 							</div>
 							
 							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.sales"/></label>
-								<input type="hidden" id="tempSaleIds_name" name="tempSaleIds_name" value="${pages.searchMap['tempSaleIds_name']}" />
 								<select class="form-control select2 saleIds" name="saleIds" id="saleIds" style="width: 100%;">
-		                    		<c:if test="${pages.searchMap['saleIds'] != null}">
-										<option value="${pages.searchMap['saleIds']}" selected="selected">${pages.searchMap['tempSaleIds_name']}</option>
-									</c:if>
+									<c:forEach var="user" items="${users}">
+	                      				<option value="${user.id}">${user.name}</option>
+	                      			</c:forEach>
 		                      	</select>
 							</div>
 							
@@ -190,53 +189,27 @@
                 $("input[type='checkbox'].allcheck").on('ifChecked', function(event){
                 	 $('input[type="checkbox"].idBox').iCheck('check');
                 });
+        		
                 //单选
                 $("input[type='checkbox'][class!='allcheck']").on("ifUnchecked",function(event){
                 	$("input[type='checkbox'].allcheck").iCheck("uncheck");
                 });
                 
-                
-             	// 代理下单，代理select2
+            	// 代理下单，代理
         		$("#channel").select2({
-        			ajax: {
-        		        url: "${ctx}/ajax/getAgencys",
-        		        dataType: 'json',
-        		        delay: 250,
-        		        data: function (params) {
-        		            return {q: params.term};
-        		        },
-        		        processResults: function (data) {
-        		            return {results: data};
-        		        },
-        		        cache: true
-        		    },
-        		    minimumInputLength: 1,
         		    placeholder: '<spring:message code="client.channel.remark" />',
         		    allowClear: true
-        		}).on('change',function(evt){
-        			$("#tempChannel_name").val($(this).find('option:selected').text());
         		});
+            	
+        		$("#channel").val("${pages.searchMap['channel']}").trigger("change");
                 
              	// 销售人员select2
                 $("#saleIds").select2({
-					ajax: {
-				        url: "${ctx}/ajax/getSales",
-				        dataType: 'json',
-				        delay: 250,
-				        data: function (params) {
-				            return {q: params.term};
-				        },
-				        processResults: function (data) {
-				            return {results: data};
-				        },
-				        cache: true
-				    },
-				    minimumInputLength: 1,
-				    placeholder: "<spring:message code='advertiser.input.sales' />",
+                	placeholder: "<spring:message code='business.opportunity.input.coopsale' />",
 				    allowClear: true
-				}).on('change',function(evt){
-        			$("#tempSaleIds_name").val($(this).find('option:selected').text());
-        		});
+				});
+             	
+                $("#saleIds").val("${pages.searchMap['saleIds']}").trigger("change");
         	});
           	
           	// 重置

@@ -10,15 +10,15 @@
 	</sql>
 	
 	<select id="get" parameterType="long" resultType="BusinessOpportunity">
-		select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
-		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id
+		select o.id,<include refid="businessOpportunityColumns-join" />,c.clientname as advertiser
+		from sales_booking_production.business_opportunities o left join xmo.clients c on o.advertiser_id = c.id
 		where o.deleted_at is null and o.id=#{id}
 	</select>
 
 	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="search" parameterType="map" resultType="BusinessOpportunity">
-		select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
-		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
+		select o.id,<include refid="businessOpportunityColumns-join" />,c.clientname as advertiser
+		from sales_booking_production.business_opportunities o left join xmo.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
 		<if test="fmt_number != null">
 		    and CAST(o.id AS CHAR) = #{fmt_number}
@@ -27,7 +27,7 @@
 			and o.name like "%"#{name}"%"
 		</if>
 		<if test="advertiser != null">
-			and c.name like "%"#{advertiser}"%"
+			and c.clientname like "%"#{advertiser}"%"
 		</if>
 		<if test="status != null">
 			and o.status = #{status}
@@ -39,7 +39,7 @@
 	
 	<select id="count" parameterType="map" resultType="int">
 		select count(1) 
-		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id 
+		from sales_booking_production.business_opportunities o left join xmo.clients c on o.advertiser_id = c.id 
 		where o.deleted_at is null
 		<if test="fmt_number != null">
 			and CAST(o.id AS CHAR) = #{fmt_number}
@@ -48,7 +48,7 @@
 			and o.name like "%"#{name}"%"
 		</if>
 		<if test="advertiser != null">
-			and c.name like "%"#{advertiser}"%"
+			and c.clientname like "%"#{advertiser}"%"
 		</if>
 		<if test="status != null">
 			and o.status = #{status}
@@ -90,8 +90,8 @@
 	</select>
 	
 	<select id="getListByCondition" parameterType="map" resultType="BusinessOpportunity">
-	    select o.id,<include refid="businessOpportunityColumns-join" />,c.name as advertiser
-		from sales_booking_production.business_opportunities o left join sales_booking_production.clients c on o.advertiser_id = c.id
+	    select o.id,<include refid="businessOpportunityColumns-join" />,c.clientname as advertiser
+		from sales_booking_production.business_opportunities o left join xmo.clients c on o.advertiser_id = c.id
 		where o.deleted_at is null
 		<if test="advertiserIds != null">
 		    and o.advertiser_id in (${advertiserIds})
