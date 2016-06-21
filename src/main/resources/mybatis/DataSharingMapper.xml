@@ -27,4 +27,8 @@
        		created_at = #{created_at}, created_by = #{created_by}
        	where id = #{id}	
     </update>
+    
+    <select id="queryChildrenDataSharing" parameterType="long" resultType="User">
+	    select id, name from xmo.users where find_in_Set(id,queryChildrenDataSharing(#{value}))
+	</select>
 </mapper>  

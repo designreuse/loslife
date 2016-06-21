@@ -14,19 +14,16 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <meta name="description" content="">
 	    <meta name="author" content="">
-	    
-	    <title>
-	    	设置
-	    </title>
+	    <title><spring:message code="setting.personal" /></title>
 	</head>
 	
 	<body>
 		
 		<section class="content-header">
-			<h1>个人设置</h1>
+			<h1><spring:message code="setting.personal" /></h1>
 			<ol class="breadcrumb">
 				<li><a href="${ctx}/opportunity"><i class="fa fa-dashboard"></i> <spring:message code="opportunity.home" /></a></li>
-				<li class="active">个人设置</li>
+				<li class="active"><spring:message code="setting.personal" /></li>
 			</ol>
 			
 			<c:if test="${message != null}">
@@ -38,42 +35,57 @@
       		</c:if>
 		</section>
 
-<!-- form -->
-<form role="form" action="${ctx}/setting/${action}" method="post" id="primaryForm" class="form-horizontal">
-<input type="hidden" name="id" id="id" value="${dataSharing.id}" />	
 
-	
 		<section class="content">
-			<div class="box box-info">
-				<div class="box-body" style="min-height: 300px;">
-					<div class="row">
-					
-						<div class="col-md-6">
-						
-							<div class="form-group">
-								<label for="parent_id" class="col-md-3">数据共享<em> *</em></label>
-			                    <div class="col-md-9">
-			                    	<select class="form-control select2 parent_id" name="parent_id" id="parent_id">
-			                      		<option value></option>
-										<c:forEach var="user" items="${users}">
-											<option value="${user.id}">${user.name}</option>
-										</c:forEach>
-			                      	</select>
-			                    </div>
-							</div>
-							
-						</div>
-					
-					</div><!-- /row --> 	
-				</div><!-- /box-body -->
-				
-				<div class="box-footer">
-		          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.save"/></button>
-				</div>
-				    	
-			</div><!-- /box -->
-		</section>
 		
+			<div class="row">
+	            <div class="col-md-6">
+	              <div class="box box-solid">
+	                <div class="box-header with-border">
+	                  <!-- <i class="fa fa-text-width"></i> -->
+	                  <h3 class="box-title"><spring:message code="setting.data.sharing.title" /></h3>
+	                </div><!-- /.box-header -->
+	                <!-- form -->
+					<form role="form" action="${ctx}/setting/${action}" method="post" id="primaryForm" class="form-horizontal">
+					<input type="hidden" name="id" id="id" value="${dataSharing.id}" />	
+	                <div class="box-body">
+	                  	<div class="form-group">
+							 <label for="parent_id" class="col-md-3 control-label"><spring:message code="setting.data.sharing" /><em> *</em></label>
+		                     <div class="col-md-9">
+		                    	<select class="form-control select2 parent_id" name="parent_id" id="parent_id">
+		                      		<option value></option>
+									<c:forEach var="user" items="${users}">
+										<option value="${user.id}">${user.name}</option>
+									</c:forEach>
+		                      	</select>
+		                    </div>
+						</div>
+	                </div><!-- /.box-body -->
+	                </form><!-- /.form -->
+	                <div class="box-footer">
+			          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.save"/></button>
+					</div>
+	              </div><!-- /.box -->
+	            </div><!-- ./col -->
+	            
+	            <div class="col-md-6">
+	              <div class="box box-solid">
+	                <div class="box-header with-border">
+	                 <!--  <i class="fa fa-text-width"></i> -->
+	                  <h3 class="box-title"><spring:message code="setting.my.view.data.sharing.title" /></h3>
+	                </div><!-- /.box-header -->
+	                <div class="box-body">
+	                  <ul class="list-unstyled">
+	                    <c:forEach var="subUser" items="${subUsers}">
+	                    	<LI>${subUser.name}</LI>
+	                    </c:forEach>
+	                  </dl>
+	                </div><!-- /.box-body -->
+	              </div><!-- /.box -->
+	            </div><!-- ./col -->
+	          </div><!-- /.row -->
+          <!-- END TYPOGRAPHY -->
+		</section>
 </form><!-- /form -->	
 
 	<script type="text/javascript"> 
@@ -88,7 +100,7 @@
 			});
 	
 			$("#parent_id").select2({
-				placeholder: "请输入领导名称",
+				placeholder: "<spring:message code='setting.data.sharing.remark' />",
 				allowClear: true
 			});
 			

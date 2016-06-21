@@ -26,6 +26,7 @@ import com.asgab.entity.Client;
 import com.asgab.entity.Product;
 import com.asgab.entity.Report;
 import com.asgab.entity.User;
+import com.asgab.repository.ProductCategoryMapper;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.agency.AgencyService;
 import com.asgab.service.client.ClientService;
@@ -57,6 +58,9 @@ public class AjaxController {
   @Autowired
   private ExchangeRateService exchangeRateService;
 
+  @Autowired
+  private ProductCategoryMapper productCategoryMapper;
+
   @RequestMapping(value = "addProduct", method = RequestMethod.POST)
   public String addProduct(HttpServletRequest request, Model model) {
     List<SelectMapper> mappers = new ArrayList<SelectMapper>();
@@ -67,6 +71,7 @@ public class AjaxController {
     List<Product> products_data = new ArrayList<Product>();
     products_data.addAll(productService.getAllProduct());
     model.addAttribute("products_data", products_data);
+    model.addAttribute("productCategories", productCategoryMapper.getList());
     return "businessOpportunity/product";
   }
 
@@ -114,24 +119,30 @@ public class AjaxController {
 
   @ResponseBody
   @RequestMapping(value = "getProducts", method = RequestMethod.GET)
-  public String getProducts(@RequestParam("q") String name) {
+  public String getProducts(@RequestParam("pt") String productType,
+      @RequestParam("sv") String selectedVal) {
 
     Map<String, Object> params = new HashMap<String, Object>();
-    if (StringUtils.isNotBlank(name)) {
-      params.put("name", name);
+    if (StringUtils.isNotBlank(productType)) {
+      params.put("productType", productType);
     }
-    Page<Product> page = new Page<Product>(1, 10, null, params);
-    Page<Product> pages = productService.search(page);
-
-    JSONArray array = new JSONArray();
-    for (int i = 0; i < pages.getContent().size(); i++) {
-      JSONObject tmp = new JSONObject();
-      tmp.put("id", pages.getContent().get(i).getId());
-      tmp.put("text", pages.getContent().get(i).getName());
-      array.add(tmp);
+    List<Product> allProduct = productService.getAllProduct(params);
+    StringBuilder sb = new StringBuilder("<option value></option>");
+    if (allProduct != null && allProduct.size() > 0) {
+      
+      for (Product thisProduct : allProduct) {
+        if (StringUtils.isNotBlank(selectedVal)
+            && selectedVal.equals(String.valueOf(thisProduct.getId()))) {
+          sb.append("<option value='" + thisProduct.getId() + "' selected>" + thisProduct.getName()
+              + "</option>");
+          System.err.println("selected");
+        } else {
+          sb.append("<option value='" + thisProduct.getId() + "'>" + thisProduct.getName()
+              + "</option>");
+        }
+      }
     }
-    return array.toJSONString();
-
+    return sb.toString();
   }
 
   @RequestMapping(value = "addContact", method = RequestMethod.POST)
@@ -166,7 +177,9 @@ public class AjaxController {
   public String list(Report report, Model model, HttpServletRequest request) {
     LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
     String lang = localeResolver.resolveLocale(request).getLanguage();
-    String[] dataRightColumns = {"report.product", "report.sale.team", "report.sale.representative", "report.channel.company"};
+    String[] dataRightColumns =
+        {"report.product", "report.sale.team", "report.sale.representative",
+            "report.channel.company"};
     Map<String, Object> map = reportService.getReport(report);
     model.addAttribute("names", map.get("names"));
     model.addAttribute("opportunityReports", map.get("opportunityReports"));
@@ -175,7 +188,9 @@ public class AjaxController {
     exchangeRateMap.put("base_currency", "RMB");
     model.addAttribute("exchangeRates", exchangeRateService.search(exchangeRateMap));
 
-    model.addAttribute("dataRightColumn", CommonUtil.getProperty(lang, dataRightColumns[Integer.parseInt(report.getDataRight()) - 1]));
+    model
+        .addAttribute("dataRightColumn", CommonUtil.getProperty(lang,
+            dataRightColumns[Integer.parseInt(report.getDataRight()) - 1]));
     return "report/reportResultList";
   }
 

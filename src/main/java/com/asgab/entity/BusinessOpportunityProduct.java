@@ -7,6 +7,7 @@ public class BusinessOpportunityProduct {
   private Long id;
   private Long business_opportunity_id;
   private Long product_id;
+  private Long product_category_id;
   private String sale_mode;
   private BigDecimal budget;
 
@@ -15,6 +16,7 @@ public class BusinessOpportunityProduct {
   private Date updated_at;
 
   private Product product;
+  private ProductCategory productCategory;
 
   public Long getId() {
     return id;
@@ -38,6 +40,14 @@ public class BusinessOpportunityProduct {
 
   public void setProduct_id(Long product_id) {
     this.product_id = product_id;
+  }
+
+  public Long getProduct_category_id() {
+    return product_category_id;
+  }
+
+  public void setProduct_category_id(Long product_category_id) {
+    this.product_category_id = product_category_id;
   }
 
   public String getSale_mode() {
@@ -86,6 +96,21 @@ public class BusinessOpportunityProduct {
 
   public void setProduct(Product product) {
     this.product = product;
+  }
+  
+  public ProductCategory getProductCategory() {
+    return productCategory;
+  }
+
+  public void setProductCategory(ProductCategory productCategory) {
+    this.productCategory = productCategory;
+  }
+  
+  public String getDecodeProductCategoryId() {
+    if (productCategory != null) {
+      return productCategory.getValue();
+    }
+    return "";
   }
 
   public String getDecodeProductId() {

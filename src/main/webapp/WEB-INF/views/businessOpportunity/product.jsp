@@ -9,24 +9,36 @@
 <div class="row" id="row_product_${index}">
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-md-3" for="product_id"><spring:message code="business.opportunity.product"/>${index+1}*</label>
+			<label class="col-md-3 control-label" for="product_category_id"><spring:message code='business.opportunity.product.type'/>${index+1} *</label>
 			<div class="col-md-9">
-				<select class="form-control select2" name="businessOpportunityProducts[${index}].product_id" style="width: 100%;">
+				<select class="form-control select2" name="businessOpportunityProducts[${index}].product_category_id" 
+				style="width: 100%;" onchange="loadProducts($(this).val(),'${index}', null);">
 					<option value></option>
-					<c:forEach var="product" items="${products_data}">
-						<option value="${product.id}">${product.name}</option>
+					<c:forEach var="pc" items="${productCategories}">
+						<option value="${pc.id}">${pc.value}</option>
 					</c:forEach>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3" for="sale_mode"><spring:message code="business.opportunity.sale.mode"/>${index+1}*</label>
+			<label class="col-md-3 control-label" for="product_id"><spring:message code="business.opportunity.product"/>${index+1} *</label>
+			<div class="col-md-9">
+				<select class="form-control select2" name="businessOpportunityProducts[${index}].product_id" style="width: 100%;">
+					<option value></option>
+					<%-- <c:forEach var="product" items="${products_data}">
+						<option value="${product.id}">${product.name}</option>
+					</c:forEach> --%>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-3 control-label" for="sale_mode"><spring:message code="business.opportunity.sale.mode"/>${index+1} *</label>
 			<div class="col-md-9">
 				<tags:selectbox name="businessOpportunityProducts[${index}].sale_mode" list="${saleModes}" addNull="true"></tags:selectbox>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3" for="budget"><spring:message code="business.opportunity.product.budget"/>${index+1}*</label>
+			<label class="col-md-3 control-label" for="budget"><spring:message code="business.opportunity.product.budget"/>${index+1} *</label>
 			<div class="col-md-9">
 				<div class="input-group">
 				<input type="text" class="form-control text-right" name="businessOpportunityProducts[${index}].budget" placeholder="<spring:message code='business.opportunity.input.product.budget' />">
@@ -46,10 +58,15 @@
 
 <script>    
 	$(document).ready(function() {
+		$("#row_product_${index}").find("select[name='businessOpportunityProducts[${index}].product_category_id']").rules('add', {required:true});
 		$("#row_product_${index}").find("select[name='businessOpportunityProducts[${index}].product_id']").rules('add', {required:true});
 		$("#row_product_${index}").find("select[name='businessOpportunityProducts[${index}].sale_mode']").rules('add', {required:true});
 		$("#row_product_${index}").find("input[name='businessOpportunityProducts[${index}].budget']").rules('add', {required:true,number:true});
 		
+		$("select[name='businessOpportunityProducts[${index}].product_category_id']").select2({
+			 placeholder: "<spring:message code='business.opportunity.product.type.remark'/>",
+			 allowClear: true
+		});
 		$("select[name='businessOpportunityProducts[${index}].product_id']").select2({
 		    placeholder: "<spring:message code='business.opportunity.input.product'/>",
 		    allowClear: true

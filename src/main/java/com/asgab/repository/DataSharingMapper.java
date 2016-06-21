@@ -3,6 +3,7 @@ package com.asgab.repository;
 import java.util.List;
 
 import com.asgab.entity.DataSharing;
+import com.asgab.entity.User;
 import com.asgab.repository.mybatis.MyBatisRepository;
 
 @MyBatisRepository
@@ -15,5 +16,7 @@ public interface DataSharingMapper {
   DataSharing get(Long id);
 
   List<DataSharing> getByUserId(Long user_id);
+  
+  List<User> queryChildrenDataSharing(Long parent_id);
 
 }
