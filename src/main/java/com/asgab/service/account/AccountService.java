@@ -66,7 +66,7 @@ public class AccountService {
     map.put("loginName", loginName);
     return userXMOMapper.findUserGroupByLoginName(map);
   }
-  
+
   public User get(Long id) {
     return userXMOMapper.get(id);
   }
@@ -76,7 +76,7 @@ public class AccountService {
 
     System.out.println(Encodes.encodeHex(hashPassword));
   }
-  
+
   public List<User> getAllXMOUser() {
     return (List<User>) userXMOMapper.search(null);
   }

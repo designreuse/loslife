@@ -24,6 +24,12 @@
 <div class="row" id="row_product_${status.index}">
 	<div class="col-md-6">
 		<div class="form-group">
+			<label class="col-md-3" for="product_id"><spring:message code='business.opportunity.product.type'/>${status.index+1}*</label>
+			<div class="col-md-9">
+				<label>${product.productCategory.value}</label>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-md-3" for="product_id"><spring:message code="business.opportunity.product"/>${status.index+1}*</label>
 			<div class="col-md-9">
 				<label>${product.decodeProductId}</label>

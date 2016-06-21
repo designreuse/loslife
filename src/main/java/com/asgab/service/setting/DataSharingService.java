@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.asgab.entity.DataSharing;
+import com.asgab.entity.User;
 import com.asgab.repository.DataSharingMapper;
 
 @Component
@@ -33,6 +34,10 @@ public class DataSharingService {
     if (list == null || list.size() == 0)
       return null;
     return list.get(0);
+  }
+  
+  public List<User> queryChildrenDataSharing(Long parent_id) {
+    return dataSharingMapper.queryChildrenDataSharing(parent_id);
   }
 
 }

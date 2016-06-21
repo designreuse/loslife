@@ -13,28 +13,28 @@
 			
 		    	<div class="col-md-6">
 		   			<div class="form-group">
-		       			<label for="" class="col-md-3"><spring:message code="client.contact.person" /> ${status.index+1}</label>
+		       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.person" /> ${status.index+1}<em> *</em></label>
 		       			<div class="col-md-9">
 		       				<input id="contact_person" class="form-control" type="text" name="contacts[${status.index}].contact_person" value="${contact.contact_person}" />
 		       			</div>
 		       		</div>
 		         		
 		       		<div class="form-group">
-		       			<label for="" class="col-md-3"><spring:message code="client.contact.position" /> ${status.index+1}</label>
+		       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.position" /> ${status.index+1}<em> *</em></label>
 		       			<div class="col-md-9">
 		       				<input id="position" class="form-control" type="text" name="contacts[${status.index}].position" value="${contact.position}" />
 		       			</div>
 		       		</div>
 		         		
 		       		<div class="form-group">
-		       			<label for="" class="col-md-3"><spring:message code="client.contact.phone" /> ${status.index+1}</label>
+		       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.phone" /> ${status.index+1}<em> *</em></label>
 		       			<div class="col-md-9">
 		       				<input id="phone" class="form-control" type="text" name="contacts[${status.index}].phone" value="${contact.phone}" />
 		       			</div>
 		       		</div>
 		         		
 		       		<div class="form-group">
-		       			<label for="" class="col-md-3"><spring:message code="client.contact.email" /> ${status.index+1}</label>
+		       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.email" /> ${status.index+1}<em> *</em></label>
 		       			<div class="col-md-9">
 		       				<input id="email" class="form-control" type="text" name="contacts[${status.index}].email" value="${contact.email}" />
 		       			</div>

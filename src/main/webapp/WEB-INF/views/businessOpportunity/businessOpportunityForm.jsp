@@ -61,14 +61,14 @@
 		                   	<div class="col-md-6">
 		                   	<c:if test="${action eq 'update' }">
 		           				<div class="form-group">
-			                      <label for="number" class="col-md-3"><spring:message code="opportunity.id" /></label>
+			                      <label for="number" class="col-md-3 control-label"><spring:message code="opportunity.id" /></label>
 			                      <div class="col-md-9">
 			                      	<input type="text" disabled="disabled" class="form-control" value="${businessOpportunity.number }" />
 			                      </div>
 			                    </div>
 			                </c:if>  
 			                    <div class="form-group">
-			                      <label for="name" class="col-md-3"><spring:message code="business.opportunity.name" />*</label>
+			                      <label for="name" class="col-md-3 control-label"><spring:message code="business.opportunity.name" /> *</label>
 			                      <div class="col-md-9">
 			                      	<input type="text" name="name" id="name" class="form-control" value="${businessOpportunity.name }" placeholder="<spring:message code='business.opportunity.input.name'/>">
 			                      </div>
@@ -79,7 +79,7 @@
 	                <div class="col-md-12">
 	                	<div class="col-md-6" style="padding-left: 0;">
 		                    <div class="form-group">
-		                      <label for="advertiser_id" class="col-md-3"><spring:message code="business.opportunity.advertiser" />*</label>
+		                      <label for="advertiser_id" class="col-md-3 control-label"><spring:message code="business.opportunity.advertiser" /> *</label>
 		                      <div class="col-md-9" >
 		                      	<select class="form-control select2" name="advertiser_id" id="advertiser_id" style="width: 100%;">
 		                      		<c:if test="${advertiser !=null}">
@@ -97,7 +97,7 @@
 	                </div>
 	                <div class="col-md-6">
 	                    <div class="form-group">
-	                      <label for="deliver_date" class="col-md-3"><spring:message code="business.opportunity.deliver.date" />*</label>
+	                      <label for="deliver_date" class="col-md-3 control-label"><spring:message code="business.opportunity.deliver.date" /> *</label>
 	                      <div class="col-md-9">
 	                      	<div class="input-group">
 	                      		<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
@@ -107,14 +107,14 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="currency_id" class="col-md-3"><spring:message code="business.opportunity.currency" />*</label>
+	                      <label for="currency_id" class="col-md-3 control-label"><spring:message code="business.opportunity.currency" /> *</label>
 	                      <div class="col-md-9">
 	                      		<tags:selectbox name="currency_id" list="${currencys}" addNull="true" value="${businessOpportunity.currency_id }"></tags:selectbox>
 	                      </div>
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="budget" class="col-md-3"><spring:message code="business.opportunity.budget" />*</label>
+	                      <label for="budget" class="col-md-3 control-label"><spring:message code="business.opportunity.budget" /> *</label>
 	                      <div class="col-md-9">
 	                      	<div class="input-group">
 	                      		<input type="text" value="${businessOpportunity.budget }" class="form-control text-right" name="budget" id="budget" placeholder="<spring:message code='business.opportunity.input.budget' />">
@@ -124,7 +124,7 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="progress" class="col-md-3"><spring:message code="business.opportunity.progress" /></label>
+	                      <label for="progress" class="col-md-3 control-label"><spring:message code="business.opportunity.progress" /></label>
 	                      <div class="col-md-9">
 				          	<input id="progress" class="form-control" data-slider-id="blue" type="text" name="progress" value="${businessOpportunity.progress}">
 				          </div>
@@ -146,7 +146,7 @@
                    <div class="row">
            			<div class="col-md-6">
 	                    <div class="form-group">
-	                    	<label for="exist_msa" class="col-md-3"><spring:message code="business.opportunity.msa" />*</label>
+	                    	<label for="exist_msa" class="col-md-3 control-label"><spring:message code="business.opportunity.msa" /> *</label>
 	                     	<input type="hidden" name="exist_msa" id="exist_msa" value="${businessOpportunity.exist_msa}">
 	                      	<div class="col-md-9">
 	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_msa ==1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_msa',this);" id="btn_exist_msa_1" value="<spring:message code="business.opportunity.yes" />">
@@ -155,7 +155,7 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                    	<label for="exist_service" class="col-md-3"><spring:message code="business.opportunity.service" />*</label>
+	                    	<label for="exist_service" class="col-md-3 control-label"><spring:message code="business.opportunity.service" /> *</label>
 	                     	<input type="hidden" name="exist_service" id="exist_service" value="${businessOpportunity.exist_service}">
 	                      	<div class="col-md-9">
 	                      		<input type="button" class="btn <c:choose><c:when test="${businessOpportunity.exist_service ==1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose> btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'exist_service',this);" value="<spring:message code="business.opportunity.service" />">
@@ -164,7 +164,7 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="owner_sale" class="col-md-3"><spring:message code="business.opportunity.sale" />*</label>
+	                      <label for="owner_sale" class="col-md-3 control-label"><spring:message code="business.opportunity.sale" /> *</label>
 	                      <div class="col-md-9">
 	                      	<select class="form-control select2" name="owner_sale" id="owner_sale" style="width: 100%;">
 	                      		<c:forEach items="${sales_data}" var="user">
@@ -180,7 +180,7 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                      <label for="cooperate_sales" class="col-md-3"><spring:message code="business.opportunity.cooperate" /></label>
+	                      <label for="cooperate_sales" class="col-md-3 control-label"><spring:message code="business.opportunity.cooperate" /></label>
 	                      <div class="col-md-9">
 	                      	<select class="form-control select2" name="cooperate_sales" id="cooperate_sales" style="width: 100%;" multiple="multiple">
 	                      		<c:forEach items="${sales_data}" var="user">
@@ -217,11 +217,11 @@
                    	<div class="row">
            			<div class="col-md-6">
            				<div class="form-group">
-	                      <label  class="col-md-3"><a href="javascript:void(0);" onclick="addProduct();"><i class="fa fa-w fa-plus-square"></i>&nbsp;<spring:message code="business.opportunity.addproduct" /></a></label>
+	                      <label class="col-md-3 control-label"><a href="javascript:void(0);" onclick="addProduct();"><i class="fa fa-w fa-plus-square"></i>&nbsp;<spring:message code="business.opportunity.addproduct" /></a></label>
 	                    </div>
            			
 	                    <div class="form-group">
-	                      <label for="remark" class="col-md-3"><spring:message code="business.opportunity.remark" /></label>
+	                      <label for="remark" class="col-md-3 control-label"><spring:message code="business.opportunity.remark" /></label>
 	                      <div class="col-md-9">
 	                      	<textarea rows="3" class="form-control" name="remark" id="remark" placeholder="<spring:message code="business.opportunity.input.remark" />">${businessOpportunity.remark}</textarea>
 	                      </div>
@@ -323,6 +323,7 @@
 				});
 				
 				$("div[id^='row_product']").each(function(i){
+					$(this).find("select[name='businessOpportunityProducts["+i+"].product_category_id']").rules('add', {required:true});
 					$(this).find("select[name='businessOpportunityProducts["+i+"].product_id']").rules('add', {required:true});
 					$(this).find("select[name='businessOpportunityProducts["+i+"].sale_mode']").rules('add', {required:true});
 					$(this).find("input[name='businessOpportunityProducts["+i+"].budget']").rules('add', {required:true,number:true});
@@ -348,6 +349,9 @@
 				<c:if test="${action eq 'create' }">
 					addProduct();
 				</c:if>
+				<c:if test="${action eq 'update' }">
+					$("select[name$='.product_category_id']").change();
+				</c:if>
 			});
 			
 			function addAdvertiser(){
@@ -369,11 +373,25 @@
 			function removeProduct(index){
 				var product_size = $("select[name$='.product_id']").size();
 				if( product_size == 1){
+					$("select[name='businessOpportunityProducts["+index+"].product_category_id']").val(null);
 					$("select[name='businessOpportunityProducts["+index+"].product_id']").val(null).change();
 					$("select[name='businessOpportunityProducts["+index+"].sale_mode']").val(null);
 					$("input[name='businessOpportunityProducts["+index+"].budget']").val('');
 				}else{
 					$('#row_product_' + index).remove()
+				}
+			};
+			
+			function loadProducts( productType, index, selectedVal ){
+				if(productType == null || productType == undefined || productType == '' ){
+					$("select[name='businessOpportunityProducts["+index+"].product_id']").html('<option value></option>');
+					$("select[name='businessOpportunityProducts["+index+"].product_id']").trigger("change");
+				}else{
+					$.get("${ctx}/ajax/getProducts",{pt:productType,sv:selectedVal},function(html){
+						$("select[name='businessOpportunityProducts["+index+"].product_id']").html(html);
+						$("select[name='businessOpportunityProducts["+index+"].product_id']").trigger("change");
+					},"html");
+					
 				}
 			};
 			

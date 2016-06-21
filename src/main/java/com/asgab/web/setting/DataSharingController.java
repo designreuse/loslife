@@ -1,6 +1,7 @@
 package com.asgab.web.setting;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.asgab.entity.DataSharing;
+import com.asgab.entity.User;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.account.ShiroDbRealm.ShiroUser;
 import com.asgab.service.setting.DataSharingService;
@@ -33,7 +35,7 @@ public class DataSharingController {
 
   @RequestMapping(method = RequestMethod.GET)
   public String toSetting(Model model, HttpServletRequest request) {
-
+    
     ShiroUser shiroUser = getCurrUser();
     if (shiroUser != null) {
       DataSharing currUserDataSharing = dataSharingService.getByUserId(shiroUser.id);
@@ -44,6 +46,8 @@ public class DataSharingController {
         model.addAttribute("action", "update");
         model.addAttribute("dataSharing", currUserDataSharing);
       }
+      List<User> subUsers = dataSharingService.queryChildrenDataSharing(shiroUser.id);
+      model.addAttribute("subUsers", subUsers);
     } else {
       model.addAttribute("action", "create");
       model.addAttribute("dataSharing", new DataSharing());
