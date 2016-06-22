@@ -65,7 +65,7 @@
 										<c:if test="${status.count != 1}">
 											<input type="radio" name="id" class="flat-red allcheck" value="${val}">
 										</c:if>
-										<spring:message code="btn.selectall" />
+										<spring:message code="btn.retain" />
 									</label>
 								</th>
 							</c:forEach>
