@@ -31,12 +31,14 @@ public class AdvertiserController {
   private ClientService clientService;
 
   @RequestMapping(value = "list", method = RequestMethod.GET)
-  public String init(Model model) {
+  public String init(Model model, HttpServletRequest request) {
     Page<Client> pages = new Page<Client>(1, 10, "", new HashMap<String, Object>());
     pages.setContent(new ArrayList<Client>());
     pages.setTotal(-1);
     model.addAttribute("search", Servlets.encodeParameterString(new HashMap<String, Object>()));
     model.addAttribute("pages", pages);
+    // 设置行业和货币
+    clientService.setSelect(request);
     return "advertiser/advertiserList";
   }
 
@@ -46,19 +48,17 @@ public class AdvertiserController {
           value = "sort", defaultValue = "id desc") String sort, HttpServletRequest request,
       Model model) {
     Map<String, Object> params = new HashMap<String, Object>();
-    if (StringUtils.isNotBlank(request.getParameter("clientname"))) {
-      params.put("clientname", request.getParameter("clientname"));
+    if (StringUtils.isNotBlank(request.getParameter("or_clientname"))) {
+      params.put("or_clientname", request.getParameter("or_clientname"));
     }
-    if (StringUtils.isNotBlank(request.getParameter("brand"))) {
-      params.put("brand", request.getParameter("brand"));
+    if (StringUtils.isNotBlank(request.getParameter("or_brand"))) {
+      params.put("or_brand", request.getParameter("or_brand"));
     }
-    if (StringUtils.isNotBlank(request.getParameter("channel"))) {
-      params.put("channel", request.getParameter("channel"));
-      params.put("tempChannel_name", request.getParameter("tempChannel_name"));
+    if (StringUtils.isNotBlank(request.getParameter("or_channel_name"))) {
+      params.put("or_channel_name", request.getParameter("or_channel_name"));
     }
     if (StringUtils.isNotBlank(request.getParameter("saleIds"))) {
       params.put("saleIds", request.getParameter("saleIds"));
-      params.put("tempSaleIds_name", request.getParameter("tempSaleIds_name"));
     }
     if (StringUtils.isNotBlank(request.getParameter("dateRange"))) {
       params.put("dateRange", request.getParameter("dateRange"));
