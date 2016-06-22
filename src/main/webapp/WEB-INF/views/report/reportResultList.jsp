@@ -54,19 +54,19 @@
 				  BigDecimal sum = BigDecimal.ZERO;
 				  Report orderReport = orderReports.get(i);
 				  if(orderReport!=null){
-				    sum = sum.add(orderReport.getBudgetSum());
-				    orderSum = orderSum.add(orderReport.getBudgetSum());
+				    sum = sum.add(orderReport.getBudget());
+				    orderSum = orderSum.add(orderReport.getBudget());
 				  }
 				  Report opportunityReport = opportunityReports.get(i);
 				  if(opportunityReport!=null){
-				    sum = sum.add(opportunityReport.getBudgetSum());
-				    opportunitySum = opportunitySum.add(opportunityReport.getBudgetSum());
+				    sum = sum.add(opportunityReport.getBudget());
+				    opportunitySum = opportunitySum.add(opportunityReport.getBudget());
 				  }
 				  totalSum = totalSum.add(sum);
 				  
 				  data.add(names.get(i));
-				  data.add(orderReport!=null?orderReport.getFmtBudgetSum():"0.00");
-				  data.add(opportunityReport!=null?opportunityReport.getFmtBudgetSum():"0.00");
+				  data.add(orderReport!=null?orderReport.getFmtBudget():"0.00");
+				  data.add(opportunityReport!=null?opportunityReport.getFmtBudget():"0.00");
 				  data.add(CommonUtil.digSeg(sum.doubleValue()));
 				  datas.add(data);
 				}

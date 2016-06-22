@@ -13,16 +13,33 @@ public class Report {
   private String progress;
   private String saleTeam;
   private String saleRepresentative;
-  private String budget;
+  private BigDecimal budget;
+  private BigDecimal budgetRMB;
   private String orderType;
-  private String gp;
+  private Double gp;
   private String incomeType;
   private String currency;
-
-  private BigDecimal budgetSum;
+  // 是否服务类
+  private Integer whether_service;
+  // 地区
+  private String regional;
+  private BigDecimal totalBudget;
   private Long product_id;
   private String product_name;
 
+  private Long order_id;
+  private Long opportunity_id;
+  private String local;
+  private Double rebate;
+  //售价
+  private BigDecimal cost;
+  // 底价 = public_price*floor_discount 底价 
+  private BigDecimal public_price;
+  private BigDecimal floor_discount;
+  
+  // 服务费率
+  private Double service_charges_scale;
+  private String metric;
   private String channel;
   private String channel_name;
 
@@ -31,6 +48,11 @@ public class Report {
   private String progress_start;
   private String progress_end;
 
+  // 默认不算GP,
+  // 1:服务类
+  // 2:非服务类 国内
+  // 3:非服务类 国外
+  private int calGP = 0;
 
   public String getDataRight() {
     return dataRight;
@@ -72,28 +94,12 @@ public class Report {
     this.saleRepresentative = saleRepresentative;
   }
 
-  public String getBudget() {
-    return budget;
-  }
-
-  public void setBudget(String budget) {
-    this.budget = budget;
-  }
-
   public String getOrderType() {
     return orderType;
   }
 
   public void setOrderType(String orderType) {
     this.orderType = orderType;
-  }
-
-  public String getGp() {
-    return gp;
-  }
-
-  public void setGp(String gp) {
-    this.gp = gp;
   }
 
   public String getIncomeType() {
@@ -112,16 +118,8 @@ public class Report {
     this.currency = currency;
   }
 
-  public BigDecimal getBudgetSum() {
-    return budgetSum;
-  }
-
-  public String getFmtBudgetSum() {
-    return CommonUtil.digSeg(getBudgetSum().doubleValue());
-  }
-
-  public void setBudgetSum(BigDecimal budgetSum) {
-    this.budgetSum = budgetSum;
+  public String getFmtBudget() {
+    return CommonUtil.digSeg(getBudget().doubleValue());
   }
 
   public Long getProduct_id() {
@@ -198,6 +196,134 @@ public class Report {
 
   public void setProgress_end(String progress_end) {
     this.progress_end = progress_end;
+  }
+
+  public Integer getWhether_service() {
+    return whether_service;
+  }
+
+  public void setWhether_service(Integer whether_service) {
+    this.whether_service = whether_service;
+  }
+
+  public String getRegional() {
+    return regional;
+  }
+
+  public void setRegional(String regional) {
+    this.regional = regional;
+  }
+
+  public BigDecimal getBudget() {
+    return budget;
+  }
+
+  public void setBudget(BigDecimal budget) {
+    this.budget = budget;
+  }
+
+  public Double getGp() {
+    return gp;
+  }
+
+  public void setGp(Double gp) {
+    this.gp = gp;
+  }
+
+  public BigDecimal getTotalBudget() {
+    return totalBudget;
+  }
+
+  public void setTotalBudget(BigDecimal totalBudget) {
+    this.totalBudget = totalBudget;
+  }
+
+  public Long getOrder_id() {
+    return order_id;
+  }
+
+  public void setOrder_id(Long order_id) {
+    this.order_id = order_id;
+  }
+
+  public String getLocal() {
+    return local;
+  }
+
+  public void setLocal(String local) {
+    this.local = local;
+  }
+
+  public Double getRebate() {
+    return rebate;
+  }
+
+  public void setRebate(Double rebate) {
+    this.rebate = rebate;
+  }
+
+  public Double getService_charges_scale() {
+    return service_charges_scale;
+  }
+
+  public void setService_charges_scale(Double service_charges_scale) {
+    this.service_charges_scale = service_charges_scale;
+  }
+
+  public BigDecimal getBudgetRMB() {
+    return budgetRMB;
+  }
+
+  public void setBudgetRMB(BigDecimal budgetRMB) {
+    this.budgetRMB = budgetRMB;
+  }
+
+  public Long getOpportunity_id() {
+    return opportunity_id;
+  }
+
+  public void setOpportunity_id(Long opportunity_id) {
+    this.opportunity_id = opportunity_id;
+  }
+
+  public int getCalGP() {
+    return calGP;
+  }
+
+  public void setCalGP(int calGP) {
+    this.calGP = calGP;
+  }
+
+  public String getMetric() {
+    return metric;
+  }
+
+  public void setMetric(String metric) {
+    this.metric = metric;
+  }
+
+  public BigDecimal getCost() {
+    return cost;
+  }
+
+  public void setCost(BigDecimal cost) {
+    this.cost = cost;
+  }
+
+  public BigDecimal getPublic_price() {
+    return public_price;
+  }
+
+  public void setPublic_price(BigDecimal public_price) {
+    this.public_price = public_price;
+  }
+
+  public BigDecimal getFloor_discount() {
+    return floor_discount;
+  }
+
+  public void setFloor_discount(BigDecimal floor_discount) {
+    this.floor_discount = floor_discount;
   }
 
 }
