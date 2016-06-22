@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.BusinessOpportunity;
 import com.asgab.entity.Product;
+import com.asgab.entity.ProductCategory;
 import com.asgab.entity.User;
+import com.asgab.repository.ProductCategoryMapper;
 import com.asgab.repository.xmo.UserXMOMapper;
 import com.asgab.service.account.AccountService;
 import com.asgab.service.account.ShiroDbRealm.ShiroUser;
@@ -57,6 +57,9 @@ public class BusinessOpportunityController {
 
   @Autowired
   private ProductService productService;
+  
+  @Autowired
+  private ProductCategoryMapper productCategoryMapper;
 
   @RequestMapping(method = RequestMethod.GET)
   public String list(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
@@ -218,6 +221,8 @@ public class BusinessOpportunityController {
     request.setAttribute("sales_data", sales);
     List<Product> products = productService.getAllProduct();
     request.setAttribute("products_data", products);
+    List<ProductCategory> productCategories = productCategoryMapper.getList();
+    request.setAttribute("productCategories", productCategories);
   }
 
   private ShiroUser getCurrUser() {

@@ -65,7 +65,7 @@
 										<c:if test="${status.count != 1}">
 											<input type="radio" name="id" class="flat-red allcheck" value="${val}">
 										</c:if>
-										<spring:message code="btn.selectall" />
+										<spring:message code="btn.retain" />
 									</label>
 								</th>
 							</c:forEach>
@@ -361,7 +361,7 @@
 			</div>
 			
 			<div class="box-footer">
-              <button type="button" class="btn btn-sm btn-primary btn-flat" onclick="$('#submitModal').modal('show');"><spring:message code="btn.submit" /></button>
+              <button type="button" class="btn btn-sm btn-primary btn-flat" onclick="$('#submitModal').modal('show');"><spring:message code="btn.save" /></button>
               <button type="button" class="btn btn-sm btn-primary btn-flat disabled" onclick="cancel();"><spring:message code="btn.cancel" /></button>
             </div>
 		</div>

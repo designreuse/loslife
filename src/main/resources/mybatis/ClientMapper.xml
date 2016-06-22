@@ -54,6 +54,24 @@
 		<if test="status != null">
 			and a.status = #{status}
 		</if>
+		
+		<!-- 三个 OR 关系 -->
+		<if test="or_clientname != null || or_brand != null || or_channel_name != null">
+		    and
+		    (
+		    	1 = 2
+		    	<if test="or_clientname != null">
+		    	    or a.clientname like "%"#{or_clientname}"%"
+		    	</if>
+		    	<if test="or_brand != null">
+		    	    or a.brand like "%"#{or_brand}"%"
+		    	</if>
+		    	<if test="or_channel_name != null">
+		    	    or c.channel_name like "%"#{or_channel_name}"%"
+		    	</if>
+		    )
+		</if>
+		
 		<if test="createDateStart != null">
 			<![CDATA[
 			and a.created_at >= #{createDateStart}
@@ -105,6 +123,23 @@
 		<if test="status != null">
 			and a.status = #{status}
 		</if>
+		<!-- 三个 OR 关系 -->
+		<if test="or_clientname != null || or_brand != null || or_channel_name != null">
+		    and
+		    (
+		    	1 = 2
+		    	<if test="or_clientname != null">
+		    	    or a.clientname like "%"#{or_clientname}"%"
+		    	</if>
+		    	<if test="or_brand != null">
+		    	    or a.brand like "%"#{or_brand}"%"
+		    	</if>
+		    	<if test="or_channel_name != null">
+		    	    or c.channel_name like "%"#{or_channel_name}"%"
+		    	</if>
+		    )
+		</if>
+		
 		<if test="createDateStart != null">
 			<![CDATA[
 			and a.created_at >= #{createDateStart}

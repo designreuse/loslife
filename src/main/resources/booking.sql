@@ -48,3 +48,7 @@ CREATE TABLE `client_contacts` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# 加字段广告形式
+alter table business_opportunity_products
+add column `product_category_id` int(11) DEFAULT NULL after `product_id`;

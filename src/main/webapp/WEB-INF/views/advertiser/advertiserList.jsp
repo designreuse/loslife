@@ -72,22 +72,17 @@
 						<div class="row">
 							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.clientname" /></label>
-								<input type="text" class="form-control" name="clientname" id="clientname" value="<c:out value="${pages.searchMap['clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
+								<input type="text" class="form-control" name="or_clientname" id="or_clientname" value="<c:out value="${pages.searchMap['or_clientname']}"/>" placeholder="<spring:message code='advertiser.input.clientname'/>">
 							</div>
 							
 							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.brand" /></label>
-								<input type="text" class="form-control" name="brand" id="brand" value="<c:out value="${pages.searchMap['brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
+								<input type="text" class="form-control" name="or_brand" id="or_brand" value="<c:out value="${pages.searchMap['or_brand']}"/>" placeholder="<spring:message code='advertiser.input.brand'/>">
 							</div>
 							
 							<div class="form-group col-md-4">
 								<label><spring:message code="advertiser.companyname" /></label>
-								<select class="form-control select2 channel" name="channel" id="channel" style="width: 100%;">
-									<option value></option>
-									<c:forEach var="agency" items="${agencys}">
-										<option value="${agency.id}">${agency.channel_name}</option>
-									</c:forEach>
-		                      	</select>
+								<input type="text" class="form-control" name="or_channel_name" id="or_channel_name" value="<c:out value="${pages.searchMap['or_channel_name']}"/>" placeholder="<spring:message code="client.channel.remark" />">
 							</div>
 							
 							<div class="form-group col-md-4">
@@ -183,7 +178,6 @@
                 $('input[type="checkbox"]').iCheck({
                   	checkboxClass: 'icheckbox_minimal-blue'
                 });
-        		
 
         		//全选
                 $("input[type='checkbox'].allcheck").on('ifChecked', function(event){
@@ -195,17 +189,9 @@
                 	$("input[type='checkbox'].allcheck").iCheck("uncheck");
                 });
                 
-            	// 代理下单，代理
-        		$("#channel").select2({
-        		    placeholder: '<spring:message code="client.channel.remark" />',
-        		    allowClear: true
-        		});
-            	
-        		$("#channel").val("${pages.searchMap['channel']}").trigger("change");
-                
              	// 销售人员select2
                 $("#saleIds").select2({
-                	placeholder: "<spring:message code='business.opportunity.input.coopsale' />",
+                	placeholder: "<spring:message code='business.opportunity.input.sale' />",
 				    allowClear: true
 				});
              	

@@ -64,7 +64,7 @@
 					 	
 					 	<c:if test="${action eq 'update' }">
 					 		<div class="form-group">
-								<label for="number" class="col-md-3"><spring:message code="client.number" /></label>
+								<label for="number" class="col-md-3 control-label"><spring:message code="client.number" /></label>
 			                    <div class="col-md-9">
 			                      	<input class="form-control" disabled="disabled" type="text" value="${client.number}" />
 			                    </div>
@@ -72,7 +72,7 @@
 						</c:if>	
 						
 							<div class="form-group">
-								<label for="clientname" class="col-md-3"><spring:message code="client.name" /><em> *</em></label>
+								<label for="clientname" class="col-md-3 control-label"><spring:message code="client.name" /><em> *</em></label>
 			                    <div class="col-md-9">
 			                      	<input id="clientname" class="form-control" type="text" name="clientname" value="${client.clientname}" 
 			                      	placeholder="<spring:message code="client.name.remark" />"/>
@@ -80,7 +80,7 @@
 							</div>
 						
 	                		<div class="form-group">
-	                			<label for="client_brand" class="col-md-3"><spring:message code="client.brand.name" /><em> *</em></label>
+	                			<label for="client_brand" class="col-md-3 control-label"><spring:message code="client.brand.name" /><em> *</em></label>
 		                      	<div class="col-md-9">
 		                      		<input id="client_brand" class="form-control" type="text" name="client_brand" value="${client.brand}"
 		                      		placeholder="<spring:message code="client.brand.remark" />"/>
@@ -88,7 +88,7 @@
 	                		</div>
 		                	
 		                	 <div class="form-group">
-		                	 	<label for="channel" class="col-md-3"><spring:message code="client.channel" /><em> *</em></label>
+		                	 	<label for="channel" class="col-md-3 control-label"><spring:message code="client.channel" /><em> *</em></label>
 		                	 	<div class="col-md-9 ">
 		                	 		<div class="input-group channel-parent-append-error">
 		                	 			<label class="input-group-addon">
@@ -123,7 +123,7 @@
 		                	</div>	
 			                	
 		                	<div class="form-group">
-	                			<label for="industry_id" class="col-md-3"><spring:message code="client.industry" /><em> *</em></label>
+	                			<label for="industry_id" class="col-md-3 control-label"><spring:message code="client.industry" /><em> *</em></label>
 		                      	<div class="col-md-9">
 		                      		<select name="industry_id" class="form-control industry_id" id="industry_id">
 		                      			<option value></option>
@@ -135,7 +135,7 @@
 	                		</div>
 	                		
 	                		<div class="form-group">
-	                			<label for="currency_id" class="col-md-3"><spring:message code="client.currency" /><em> *</em></label>
+	                			<label for="currency_id" class="col-md-3 control-label"><spring:message code="client.currency" /><em> *</em></label>
 		                      	<div class="col-md-9">
 		                      		<tags:selectbox name="currency_id" list="${currencyTypes}" value="${client.currency_id }" addNull="true"  />
 		                      	</div>
@@ -166,7 +166,7 @@
 		 						<div class="row">
 				           			<div class="col-md-6">
 				           				<div class="form-group">
-					                      	<label class="col-md-3"><a href="javascript:void(0);" onclick="add_client_contacts();">
+					                      	<label class="col-md-3 control-label"><a href="javascript:void(0);" onclick="add_client_contacts();">
 					                      		<i class="fa fa-w fa-plus-square"></i>&nbsp;<spring:message code="client.contact.add" /></a>
 					                      	</label>
 					                    </div>
@@ -185,14 +185,14 @@
 		 						
 		 							<div class="col-md-6">
 		 								<div class="form-group">
-											<label for="address" class="col-md-3"><spring:message code="client.contact.address" /></label>
+											<label for="address" class="col-md-3 control-label"><spring:message code="client.contact.address" /></label>
 											<div class="col-md-9">
 					                      		<input id="address" class="form-control" type="text" name="address" value="${client.address}" />
 					                      	</div>
 										</div>
 		                
 					                	<div class="form-group">
-											<label for="name" class="col-md-3"><spring:message code="client.contact.salesperson" /></label>
+											<label for="name" class="col-md-3 control-label"><spring:message code="client.contact.salesperson" /></label>
 						                    <div class="col-md-9">
 						                    	<select class="form-control select2 saleIds" name="saleIds" id="saleIds" multiple="multiple">
 					                      			<c:forEach var="user" items="${users}">
@@ -203,7 +203,7 @@
 										</div>
 										
 										<div class="form-group">
-											<label for="name" class="col-md-3"><spring:message code="client.cross.regional" /><br/><spring:message code="client.cross.regional.remark" /></label>
+											<label for="name" class="col-md-3 control-label"><spring:message code="client.cross.regional" /><br/><spring:message code="client.cross.regional.remark" /></label>
 						                    <div class="col-md-9">
 						                    		<input type="hidden" name="whether_cross_district" id="whether_cross_district" value="${client.whether_cross_district}">
 						                    		<input type="button" class="btn <c:choose><c:when test="${client.whether_cross_district == 1 }">btn-primary</c:when><c:otherwise>btn-default</c:otherwise></c:choose>  btn-flat pull-left btn-sm btn-100" onclick="changeRadio(1,'whether_cross_district',this);" id="btn_whether_cross_district_1" 
@@ -219,7 +219,7 @@
 		 				</div><!-- /.box-body -->
 		 				
 		      		 	<div class="box-footer">
-				          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.submit"/></button>
+				          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.save"/></button>
 				          	 <button type="button" class="btn btn-primary btn-sm disabled" onclick="window.location.href='${ctx}/client'"><spring:message code="btn.cancel"/></button>
 				    	</div>
 		 		</div><!-- /.box-noborder -->
@@ -348,7 +348,11 @@
 	
 	// 再添加一个联系人
 	function add_client_contacts(){
-		var index = $("#client_contacts div.contacts").last().attr("id").replace("client_contact_","");
+		var size = $("#client_contacts div.contacts").size();
+		var index = -1;
+		if(size != 0 ){
+			index = $("#client_contacts div.contacts").last().attr("id").replace("client_contact_","");
+		}
 		$.post("${ctx}/ajax/addContact",{index:Number(index)+1},function(html){
 			$("#client_contacts").append(html);
 			bind_hover();

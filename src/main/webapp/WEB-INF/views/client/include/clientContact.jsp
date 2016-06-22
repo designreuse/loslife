@@ -9,28 +9,28 @@
 <div class="row contacts" id="client_contact_${index}">
     <div class="col-md-6">
    			<div class="form-group">
-       			<label for="" class="col-md-3"><spring:message code="client.contact.person" /> ${index+1}<em> *</em></label>
+       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.person" /> ${index+1}<em> *</em></label>
        			<div class="col-md-9">
        				<input id="contact_person" class="form-control" type="text" name="contacts[${index}].contact_person" value="" />
        			</div>
        		</div>
          		
        		<div class="form-group">
-       			<label for="" class="col-md-3"><spring:message code="client.contact.position" /> ${index+1}<em> *</em></label>
+       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.position" /> ${index+1}<em> *</em></label>
        			<div class="col-md-9">
        				<input id="position" class="form-control" type="text" name="contacts[${index}].position" value="" />
        			</div>
        		</div>
          		
        		<div class="form-group">
-       			<label for="" class="col-md-3"><spring:message code="client.contact.phone" /> ${index+1}<em> *</em></label>
+       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.phone" /> ${index+1}<em> *</em></label>
        			<div class="col-md-9">
        				<input id="phone" class="form-control" type="text" name="contacts[${index}].phone" value="" />
        			</div>
        		</div>
          		
        		<div class="form-group">
-       			<label for="" class="col-md-3"><spring:message code="client.contact.email" /> ${index+1}<em> *</em></label>
+       			<label for="" class="col-md-3 control-label"><spring:message code="client.contact.email" /> ${index+1}<em> *</em></label>
        			<div class="col-md-9">
        				<input id="email" class="form-control" type="text" name="contacts[${index}].email" value="" />
        			</div>

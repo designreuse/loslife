@@ -6,12 +6,15 @@
 	
 	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="search" parameterType="map" resultType="Product">
-		select id,concat(name,' - ',IFNULL(regional,'')) as name
+		select id,concat(name,' - ',IFNULL(regional,'')) as name, product_category_id
 		from sales_booking_production.products where 1=1
 		<if test="name != null">
 			and (name like "%"#{name}"%" 
 				or en_name like "%"#{name}"%" 
 			)
+		</if>
+		<if test="productType != null">
+		    and product_category_id = #{productType}
 		</if>
 	</select>
 	

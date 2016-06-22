@@ -23,6 +23,7 @@ import com.asgab.entity.ProgressBar;
 import com.asgab.entity.xmo.Currency;
 import com.asgab.repository.BusinessOpportunityMapper;
 import com.asgab.repository.BusinessOpportunityProductMapper;
+import com.asgab.repository.ProductCategoryMapper;
 import com.asgab.service.product.ProductService;
 import com.asgab.util.SelectMapper;
 
@@ -38,6 +39,9 @@ public class BusinessOpportunityService {
 
   @Autowired
   private ProductService productService;
+  
+  @Autowired
+  private ProductCategoryMapper productCategoryMapper;
 
   public static Map<Integer, Integer> statusMap = new TreeMap<Integer, Integer>();
   public static Map<Integer, String> statusZH = new TreeMap<Integer, String>();
@@ -88,6 +92,7 @@ public class BusinessOpportunityService {
       for (int i = 0; i < businessOpportunity.getBusinessOpportunityProducts().size(); i++) {
         BusinessOpportunityProduct businessOpportunityProduct = businessOpportunity.getBusinessOpportunityProducts().get(i);
         businessOpportunityProduct.setProduct(productService.get(businessOpportunityProduct.getProduct_id()));
+        businessOpportunityProduct.setProductCategory(productCategoryMapper.get(businessOpportunityProduct.getProduct_category_id()));
       }
     }
     return businessOpportunity;

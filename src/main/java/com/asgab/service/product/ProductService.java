@@ -1,6 +1,7 @@
 package com.asgab.service.product;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,10 @@ public class ProductService {
     List<Product> products = productXMOMapper.search(page.getSearchMap(), page.getRowBounds());
     page.setContent(products);
     return page;
+  }
+
+  public List<Product> getAllProduct(Map<String, Object> searchMap) {
+    return productXMOMapper.search(searchMap);
   }
 
   public List<Product> getAllProduct() {
