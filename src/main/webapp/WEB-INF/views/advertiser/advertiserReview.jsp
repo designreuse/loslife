@@ -361,7 +361,7 @@
 			</div>
 			
 			<div class="box-footer">
-              <button type="button" class="btn btn-sm btn-primary btn-flat" onclick="$('#submitModal').modal('show');"><spring:message code="btn.submit" /></button>
+              <button type="button" class="btn btn-sm btn-primary btn-flat" onclick="$('#submitModal').modal('show');"><spring:message code="btn.save" /></button>
               <button type="button" class="btn btn-sm btn-primary btn-flat disabled" onclick="cancel();"><spring:message code="btn.cancel" /></button>
             </div>
 		</div>

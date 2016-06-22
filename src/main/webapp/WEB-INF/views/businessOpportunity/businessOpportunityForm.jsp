@@ -240,7 +240,7 @@
 	            		</div>
             		</div>
             		<br/>
-                    <button type="button" class="btn btn-primary btn-sm btn-flat" onclick="submitForm();"><spring:message code="btn.submit"/></button> 
+                    <button type="button" class="btn btn-primary btn-sm btn-flat" onclick="submitForm();"><spring:message code="btn.save"/></button> 
                     <button type="button" class="btn btn-primary btn-sm disabled btn-sm btn-flat" onclick="cancel();"><spring:message code="btn.cancel"/></button>
                 </div>
               </div>
