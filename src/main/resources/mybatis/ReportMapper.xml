@@ -5,26 +5,17 @@
 <mapper namespace="com.asgab.repository.ReportMapper">
 	
 	<select id="getOpportunitysByProduct" parameterType="Report" resultType="Report">
-		select t.product_id,t.product_name,t.currency,sum(t.budget) as budgetSum from (
-			<!-- 有订单,订单不为完成. 取订单 -->
-			select adv.product_id as product_id,products.name as product_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budget from orders ord 
+			<!-- 有订单,订单不为完成. 取订单 adv.cost 售价 public_price*floor_discount 底价 -->
+			select adv.order_id as order_id , null as opportunity_id,getLocalByOrderId(adv.order_id) as `local`,adv.product_id as product_id,getGPByProductId(adv.product_id) as gp, products.name as product_name,ord.budget_currency as currency, 
+				adv.budget_ratio as budget,ord.budget as totalBudget,IFNULL(ord.rebate,0) as rebate,IFNULL(ord.service_charges_scale,0) as service_charges_scale,ord.whether_service as whether_service,
+				adv.cost,products.public_price,products.floor_discount
+				from orders ord 
 				right join advertisements adv on ord.id=adv.order_id 
 				left join products as products on adv.product_id = products.id
-			where adv.order_id in (
-				select distinct(c.id) from business_opportunities a 
+			where  exists (
+				select ord.id from business_opportunities a 
 					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is not null and  (c.state != 'examine_completed' or c.state is null)
-				<if test="reportDate_start != null and reportDate_start !=''">
-					<![CDATA[
-					and c.start_date >= #{reportDate_start}
-					]]>
-				</if>
-				<if test="reportDate_end != null and reportDate_end !=''">
-					<![CDATA[
-					and c.ending_date <= #{reportDate_end}
-					]]>
-				</if>
+				where  ( ord.state != 'examine_completed' or ord.state is null) and ord.id = b.order_id
 				<if test="progress_start != null and progress_start !=''">
 					<![CDATA[
 					and a.progress >= #{progress_start}
@@ -36,67 +27,74 @@
 					]]>
 				</if>
 			)
-			group by adv.product_id,ord.budget_currency
-			union
+			<if test="reportDate_start != null and reportDate_start !=''">
+					<![CDATA[
+					and ord.start_date >= #{reportDate_start}
+					]]>
+				</if>
+				<if test="reportDate_end != null and reportDate_end !=''">
+					<![CDATA[
+					and ord.ending_date <= #{reportDate_end}
+					]]>
+				</if>
+			union all
 			<!-- 没有订单, 取本身 -->
-			select pro.product_id as product_id,products.name as product_name,cur.name as currency,sum(pro.budget) as budget from business_opportunities opp 
+			select null as order_id,opp.id as opportunity_id, getLocalByOpportunityId(opp.id) as `local`,  pro.product_id as product_id, getGPByProductId(pro.product_id) as gp ,
+				products.name as product_name,cur.name as currency,pro.budget as budget,opp.budget as totalBudget, 0 as rebate, 0 as service_charges_scale,opp.exist_service as whether_service,
+				0 as cost,products.public_price,products.floor_discount 
+				from business_opportunities opp 
 				right join business_opportunity_products pro on opp.id=pro.business_opportunity_id
 				left join xmo.currencies cur on cur.id = opp.currency_id
 				left join products as products on pro.product_id = products.id
-			where opp.id in (
-				select distinct(a.id) from business_opportunities a 
-					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is null
+			where not exists (
+				select b.id from business_opportunity_orders a left join orders b on a.order_id = b.id
+				where a.business_opportunity_id = opp.id
+			)
 				<if test="reportDate_start != null and reportDate_start !=''">
 					<![CDATA[
-					and a.deliver_start_date >= #{reportDate_start}
+					and opp.deliver_start_date >= #{reportDate_start}
 					]]>
 				</if>
 				<if test="reportDate_end != null and reportDate_end !=''">
 					<![CDATA[
-					and a.deliver_end_date <= #{reportDate_end}
+					and opp.deliver_end_date <= #{reportDate_end}
 					]]>
 				</if>
 				<if test="progress_start != null and progress_start !=''">
 					<![CDATA[
-					and a.progress >= #{progress_start}
+					and opp.progress >= #{progress_start}
 					]]>
 				</if>
 				<if test="progress_end != null and progress_end !=''">
 					<![CDATA[
-					and a.progress <= #{progress_end}
+					and opp.progress <= #{progress_end}
 					]]>
 				</if>
-			)
-			group by pro.product_id,cur.name
-		) t 
-		group by t.product_id,t.currency
-		
 	</select>
 	
 	<select id="getOrdersByProduct" parameterType="Report" resultType="Report">
 		<!--取订单 -->
-		select adv.product_id as product_id,products.name as product_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budgetSum 
-			from orders ord right join advertisements adv on ord.id=adv.order_id 
+		select adv.order_id, getLocalByOrderId(adv.order_id) as `local` , adv.product_id as product_id,getGPByProductId(adv.product_id) as gp,
+			products.name as product_name,ord.budget_currency as currency,adv.budget_ratio as budget,ord.budget as totalBudget,IFNULL(ord.rebate,0) as rebate,
+			IFNULL(ord.service_charges_scale,0) as service_charges_scale,ord.whether_service as whether_service,
+			adv.cost,products.public_price,products.floor_discount
+		from orders ord right join advertisements adv on ord.id=adv.order_id 
 			left join products as products on adv.product_id = products.id
-			where adv.order_id in (
-				select distinct(c.id) from business_opportunities a 
-					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is not null and  (c.state = 'examine_completed')
-				<if test="reportDate_start != null and reportDate_start !=''">
-					<![CDATA[
-					and c.start_date >= #{reportDate_start}
-					]]>
-				</if>
-				<if test="reportDate_end != null and reportDate_end !=''">
-					<![CDATA[
-					and c.ending_date <= #{reportDate_end}
-					]]>
-				</if>
+			where ord.state = 'examine_completed' and exists (
+				select a.id from business_opportunity_orders a
+				left join business_opportunities b on a.business_opportunity_id = b.id
+				where  a.order_id = ord.id
 			)
-			group by adv.product_id,ord.budget_currency
+		<if test="reportDate_start != null and reportDate_start !=''">
+			<![CDATA[
+			and ord.start_date >= #{reportDate_start}
+			]]>
+		</if>
+		<if test="reportDate_end != null and reportDate_end !=''">
+			<![CDATA[
+			and ord.ending_date <= #{reportDate_end}
+			]]>
+		</if>
 	</select>
 	
 	<select id="getReportBySaleTeam" parameterType="map" resultType="Report">
@@ -108,28 +106,20 @@
 	</select>
 	
 	<select id="getOpportunitysByChannel" parameterType="Report" resultType="Report">
-		select t.channel,t.channel_name,t.currency,sum(t.budget) as budgetSum from (
 			<!--  有订单,订单不为完成. 取订单 -->
-			select clients.channel as channel ,channels.channel_name as channel_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budget from orders ord 
+			select adv.order_id as order_id , null as opportunity_id,getLocalByOrderId(adv.order_id) as `local`,clients.channel as channel ,
+				getGPByProductId(adv.product_id) as gp,channels.channel_name as channel_name,ord.budget_currency as currency, 
+				adv.budget_ratio as budget,ord.budget as totalBudget,IFNULL(ord.rebate,0) as rebate,IFNULL(ord.service_charges_scale,0) as service_charges_scale,ord.whether_service as whether_service,
+				adv.cost,products.public_price,products.floor_discount 
+				from orders ord 
 				right join advertisements adv on ord.id=adv.order_id 
-				left join products as products on adv.product_id = products.id
 				left join clients as clients on clients.id = ord.client_id
 				left join channels as channels on clients.channel = channels.id
-			where adv.order_id in (
-				select distinct(c.id) from business_opportunities a 
+				left join products as products on adv.product_id = products.id
+			where exists (
+				select ord.id from business_opportunities a 
 					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is not null and  (c.state != 'examine_completed' or c.state is null)
-				<if test="reportDate_start != null and reportDate_start !=''">
-					<![CDATA[
-					and c.start_date >= #{reportDate_start}
-					]]>
-				</if>
-				<if test="reportDate_end != null and reportDate_end !=''">
-					<![CDATA[
-					and c.ending_date <= #{reportDate_end}
-					]]>
-				</if>
+				where  ( ord.state != 'examine_completed' or ord.state is null) and ord.id = b.order_id
 				<if test="progress_start != null and progress_start !=''">
 					<![CDATA[
 					and a.progress >= #{progress_start}
@@ -142,71 +132,79 @@
 				</if>
 			)
 			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
-			group by clients.channel,ord.budget_currency
-			union
+				<if test="reportDate_start != null and reportDate_start !=''">
+					<![CDATA[
+					and ord.start_date >= #{reportDate_start}
+					]]>
+				</if>
+				<if test="reportDate_end != null and reportDate_end !=''">
+					<![CDATA[
+					and ord.ending_date <= #{reportDate_end}
+					]]>
+				</if>
+			union all
 			<!--  没有订单, 取本身 -->
-			select clients.channel as channel ,channels.channel_name as channel_name,cur.name as currency,sum(pro.budget) as budget  from business_opportunities opp right join business_opportunity_products pro on opp.id=pro.business_opportunity_id
+			select null as order_id,opp.id as opportunity_id, getLocalByOpportunityId(opp.id) as `local`,clients.channel as channel ,
+				getGPByProductId(pro.product_id) as gp,channels.channel_name as channel_name,cur.name as currency,pro.budget as budget,
+				opp.budget as totalBudget,0 as rebate, 0 as service_charges_scale,opp.exist_service as whether_service,
+				0 as cost,products.public_price,products.floor_discount  
+				from business_opportunities opp right join business_opportunity_products pro on opp.id=pro.business_opportunity_id
 				left join xmo.currencies cur on cur.id = opp.currency_id
-				left join products as products on pro.product_id = products.id
 				left join clients as clients on clients.id = opp.advertiser_id
 				left join channels as channels on clients.channel = channels.id
-			where opp.id in (
-				select distinct(a.id) from business_opportunities a 
-					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is null 
+				left join products as products on pro.product_id = products.id
+			where not exists (
+				select b.id from business_opportunity_orders a left join orders b on a.order_id = b.id
+				where a.business_opportunity_id = opp.id
+			) 
+			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
 				<if test="reportDate_start != null and reportDate_start !=''">
 					<![CDATA[
-					and a.deliver_start_date >= #{reportDate_start}
+					and opp.deliver_start_date >= #{reportDate_start}
 					]]>
 				</if>
 				<if test="reportDate_end != null and reportDate_end !=''">
 					<![CDATA[
-					and a.deliver_end_date <= #{reportDate_end}
+					and opp.deliver_end_date <= #{reportDate_end}
 					]]>
 				</if>
 				<if test="progress_start != null and progress_start !=''">
 					<![CDATA[
-					and a.progress >= #{progress_start}
+					and opp.progress >= #{progress_start}
 					]]>
 				</if>
 				<if test="progress_end != null and progress_end !=''">
 					<![CDATA[
-					and a.progress <= #{progress_end}
+					and opp.progress <= #{progress_end}
 					]]>
 				</if>
-			)
-			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
-			group by clients.channel,cur.name
-		) t 
-		group by t.channel,t.currency
-		
 	</select>
 	
 	<select id="getOrdersByChannel" parameterType="map" resultType="Report">
-		select clients.channel as channel ,channels.channel_name as channel_name,ord.budget_currency as currency, sum(adv.budget_ratio) as budgetSum 
+		select adv.order_id, getLocalByOrderId(adv.order_id) as `local` ,clients.channel as channel ,
+			getGPByProductId(adv.product_id) as gp,channels.channel_name as channel_name,ord.budget_currency as currency, 
+			adv.budget_ratio as budget,ord.budget as totalBudget,IFNULL(ord.rebate,0) as rebate,IFNULL(ord.service_charges_scale,0) as service_charges_scale,
+			ord.whether_service as whether_service ,adv.cost,products.public_price,products.floor_discount 
 			from orders ord right join advertisements adv on ord.id=adv.order_id 
-			left join products as products on adv.product_id = products.id
 			left join clients as clients on clients.id = ord.client_id
 			left join channels as channels on clients.channel = channels.id
-			where adv.order_id in (
-				select distinct(c.id) from business_opportunities a 
-					left join business_opportunity_orders b on  a.id = b.business_opportunity_id 
-					left join orders c on c.id = b.order_id
-				where c.id is not null and  (c.state = 'examine_completed')
-				<if test="reportDate_start != null and reportDate_start !=''">
-					<![CDATA[
-					and c.start_date >= #{reportDate_start}
-					]]>
-				</if>
-				<if test="reportDate_end != null and reportDate_end !=''">
-					<![CDATA[
-					and c.ending_date <= #{reportDate_end}
-					]]>
-				</if>
+			left join products as products on adv.product_id = products.id
+			where ord.state = 'examine_completed' and exists (
+				select a.id from business_opportunity_orders a
+				left join business_opportunities b on a.business_opportunity_id = b.id
+				where  a.order_id = ord.id
 			)
 			and  clients.whether_channel = 1 and clients.channel != '' and clients.channel != ''  is not null
-			group by clients.channel,ord.budget_currency
+			<if test="reportDate_start != null and reportDate_start !=''">
+				<![CDATA[
+				and ord.start_date >= #{reportDate_start}
+				]]>
+			</if>
+			<if test="reportDate_end != null and reportDate_end !=''">
+				<![CDATA[
+				and ord.ending_date <= #{reportDate_end}
+				]]>
+			</if>
 	</select>
 	
 </mapper> 

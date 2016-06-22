@@ -77,7 +77,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label><spring:message code="report.metric" /></label> 
-										<select class="form-control select2" name="dataRight" id="dataRight" style="width: 100%;">
+										<select class="form-control select2" name="metric" id="metric" style="width: 100%;">
 											<option value="1" selected="selected"><spring:message code="report.income" /></option>
 											<option value="2"><spring:message code="report.estimate.gp" /></option>
 										</select>
@@ -264,6 +264,7 @@
 		
 		function submitForm(){
 			var dataRight=$("#dataRight").val();
+			var metric=$("#metric").val();
 			var reportDate=$("#reportDate").val();
 			var progress=$("#progress").val();
 			var budget=$("#budget").val();
@@ -274,6 +275,7 @@
 			var currency=$("#currency").val();
 			$.post("${ctx}/ajax/report/list",{
 										'dataRight':dataRight,
+										'metric':metric,
 										'reportDate':reportDate,
 										'progress':progress,
 										'budget':budget,
@@ -289,6 +291,7 @@
 		
 		function resetForm(){
 			$("#dataRight").val("1").trigger('change');
+			$("#metric").val("1").trigger('change');
 			$('#reportDateSpan').html(moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
 			$('#reportDate').val(moment().startOf('quarter').format('YYYY/MM/DD') + ' - '+ moment().endOf('quarter').format('YYYY/MM/DD'));
 			$('#reportDateDiv').data('daterangepicker').setStartDate(moment().startOf('quarter'));
