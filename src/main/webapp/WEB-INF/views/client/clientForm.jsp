@@ -219,7 +219,7 @@
 		 				</div><!-- /.box-body -->
 		 				
 		      		 	<div class="box-footer">
-				          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.submit"/></button>
+				          	 <button type="submit" class="btn btn-primary btn-sm" onclick="$('#primaryForm').submit();"><spring:message code="btn.save"/></button>
 				          	 <button type="button" class="btn btn-primary btn-sm disabled" onclick="window.location.href='${ctx}/client'"><spring:message code="btn.cancel"/></button>
 				    	</div>
 		 		</div><!-- /.box-noborder -->
