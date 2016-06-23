@@ -3,33 +3,72 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="com.asgab.repository.UserMapper">
-	<!--
-		获取用户: 输出直接映射到对象, login_name列要"as loginName"以方便映射 ,team_id as "team.id"创建team对象并赋值
-	-->
+	
 	<select id="get" parameterType="long" resultType="User">
-		select id, name,login_name as loginName,password,salt,roles,emailaudit,register_date as registerDate, email, financeEmail,company, department, function
-		from ss_user
-		where deleted = 1 and id=#{id}
+		select a.id,a.admin_account,a.version_type, a.date_register, a.expires_time,b.backup_count,b.lastBackup_date
+		from tb_enterprise a left join tb_backuprecord b on a.id = b.enterprise_id 
+		where a.admin_account = #{value}
 	</select>
 
-	<!-- 查询用户,演示: 1.输入用map传入多个参数 2.<where>语句, 智能添加where和and关键字 3.输出直接映射对象 -->
 	<select id="search" parameterType="map" resultType="User">
-		select id, name,login_name as loginName, password,salt,roles,emailaudit,register_date as registerDate, email, financeEmail,company, department, function
-		from ss_user where deleted = 1
-		<if test="loginName != null">
-			and login_name=#{loginName}
+		select a.id,a.admin_account,a.version_type, a.date_register, a.expires_time,b.backup_count,b.lastBackup_date
+		from tb_enterprise a left join tb_backuprecord b on a.id = b.enterprise_id 
+		where 1=1
+		<if test="admin_account != null and admin_account != '' ">
+		    and admin_account like "%"#{admin_account}"%"
 		</if>
-		<if test="name != null">
-			and name like "%"#{name}"%"
+		<if test="searchType == 1 ">
+		    and exists (
+		    <![CDATA[
+		    select pay_id from `yls_rechargerecord` where money > 0  and pay_date >= #{search_start} and pay_date <= #{search_end} and enterpriseid = a.id order by pay_date asc limit 0,1
+		    ]]>
+		    )
 		</if>
-		<if test="roles != null">
-			and roles like "%"#{roles}"%"
+		<!-- 过期3天 -->
+		<if test="searchType == 2 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and exists (
+		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
+		    )
 		</if>
-		<if test="financeEmail != null and financeEmail!=''">
-			and financeEmail like "%"#{financeEmail}"%"
+		<!-- 还剩5天 付费-->
+		<if test="searchType == 3 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and exists (
+		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
+		    )
 		</if>
-		<if test="emailaudit != null and emailaudit !=''">
-			and emailaudit = #{emailaudit}
+		<!-- 还剩5天 试用-->
+		<if test="searchType == 4 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 在使用的付费用户 -->
+		<if test="searchType == 5 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start}
+		    ]]>
+			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 付费3天未备份用户 -->
+		<if test="searchType == 6 ">
+			<![CDATA[
+			and b.lastBackup_date <= #{search_start}
+			 ]]>
+			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 试用3天未备份用户 -->
+		<if test="searchType == 7 ">
+			<![CDATA[
+			and b.lastBackup_date <= #{search_start}
+			 ]]>
+			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
 		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
@@ -38,50 +77,64 @@
 	
 	<select id="count" parameterType="map" resultType="int">
 		select count(1) 
-		from ss_user where deleted = 1
-		<if test="loginName != null">
-			and login_name=#{loginName}
+		from tb_enterprise a left join tb_backuprecord b on a.id = b.enterprise_id 
+		where 1=1
+		<if test="admin_account != null and admin_account != '' ">
+		    and admin_account like "%"#{admin_account}"%"
 		</if>
-		<if test="name != null">
-			and name like "%"#{name}"%"
+		<if test="searchType == 1 ">
+		    and exists (
+		    <![CDATA[
+		    select pay_id from `yls_rechargerecord` where money > 0  and pay_date >= #{search_start} and pay_date <= #{search_end} and enterpriseid = a.id order by pay_date asc limit 0,1
+		    ]]>
+		    )
 		</if>
-		<if test="roles != null">
-			and roles like "%"#{roles}"%"
+		<!-- 过期3天 -->
+		<if test="searchType == 2 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and exists (
+		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
+		    )
 		</if>
-		<if test="financeEmail != null and financeEmail !=''">
-			and financeEmail like "%"#{financeEmail}"%"
+		<!-- 还剩5天 付费-->
+		<if test="searchType == 3 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and exists (
+		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
+		    )
 		</if>
-		<if test="emailaudit != null and emailaudit !=''">
-			and emailaudit = #{emailaudit}
+		<!-- 还剩5天 试用-->
+		<if test="searchType == 4 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
+		    ]]>
+			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 在使用的付费用户 -->
+		<if test="searchType == 5 ">
+		    <![CDATA[
+			and a.expires_time >= #{search_start}
+		    ]]>
+			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 付费3天未备份用户 -->
+		<if test="searchType == 6 ">
+			<![CDATA[
+			and b.lastBackup_date <= #{search_start}
+			 ]]>
+			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+		</if>
+		<!-- 试用3天未备份用户 -->
+		<if test="searchType == 7 ">
+			<![CDATA[
+			and b.lastBackup_date <= #{search_start}
+			 ]]>
+			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
 		</if>
 	</select>
-
-	<!-- 插入用户： 1.由数据库生成id并赋值到user对象 2.输入用对象, 嵌套属性表达式#{team.id} -->
-	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		insert into ss_user (
-		login_name, name, password,salt,roles,emailaudit,register_date,deleted, email,financeEmail, company, department, function)
-		values (
-		#{loginName}, #{name}, #{password},#{salt},#{roles},#{emailaudit},#{registerDate},1, #{email},#{financeEmail}, #{company}, #{department}, #{function})
-	</insert>
 	
-	<!-- 插入用户： 1.由数据库生成id并赋值到user对象 2.输入用对象, 嵌套属性表达式#{team.id} -->
-	<insert id="update" parameterType="User">
-		update ss_user set 
-		name=#{name},
-		password=#{password},
-		roles=#{roles},
-		emailaudit=#{emailaudit},
-		salt=#{salt},
-		email=#{email}, 
-		financeEmail=#{financeEmail}, 
-		company=#{company}, 
-		department=#{department}, 
-		function=#{function}
-		where id = #{id}
-	</insert>
-	
-	<!-- 删除用户 -->
-	<delete id="delete" parameterType="long">
-	     update ss_user set deleted=2 where id=#{id}
-	</delete>
 </mapper> 

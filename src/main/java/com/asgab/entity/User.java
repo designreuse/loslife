@@ -1,176 +1,111 @@
 package com.asgab.entity;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.ImmutableList;
+import com.asgab.util.CommonUtil;
 
 public class User {
-  private Long id;
+	private Long id;
+	private String admin_account;
+	private String version_type;
+	private Long date_register;
+	private Long expires_time;
+	private int backup_count;
+	private Long lastBackup_date;
 
-  private String loginName;
-  private String name;
-  private String plainPassword;
-  private String password;
-  private String salt;
-  private String roles;
-  private String emailaudit;
+	private Long search_start;
+	private Long search_end;
 
-  private Date registerDate;
+	private String searchType;
 
-  private String email;
-  private String financeEmail;
-  private String company;
-  private String department;
-  private String function;
+	public String getAdmin_account() {
+		return admin_account;
+	}
 
-  private String status;
+	public void setAdmin_account(String admin_account) {
+		this.admin_account = admin_account;
+	}
 
-  public User() {}
+	public String getVersion_type() {
+		return version_type;
+	}
 
-  public User(Long id) {
-    this.id = id;
-  }
+	public void setVersion_type(String version_type) {
+		this.version_type = version_type;
+	}
 
-  public Long getId() {
-    return id;
-  }
+	public Long getDate_register() {
+		return date_register;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public String getFmtDate_register() {
+		return CommonUtil.formatDate(date_register, "yyyy-MM-dd HH:mm");
+	}
 
-  @NotBlank
-  public String getLoginName() {
-    return loginName;
-  }
+	public void setDate_register(Long date_register) {
+		this.date_register = date_register;
+	}
 
-  public void setLoginName(String loginName) {
-    this.loginName = loginName;
-  }
+	public Long getExpires_time() {
+		return expires_time;
+	}
 
-  @NotBlank
-  public String getName() {
-    return name;
-  }
+	public String getFmtExpires_time() {
+		return CommonUtil.formatDate(expires_time, "yyyy-MM-dd");
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setExpires_time(Long expires_time) {
+		this.expires_time = expires_time;
+	}
 
-  @JsonIgnore
-  public String getPlainPassword() {
-    return plainPassword;
-  }
+	public int getBackup_count() {
+		return backup_count;
+	}
 
-  public void setPlainPassword(String plainPassword) {
-    this.plainPassword = plainPassword;
-  }
+	public void setBackup_count(int backup_count) {
+		this.backup_count = backup_count;
+	}
 
-  public String getPassword() {
-    return password;
-  }
+	public Long getLastBackup_date() {
+		return lastBackup_date;
+	}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public String getFmtLastBackup_date() {
+		return CommonUtil.formatDate(lastBackup_date, "MM-dd HH:mm");
+	}
 
-  public String getSalt() {
-    return salt;
-  }
+	public void setLastBackup_date(Long lastBackup_date) {
+		this.lastBackup_date = lastBackup_date;
+	}
 
-  public void setSalt(String salt) {
-    this.salt = salt;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public String getRoles() {
-    return roles;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public void setRoles(String roles) {
-    this.roles = roles;
-  }
+	public String getSearchType() {
+		return searchType;
+	}
 
-  public String getEmail() {
-    return email;
-  }
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public Long getSearch_start() {
+		return search_start;
+	}
 
-  public String getCompany() {
-    return company;
-  }
+	public void setSearch_start(Long search_start) {
+		this.search_start = search_start;
+	}
 
-  public void setCompany(String company) {
-    this.company = company;
-  }
+	public Long getSearch_end() {
+		return search_end;
+	}
 
-  public String getDepartment() {
-    return department;
-  }
+	public void setSearch_end(Long search_end) {
+		this.search_end = search_end;
+	}
 
-  public void setDepartment(String department) {
-    this.department = department;
-  }
-
-  public String getFunction() {
-    return function;
-  }
-
-  public void setFunction(String function) {
-    this.function = function;
-  }
-
-  public String getEmailaudit() {
-    return emailaudit;
-  }
-
-  public void setEmailaudit(String emailaudit) {
-    this.emailaudit = emailaudit;
-  }
-
-  public String getFinanceEmail() {
-    return financeEmail;
-  }
-
-  public void setFinanceEmail(String financeEmail) {
-    this.financeEmail = financeEmail;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  @JsonIgnore
-  public List<String> getRoleList() {
-    // 角色列表在数据库中实际以逗号分隔字符串存储，因此返回不能修改的List.
-    return ImmutableList.copyOf(StringUtils.split(roles, ","));
-  }
-
-  // 设定JSON序列化时的日期格式
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-  public Date getRegisterDate() {
-    return registerDate;
-  }
-
-  public void setRegisterDate(Date registerDate) {
-    this.registerDate = registerDate;
-  }
-
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(this);
-  }
 }
