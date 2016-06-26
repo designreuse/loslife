@@ -4,71 +4,55 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="com.asgab.repository.UserMapper">
 	
-	<select id="get" parameterType="long" resultType="User">
-		select a.id,a.admin_account,a.version_type, a.date_register, a.expires_time,b.backup_count,b.lastBackup_date
+	<select id="get" parameterType="String" resultType="User">
+		select a.id,a.admin_account,a.version_type, a.date_register, if(a.expires_time &lt;= 253402271999602,a.expires_time,253402271999602) as expires_time , 
+		a.name,a.contact_phoneMobile,b.backup_count,b.lastBackup_date,c.money as accountMoney,d.deviceName,
+		(select count(0) from tb_membercardcategory where enterprise_id = a.id) as  membercardcategoryCount,
+		(select count(0) from tb_employee where enterprise_id = a.id) as  employeeCount,
+		(select count(0) from tb_service left join tb_service_cate on tb_service.serviceCategory_id = tb_service_cate.id where tb_service.enterprise_id = a.id) as serviceCount
 		from tb_enterprise a left join tb_backuprecord b on a.id = b.enterprise_id 
-		where a.admin_account = #{value}
+		left join yls_paymentaccount c on c.enterpriseid = a.id
+		left join tb_userlogincounts d on d.username = a.admin_account
+		where a.id = #{value}
 	</select>
 
 	<select id="search" parameterType="map" resultType="User">
-		select a.id,a.admin_account,a.version_type, a.date_register, a.expires_time,b.backup_count,b.lastBackup_date
+		select a.id,a.admin_account,a.version_type, a.date_register, if(a.expires_time &lt;= 253402271999602,a.expires_time,253402271999602) as expires_time , 
+		a.name,a.contact_phoneMobile,b.backup_count,b.lastBackup_date
 		from tb_enterprise a left join tb_backuprecord b on a.id = b.enterprise_id 
 		where 1=1
 		<if test="admin_account != null and admin_account != '' ">
 		    and admin_account like "%"#{admin_account}"%"
 		</if>
-		<if test="searchType == 1 ">
-		    and exists (
-		    <![CDATA[
-		    select pay_id from `yls_rechargerecord` where money > 0  and pay_date >= #{search_start} and pay_date <= #{search_end} and enterpriseid = a.id order by pay_date asc limit 0,1
-		    ]]>
-		    )
+		<!-- 因为第一个用$占位 -->
+		<if test="searchType !=0 and enterpriseIds != null and enterpriseIds.size() >= 1 ">
+		    and a.id 
+		    <if test="searchIn == 1">
+		    	in
+		    </if>
+		    <if test="searchIn == 0">
+		    	not in
+		    </if>
+		    <foreach collection="enterpriseIds" item="id" open="(" close=")" separator=",">
+		    	#{id}
+		    </foreach>
 		</if>
-		<!-- 过期3天 -->
-		<if test="searchType == 2 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and exists (
-		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
-		    )
-		</if>
-		<!-- 还剩5天 付费-->
-		<if test="searchType == 3 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and exists (
-		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
-		    )
-		</if>
-		<!-- 还剩5天 试用-->
-		<if test="searchType == 4 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
-		</if>
-		<!-- 在使用的付费用户 -->
-		<if test="searchType == 5 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start}
-		    ]]>
-			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
-		</if>
-		<!-- 付费3天未备份用户 -->
-		<if test="searchType == 6 ">
+		<if test="search_start != null and search_start !='' ">
 			<![CDATA[
-			and b.lastBackup_date <= #{search_start}
-			 ]]>
-			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+			and a.expires_time >= #{search_start} 
+		    ]]>
 		</if>
-		<!-- 试用3天未备份用户 -->
-		<if test="searchType == 7 ">
+		<if test="search_end != null and search_end !='' ">
 			<![CDATA[
-			and b.lastBackup_date <= #{search_start}
+			and a.expires_time <= #{search_end}
+		    ]]>
+		</if>
+		
+		<!-- 付费未过期 3天未备份 (和6一样. 但是需要加上未备份) -->
+		<if test="searchType == 8 or searchType == 9">
+			<![CDATA[
+			and b.lastBackup_date <= #{backup_date}
 			 ]]>
-			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
 		</if>
 		<if test="sort != null and sort!=''">
 			order by ${sort}
@@ -82,59 +66,75 @@
 		<if test="admin_account != null and admin_account != '' ">
 		    and admin_account like "%"#{admin_account}"%"
 		</if>
-		<if test="searchType == 1 ">
-		    and exists (
-		    <![CDATA[
-		    select pay_id from `yls_rechargerecord` where money > 0  and pay_date >= #{search_start} and pay_date <= #{search_end} and enterpriseid = a.id order by pay_date asc limit 0,1
-		    ]]>
-		    )
+		<!-- 因为第一个用$占位 -->
+		<if test="searchType !=0 and enterpriseIds != null and enterpriseIds.size() >= 1 ">
+		    and a.id 
+		    <if test="searchIn == 1">
+		    	in
+		    </if>
+		    <if test="searchIn == 0">
+		    	not in
+		    </if>
+		    <foreach collection="enterpriseIds" item="id" open="(" close=")" separator=",">
+		    	#{id}
+		    </foreach>
 		</if>
-		<!-- 过期3天 -->
-		<if test="searchType == 2 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and exists (
-		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
-		    )
-		</if>
-		<!-- 还剩5天 付费-->
-		<if test="searchType == 3 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and exists (
-		    select pay_id from `yls_rechargerecord` where money > 0  and enterpriseid = a.id
-		    )
-		</if>
-		<!-- 还剩5天 试用-->
-		<if test="searchType == 4 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start} and a.expires_time <= #{search_end}
-		    ]]>
-			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
-		</if>
-		<!-- 在使用的付费用户 -->
-		<if test="searchType == 5 ">
-		    <![CDATA[
-			and a.expires_time >= #{search_start}
-		    ]]>
-			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
-		</if>
-		<!-- 付费3天未备份用户 -->
-		<if test="searchType == 6 ">
+		<if test="search_start != null and search_start !='' ">
 			<![CDATA[
-			and b.lastBackup_date <= #{search_start}
-			 ]]>
-			and exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+			and a.expires_time >= #{search_start} 
+		    ]]>
 		</if>
-		<!-- 试用3天未备份用户 -->
-		<if test="searchType == 7 ">
+		<if test="search_end != null and search_end !='' ">
 			<![CDATA[
-			and b.lastBackup_date <= #{search_start}
-			 ]]>
-			and not exists ( select pay_id from `yls_rechargerecord` where money > 0 and enterpriseid = a.id)
+			and a.expires_time <= #{search_end}
+		    ]]>
 		</if>
+		
+		<!-- 付费未过期 3天未备份 (和6一样. 但是需要加上未备份) -->
+		<if test="searchType == 8 or searchType == 9">
+			<![CDATA[
+			and b.lastBackup_date <= #{backup_date}
+			 ]]>
+		</if>
+	
 	</select>
 	
+	<select id="getPayingUsers" parameterType="String" resultType="User">
+		select a.id,a.admin_account,a.version_type, a.date_register, if(a.expires_time &lt;= 253402271999602,a.expires_time,253402271999602) as expires_time,
+		b.pay_id,b.pay_date,b.money,b.month,b.expires_time as recharge_expires_time,b.version_type as echarge_version_type,b.description,b.operator,b.day
+		from tb_enterprise a inner join yls_rechargeRecord b on a.id = b.enterpriseId
+		and a.id in (
+			select distinct(enterpriseId) from yls_rechargeRecord where money > 0 
+		)
+		order by a.id asc , b.pay_date asc
+	</select>
+	
+	<!-- 获取备份记录 -->
+	<select id="countBackupHistorysByEnterpriseId" parameterType="map" resultType="Integer">
+		select count(0) from tb_backuphistory where enterprise_id = #{enterprise_id}
+			<![CDATA[ and backup_time >= #{time1} and backup_time <= #{time2} ]]>
+		union all
+		select count(0) from tb_backuphistory where enterprise_id = #{enterprise_id}
+			<![CDATA[ and backup_time >= #{time3} and backup_time <= #{time4} ]]>
+		union all
+		select count(0) from tb_backuphistory where enterprise_id = #{enterprise_id}
+			<![CDATA[ and backup_time >= #{time5} and backup_time <= #{time6} ]]>
+	</select>
+	
+	<!-- 获取设备记录 -->
+	<select id="getUserLoginCount" parameterType="String" resultType="String">
+		select id from tb_userlogincounts where username = #{value}
+	</select>
+	
+	<!-- 删除设备记录 -->
+	<select id="deleteUserLoginCount" parameterType="String" resultType="Integer">
+		delete from tb_userlogincounts where id = #{id}
+	</select>
+	
+	<select id="getBackupHistory" parameterType="String" resultType="BackupHistory">
+		select enterprise_id,backup_time,id from tb_backuphistory 
+			where enterprise_id = #{value}
+			order by backup_time desc
+			limit 0,10
+	</select>
 </mapper> 

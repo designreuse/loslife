@@ -154,6 +154,13 @@ public class CommonUtil {
 
 	public static Long getFistDayOfMonth() {
 		Calendar calendar = Calendar.getInstance();
+		return getFistDayOfMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+	}
+
+	public static Long getFistDayOfMonth(int year, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -163,6 +170,13 @@ public class CommonUtil {
 
 	public static Long getLastDayOfMonth() {
 		Calendar calendar = Calendar.getInstance();
+		return getFistDayOfMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+	}
+
+	public static Long getLastDayOfMonth(int year, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
 		calendar.add(Calendar.MONTH, 1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -192,9 +206,17 @@ public class CommonUtil {
 		return calendar.getTimeInMillis();
 	}
 
+	public static Long getCurrentDateTime() {
+		return Calendar.getInstance().getTimeInMillis();
+	}
+
 	public static void main(String[] args) {
-		System.out.println(formatDate(getGapNDaysStart(5), "yyyy-MM-dd HH:mm:ss"));
-		System.out.println(formatDate(getGapNDaysEnd(5), "yyyy-MM-dd HH:mm:ss"));
+		System.out.println(getGapNDaysStart(-1));
+		System.out.println(getGapNDaysEnd(-1));
+		System.out.println(getGapNDaysStart(-2));
+		System.out.println(getGapNDaysEnd(-2));
+		System.out.println(getGapNDaysStart(-3));
+		System.out.println(getGapNDaysEnd(-3));
 	}
 
 }

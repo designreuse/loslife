@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.RechargeRecordMapper">
+	
+	<select id="get" parameterType="String" resultType="RechargeRecord">
+		select 	pay_id,pay_date,money,month,expires_time,version_type,status,enterpriseId,description,operator,day 
+		from yls_rechargerecord where pay_id = #{value}
+	</select>
+
+	<select id="getByEnterpriseId" parameterType="String" resultType="RechargeRecord">
+		select 	pay_id,pay_date,money,month,expires_time,version_type,status,enterpriseId,description,operator,day 
+		from yls_rechargerecord where enterpriseId = #{value}
+	</select>
+	
+</mapper> 

@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd"
-	default-lazy-init="true">
+	default-lazy-init="false">
 
 	<description>Spring公共配置 </description>
 
@@ -40,6 +40,10 @@
         <property name="dataSource" ref="dataSource" />
         <qualifier value="booking"></qualifier>
     </bean>
+    
+    <!-- 初始化方法 -->
+	<bean id="applicationContext" class="com.asgab.util.ApplicationContext" scope="singleton" init-method="init"></bean>
+    
 	<!-- 使用annotation定义事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<!-- MyBatis配置 end-->
@@ -56,9 +60,6 @@
 		<property name="maxUploadSize" value="10485760000" />
 		<property name="maxInMemorySize" value="40960" />
 	</bean>
-	
-	
-	
 	
 	<!-- production环境 -->
  	<beans profile="production">

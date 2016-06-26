@@ -9,7 +9,7 @@
         <nav class="navbar navbar-static-top ">
           <div class="">
             <div class="navbar-header">
-              <a href="${ctx}/static/AdminLTE-2.3.0/index2.html" class="navbar-brand"><img style="margin-top: -6px;" src="${ctx}/static/images/logo.jpg"></a>
+              <a href="${ctx}/static/AdminLTE-2.3.3/index2.html" class="navbar-brand"><img style="margin-top: -6px;" src="${ctx}/static/images/logo.jpg"></a>
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                 <i class="fa fa-bars"></i>
               </button>

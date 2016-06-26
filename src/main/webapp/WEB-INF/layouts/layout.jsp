@@ -19,19 +19,28 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="${ctx}/static/styles/font-awesome.min.css">
     
-    <!-- Ion Slider -->
+    <!-- Ion Slider 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/ionslider/ion.rangeSlider.css">
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/ionslider/ion.rangeSlider.skinFlat.css">
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/ionslider/ion.rangeSlider.skinNice.css">
+    -->
     
-    <!-- daterange picker -->
+    <!-- daterange picker 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/daterangepicker/daterangepicker-bs3.css">
-    <!-- iCheck for checkboxes and radio inputs -->
+    -->
+    
+    <!-- iCheck for checkboxes and radio inputs 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/iCheck/all.css">
-    <!-- Bootstrap Color Picker -->
+    -->
+    
+    <!-- Bootstrap Color Picker 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/colorpicker/bootstrap-colorpicker.min.css">
-    <!-- Bootstrap time Picker -->
+    -->
+    
+    <!-- Bootstrap time Picker 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/timepicker/bootstrap-timepicker.min.css">
+    -->
+    
     <!-- Select2 -->
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/select2/select2.min.css">
     
@@ -39,11 +48,16 @@
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/dist/css/AdminLTE.css">
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/dist/css/skins/_all-skins.css">
     
-    <!-- daterangepicker -->
+    <!-- daterangepicker 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/daterangepicker/daterangepicker-bs3.css">
+    -->
     
-    <!-- datatable -->
+    <!-- datatable 
     <link rel="stylesheet" href="${ctx}/static/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.css">
+    -->
+    
+    <!-- datetimepicker  new -->
+    <link rel="stylesheet" href="${ctx}/static/datetimepicker/bootstrap-datetimepicker.min.css">
     
     <!-- custom style -->
     <link rel="stylesheet" href="${ctx}/static/styles/custom.css">
@@ -63,31 +77,56 @@
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/input-mask/jquery.inputmask.js"></script>
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-    <!-- date-range-picker -->
+    
+    <!-- date-range-picker 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/daterangepicker/moment.min.js"></script>
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
+    -->
+    
+    <!-- bootstrap color picker 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
-    <!-- bootstrap time picker -->
+    -->
+    
+    <!-- bootstrap time picker 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-    <!-- SlimScroll 1.3.0 -->
+    -->
+    
+    <!-- SlimScroll 1.3.0 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- iCheck 1.0.1 -->
+    -->
+    
+    <!-- iCheck 1.0.1 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/iCheck/icheck.min.js"></script>
-    <!-- ChartJS 2.1.4 -->
+    -->
+    
+    <!-- ChartJS 2.1.4 
     <script src="${ctx}/static/chartjs/Chart.js"></script>
-    <!-- FastClick -->
+    -->
+    
+    <!-- FastClick 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/fastclick/fastclick.min.js"></script>
-    <!-- Ion Slider -->
+    -->
+    <!-- Ion Slider 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/ionslider/ion.rangeSlider.min.js"></script>
-    <!-- bootbox -->
+    -->
+    
+    <!-- bootbox 
     <script src="${ctx}/static/bootbox/bootbox.js"></script>
-    <!-- jquery validate 1.14.0 -->
+    -->
+    
+    <!-- jquery validate 1.14.0 
     <script src="${ctx}/static/jquery-validation/1.14.0/dist/jquery.validate.js" type="text/javascript"></script>
 	<script src="${ctx}/static/jquery-validation/1.14.0/dist/jquey.validate.override.js" type="text/javascript"></script>
-    <!-- DataTables -->
+	-->
+	
+    <!-- DataTables 
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="${ctx}/static/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    -->
+    
+    <!-- datetimepicker  new -->
+    <script src="${ctx}/static/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="${ctx}/static/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 
     <!-- AdminLTE App -->
     <script src="${ctx}/static/AdminLTE-2.3.3/dist/js/app.min.js"></script>
@@ -99,7 +138,9 @@
 	String lang =localeResolver.resolveLocale(request).getLanguage();
 	if("zh".equals(lang)){
 		%>
+		<!-- 
 		<script src="${ctx}/static/jquery-validation/1.14.0/dist/localization/messages_zh.js" type="text/javascript"></script>
+		 -->
 		<%
 	}
 	%>
@@ -138,7 +179,7 @@
           <div class="pull-right hidden-xs">
             <b>Version</b> 1.0
           </div>
-          <strong>Copyright &copy; 2016 <a href="http://www.i-click.com/">iClick Interactive Asia Limited</a>.</strong> All rights reserved.
+          <strong>Copyright &copy; 2016 </strong> All rights reserved.
         </div><!-- /.container -->
       </footer>
     </div><!-- ./wrapper -->
