@@ -11,7 +11,7 @@
 
 	<select id="getByEnterpriseId" parameterType="String" resultType="RechargeRecord">
 		select 	pay_id,pay_date,money,month,expires_time,version_type,status,enterpriseId,description,operator,day 
-		from yls_rechargerecord where enterpriseId = #{value}
+		from yls_rechargerecord where enterpriseId = #{value} order by pay_date desc
 	</select>
 	
 </mapper> 
