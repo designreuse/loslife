@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.asgab.core.pagination.Page;
 import com.asgab.entity.User;
 import com.asgab.service.user.UserService;
+import com.asgab.thread.SyncPayingUsersThread;
 import com.asgab.util.ApplicationContext;
 import com.asgab.util.CommonUtil;
 import com.asgab.util.Servlets;
@@ -48,7 +49,10 @@ public class UserController {
 			@RequestParam(value = "sort", defaultValue = "id desc") String sort, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 如果超过10分钟没有更新payingUsers .先更新
 		if ((CommonUtil.getCurrentDateTime() - ApplicationContext.lastSyncTime) > 10 * 60 * 1000) {
-			userService.initPayingUsers();
+			// userService.initPayingUsers();
+			// 用线程去同步
+			SyncPayingUsersThread syncPayingUsersThread = new SyncPayingUsersThread(userService);
+			syncPayingUsersThread.start();
 		}
 
 		Map<String, Object> params = new HashMap<String, Object>();
