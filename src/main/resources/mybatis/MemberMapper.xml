@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.MemberMapper">
+	
+	<select id="getMembersByEnterpriseId" parameterType="String" resultType="Member">
+		select id,memberNo,name,sex,birthday,phoneMobile,joinDate,currentScore,totalScore,job,description 
+		from tb_member where enterprise_id = #{value}
+	</select>
+	
+</mapper> 

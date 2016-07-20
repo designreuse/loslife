@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.asgab.repository.MemberCardCategoryMapper">
+	
+	<select id="getMemberCardCategoryByEnterpriseId" parameterType="String" resultType="MemberCardCategory">
+		select id,name,baseInfo_minMoney,baseInfo_type,discounts_goodsDiscount,discounts_serviceDiscount,cardValid,cardNoGenRule_cardNoPrefix,
+			activeCardPresentMoney,activeCardPresentScore,rechargePresentScore,consumePresentScore,inverse_ratio 
+		from tb_membercardcategory where enterprise_id = #{value}
+	</select>
+	
+	<select id="getRecordCateServicesByEnterpriseId" parameterType="String" resultType="RecordCateService">
+		select a.cardCateName,a.serviceName,a.def_int1,a.def_int2,a.def_int3
+		from tb_recordcateservices a left join tb_membercardcategory b on a.cardCateId = b.id
+		where b.baseInfo_type = 'recordTimeCard' and b.enterprise_id = #{value}
+	</select>
+	
+</mapper> 
