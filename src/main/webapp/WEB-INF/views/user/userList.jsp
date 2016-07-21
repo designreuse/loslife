@@ -117,6 +117,7 @@
                <td>
                	<a href="javascript:void(0);" onclick="view('${user.id}');"><i class="fa fa-w fa-search"></i>账户详情</a>
                	<a href="javascript:void(0);" onclick="backup('${user.id}');" class="btnLink"><i class="fa fa-w fa-cloud-upload"></i>备份记录</a>
+               	<a href="javascript:void(0);" onclick="exportEnterprise('${user.id}');" class="btnLink"><i class="fa fa-w fa-download"></i>商户导出</a>
                </td>
              </tr>
             </c:forEach>
@@ -172,6 +173,10 @@
           			$("#detailModal").html(data);
           			$("#detailModal").modal({backdrop: 'static', keyboard: false}).show();
           		},"text");
+          	};
+          	
+          	function exportEnterprise(id){
+          		window.location.href="${ctx}/ajax/export/"+id;
           	};
           	
           	function resetForm(){

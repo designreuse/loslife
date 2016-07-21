@@ -9,14 +9,13 @@ public class ServiceAttrMap {
 	private Long create_date;
 	private String enterprise_id;
 	
-	// 如果是服务
 	private String serviceName;
 	
 	public static String cannotusecard = "cannotUseCard";
 	public static String noDiscount = "noDiscount";
 	public static String fixed_bonus = "fixed_bonus";
 	public static String hasCommonUsedProject = "hasCommonUsedProject";
-	// 服务 如果是服务 value就是服务id
+	// 鏈夊鏋滄槸鍗栧搧灏辨湁鏈嶅姟
 	public static String service = "service";
 	public static String stored_in_shop = "stored_in_shop";
 	

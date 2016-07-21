@@ -11,6 +11,6 @@ public interface ServiceMapper {
 
 	List<Service> getServiceByEnterpriseId(String enterpriseId);
 
-	List<ServiceAttrMap> getServiceAttrMapsByServiceIds(List<String> serviceIds);
+	List<ServiceAttrMap> getServiceAttrMapsByServiceIds(String enterpriseId);
 
 }

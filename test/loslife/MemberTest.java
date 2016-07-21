@@ -24,9 +24,11 @@ public class MemberTest {
 	public void getServiceByEnterprised() {
 		List<Member> members =memberService.getMembersByEnterpriseId("131955001317139159");
 		for (Member member : members) {
+		    System.out.print(member.getMemberNo()+",");
 			System.out.print(member.getName()+",");
 			System.out.print(member.getDecodeSex()+",");
 			System.out.print(member.getFmtBirthday()+",");
+			System.out.print(member.getPhoneMobile()+",");
 			System.out.print(member.getFmtJoinDate()+",");
 			System.out.print(member.getCurrentScore()+",");
 			System.out.print(member.getTotalScore()+",");

@@ -13,11 +13,11 @@ import com.asgab.repository.MemberMapper;
 @Transactional
 public class MemberService {
 
-	@Autowired
-	private MemberMapper memberMapper;
-	
-	public List<Member> getMembersByEnterpriseId(String enterpriseId){
-		return memberMapper.getMembersByEnterpriseId(enterpriseId);
-	}
+  @Autowired
+  private MemberMapper memberMapper;
+
+  public List<Member> getMembersByEnterpriseId(String enterpriseId) {
+    return memberMapper.getMembersByEnterpriseId(enterpriseId);
+  }
 
 }

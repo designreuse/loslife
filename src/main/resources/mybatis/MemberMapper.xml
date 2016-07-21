@@ -9,4 +9,17 @@
 		from tb_member where enterprise_id = #{value}
 	</select>
 	
+	<!-- 会员的会员卡信息 -->
+	<select id="getMemberCardsByEnterpriseId" parameterType="String" resultType="MemberCard">
+		select a.id,b.memberNo,a.cardNo,a.memberCardCategoryName,a.currentMoney,a.create_date ,c.baseInfo_type
+			from tb_membercard a left join tb_member b  on b.id = a.memberId 
+			left join tb_membercardcategory c on a.memberCardCategoryId = c.id
+			where b.enterprise_id=#{value}
+	</select>
+	
+	<!-- 会员卡记次卡信息 -->
+	<select id="getRecordTimeMemberCardsByEnterpriseId" parameterType="String" resultType="MemberCardAttrMap">	
+		select id,memberCardId,groupName,keyName,value 
+		from tb_membercardattrmap where enterprise_id=#{value}
+	</select>
 </mapper> 

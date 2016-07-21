@@ -20,8 +20,8 @@ public class Member {
 	
 	private static Map<Integer,String> sexs = new HashMap<Integer,String>();
 	static{
-		sexs.put(0, "Å®");
-		sexs.put(1, "ÄÐ");
+		sexs.put(0, "å¥³");
+		sexs.put(1, "ç”·");
 	}
 	public String getId() {
 		return id;

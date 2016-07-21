@@ -9,12 +9,10 @@
 		from tb_service a left join tb_service_cate b on a.serviceCategory_id = b.id where a.enterprise_id = #{id}
 	</select>
 	
-	<select id="getServiceAttrMapsByServiceIds" parameterType="list" resultType="ServiceAttrMap">
-		select id,service_id,groupName,keyName,value,create_date,enterprise_id
-		from tb_serviceattrmap where service_id in
-		<foreach collection="list" item="id" open="(" close=")" separator=",">
-			#{id}
-		</foreach>
+	<select id="getServiceAttrMapsByServiceIds" parameterType="String" resultType="ServiceAttrMap">
+		select a.id,a.service_id,a.groupName,a.keyName,a.value,a.create_date,a.enterprise_id
+		from tb_serviceattrmap a left join tb_service b on a.service_id = b.id 
+		where b.enterprise_id = #{id}
 	</select>
 
 	
