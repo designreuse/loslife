@@ -41,7 +41,7 @@
 	<mvc:default-servlet-handler />
 
 	<!-- 定义无需Controller的url<->view直接映射 -->
-	<mvc:view-controller path="/" view-name="redirect:/user" />
+	<mvc:view-controller path="/" view-name="redirect:/login" />
 	
 	<mvc:interceptors>
 	<!-- Changes the locale when a 'lang' request parameter is sent; e.g. /?lang=de -->

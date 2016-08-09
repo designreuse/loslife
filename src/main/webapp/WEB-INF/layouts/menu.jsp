@@ -20,6 +20,17 @@
                 <li id="menu_user"><a href="${ctx}/user">商户</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
+            
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav navbar-right" style="padding-right: 15px;">
+                  <li class="dropdown" >
+                    <a href="${ctx}/logout" class="dropdown-toggle" style="cursor: default;height: 50px;" >
+                        退出
+                    </a>
+                  </li>
+                </ul>
+            </div>
+            
           </div><!-- /.container-fluid -->
         </nav>
       </header>

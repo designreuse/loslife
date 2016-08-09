@@ -192,10 +192,10 @@ public class EnterpriseService {
           cell.setCellValue(member.getFmtJoinDate());
 
           cell = row.createCell(bodyColumbIndex++);
-          cell.setCellValue(member.getCurrentScore());
+          cell.setCellValue(member.getCurrentScore() == null ? 0 : member.getCurrentScore().doubleValue());
 
           cell = row.createCell(bodyColumbIndex++);
-          cell.setCellValue(member.getTotalScore());
+          cell.setCellValue(member.getTotalScore() == null ? 0 : member.getTotalScore().doubleValue());
 
           cell = row.createCell(bodyColumbIndex++);
           cell.setCellValue(member.getJob());
@@ -225,7 +225,7 @@ public class EnterpriseService {
           cell.setCellValue(card.getMemberCardCategoryName());
 
           cell = row.createCell(bodyColumbIndex++);
-          cell.setCellValue(card.getCardValue());
+          cell.setCellValue(card.getCardValue() == null ? 0 : card.getCardValue().doubleValue());
 
           cell = row.createCell(bodyColumbIndex++);
           cell.setCellValue(card.getFmtCreate_date());

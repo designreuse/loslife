@@ -65,7 +65,7 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/businessOpportunity" />
+		<property name="successUrl" value="/user" />
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="myFormAuthenticationFilter" />
@@ -74,8 +74,16 @@
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/** = anon
-			</value>
+                /jcaptcha* = anon
+                /login = jCaptchaValidate,authc
+                /login/lang = anon
+                /logout = logout
+                /static/** = anon
+                /file/** = anon
+                /admin/** = roles[admin]
+                /favicon.ico = anon
+                /** = user
+            </value>
 		</property>
 	</bean>
 
