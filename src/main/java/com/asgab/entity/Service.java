@@ -144,7 +144,7 @@ public class Service {
     if (serviceAttrMaps == null || (serviceAttrMaps != null && serviceAttrMaps.size() == 0)) {
       return "";
     } else {
-      if (type.equals(1)) {
+      if (type != null && type.equals(1)) {
         return serviceAttrMaps.get(0).getValue();
       } else {
         return getStringByList(serviceAttrMaps);
