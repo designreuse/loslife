@@ -2,6 +2,7 @@ package com.asgab.service.member;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ public class MemberCardService {
   private void setMemberCardAttr(MemberCard memberCard, List<MemberCardAttrMap> recordTimeMemberCardsAttrMap) {
     if (recordTimeMemberCardsAttrMap != null && recordTimeMemberCardsAttrMap.size() > 0) {
       for (MemberCardAttrMap cardAttr : recordTimeMemberCardsAttrMap) {
-        if (cardAttr.getMemberCardId().equals(memberCard.getId())) {
+        if (cardAttr != null && StringUtils.isNotBlank(cardAttr.getMemberCardId()) && cardAttr.getMemberCardId().equals(memberCard.getId())) {
           memberCard.getMemberCardAttrMaps().add(cardAttr);
         }
       }

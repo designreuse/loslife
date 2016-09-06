@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.asgab.util.CommonUtil;
 
 public class MemberCard {
@@ -95,7 +97,9 @@ public class MemberCard {
   public int getRecordTimesCardValue() {
     int count = 0;
     for (MemberCardAttrMap map : memberCardAttrMaps) {
-      count = count + Integer.parseInt(map.getValue());
+      if (StringUtils.isNotBlank(map.getValue())) {
+        count = count + Integer.parseInt(map.getValue());
+      }
     }
     return count;
   }
